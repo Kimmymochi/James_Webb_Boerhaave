@@ -1,8 +1,11 @@
 # James_Webb_Boerhaave
 
 ## Setup
-
-To use npm, download [NodeJS](https://nodejs.org/en/download/).
+Check npm version
+```
+npm -v
+```
+Is npm not recognize or under version 8.5.0, download new version of [NodeJS](https://nodejs.org/en/download/).
 
 Install the `package.json` dependencies 
 ```

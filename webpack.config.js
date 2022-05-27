@@ -21,6 +21,22 @@ module.exports = {
                     "css-loader",
                     "sass-loader"
                 ]
+            },
+            {
+                test: /\.(gltf)$/,
+                use: [
+                    {
+                        loader: "gltf-webpack-loader"
+                    }
+                ]
+            },
+            {
+                test: /\.(bin)$/,
+                    use: [
+                    {
+                        loader: 'file-loader',
+                    }
+                ]
             }
         ]
     },

@@ -6,13 +6,15 @@ canvas {
 
 .annotation {
     position: absolute;
+    cursor: pointer;
+    user-select: none;
     top: 0;
     left: 0;
     z-index: 1;
     margin-left: 15px;
     margin-top: 15px;
-    padding: 1em;
-    width: 200px;
+    // padding: 1em;
+    // width: 200px;
     color: #fff;
     background: rgba(0, 0, 0, 0.8);
     border-radius: .5em;
@@ -20,7 +22,7 @@ canvas {
     line-height: 1.2;
     transition: opacity .5s;
     &::before {
-        content: '1';
+        content: attr(data-number);
         position: absolute;
         top: -30px;
         left: -30px;
@@ -33,10 +35,28 @@ canvas {
         text-align: center;
         background: rgba(0, 0, 0, 0.8);
     }
+    &:hover {
+        &::before {
+            animation: pulse 1.5s;
+        }
+    }
+    &__box {
+        display: none;
+        padding: 1em;
+        width: 200px;
+    }
 }
-
 
 #number {
     position: absolute;
     z-index: -1;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+  }
 }

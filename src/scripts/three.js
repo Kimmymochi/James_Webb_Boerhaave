@@ -40,8 +40,16 @@ let scene;
 let renderer;
 let sprite;
 let spriteBehindObject;
-const annotation = document.querySelector(".annotation");
 
+// const annotation = document.querySelector(".annotation");
+const annotations = document.querySelectorAll('.annotation');
+
+// test positions
+const positions = [
+    [0, 5, 2],
+    [0, -1, 7],
+    [0, -2, 0]
+]
 
 init();
 animate();
@@ -112,11 +120,14 @@ function init() {
         depthWrite: false
     });
 
-    sprite = new THREE.Sprite(spriteMaterial);
-    sprite.position.set(0,4,0);
-    sprite.scale.set(60, 60, 1);
-
-    scene.add(sprite);
+    // NEW | Dynamically sets position for every sprite
+    for( let i = 0; i < positions.length; i++) {
+        sprite = new THREE.Sprite(spriteMaterial);
+        // sprite.position.set(0,4,0);
+        sprite.position.set(positions[i][0], positions[i][1], positions[i][2]);
+        sprite.scale.set(60, 60, 1);
+        scene.add(sprite);
+    }
 
     // Renderer
 
@@ -150,7 +161,11 @@ function animate() {
 function render() {
     renderer.render(scene, camera);
     updateAnnotationOpacity();
-    updateScreenPosition();
+
+    // NEW | updateScreenPosition now sets position for each annotation in HTML
+    for( let i = 0; i < annotations.length; i++) {
+        updateScreenPosition(positions[i], annotations[i]);
+    }
 }
 
 function updateAnnotationOpacity() {
@@ -168,8 +183,9 @@ function updateAnnotationOpacity() {
     sprite.material.opacity = 0;
 }
 
-function updateScreenPosition() {
-    const vector = new THREE.Vector3(0,4,0);
+function updateScreenPosition(position, annotation) {
+    // const vector = new THREE.Vector3(0,4,0);
+    const vector = new THREE.Vector3(position[0], position[1], position[2]);
     const canvas = renderer.domElement;
 
     vector.project(camera);
@@ -180,4 +196,12 @@ function updateScreenPosition() {
     annotation.style.top = `${vector.y}px`;
     annotation.style.left = `${vector.x}px`;
     annotation.style.opacity = spriteBehindObject ? 0.25 : 1;
+}
+
+// NEW || Click event for toggling annotation display
+for (var i = 0; i < annotations.length; i++) {
+    annotations[i].addEventListener('click', function() {
+      let annotationBox = this.getElementsByClassName("annotation__box")[0];
+      annotationBox.style.display == "block" ? annotationBox.style.display = "none" : annotationBox.style.display = "block";
+  });
 }

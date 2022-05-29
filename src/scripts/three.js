@@ -1,35 +1,42 @@
 const THREE = require('three');
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import modelBin from '../models/scene.bin'
 import model from '../models/scene.gltf'
+import font from '../fonts/Prata_Regular.json'
 
-// Number
-
-const canvas = document.getElementById("number");
-const ctx = canvas.getContext("2d");
-const x = 32;
-const y = 32;
-const radius = 30;
-const startAngle = 0;
-const endAngle = Math.PI * 2;
-
-ctx.fillStyle = "rgb(0, 0, 0)";
-ctx.beginPath();
-ctx.arc(x, y, radius, startAngle, endAngle);
-ctx.fill();
-
-ctx.strokeStyle = "rgb(255, 255, 255)";
-ctx.lineWidth = 3;
-ctx.beginPath();
-ctx.arc(x, y, radius, startAngle, endAngle);
-ctx.stroke();
-
-ctx.fillStyle = "rgb(255, 255, 255)";
-ctx.font = "32px sans-serif";
-ctx.textAlign = "center";
-ctx.textBaseline = "middle";
-ctx.fillText("1", x, y);
+//test: alternative annotation mechanics
+// this is the distance the annotation will have from the annotation fixture point
+const annotationOffset = 5;
+// array with annotation points
+const annotationsData = [
+    {
+    id: 1,
+    location: new THREE.Vector3(0,2,-2),
+    title: "Test annotation Title",
+    text: "lorem lorem ippy summ"
+    },
+    {
+    id: 2,
+    location: new THREE.Vector3(2,2,0),
+    title: "Test annotation Title",
+    text: "lorem lorem ippy summ"
+    },
+    {
+    id: 3,
+    location: new THREE.Vector3(2,0,0),
+    title: "Test annotation Title",
+    text: "lorem lorem ippy summ"
+    },
+];
+//annotation line material
+const annotationMaterial = new THREE.LineBasicMaterial({
+        color: 0xffffff,
+    });
+//font loader
+const loader = new FontLoader();
 
 // three.js
 let telescope;
@@ -40,9 +47,6 @@ let scene;
 let renderer;
 let sprite;
 let spriteBehindObject;
-
-// const annotation = document.querySelector(".annotation");
-const annotations = document.querySelectorAll('.annotation');
 
 // test positions
 const positions = [
@@ -106,29 +110,6 @@ function init() {
 	} );
 
 
-    // Sprite
-
-    const numberTexture = new THREE.CanvasTexture(
-        document.querySelector("#number")
-    );
-
-    const spriteMaterial = new THREE.SpriteMaterial({
-        map: numberTexture,
-        alphaTest: 0.5,
-        transparent: true,
-        depthTest: false,
-        depthWrite: false
-    });
-
-    // NEW | Dynamically sets position for every sprite
-    for( let i = 0; i < positions.length; i++) {
-        sprite = new THREE.Sprite(spriteMaterial);
-        // sprite.position.set(0,4,0);
-        sprite.position.set(positions[i][0], positions[i][1], positions[i][2]);
-        sprite.scale.set(60, 60, 1);
-        scene.add(sprite);
-    }
-
     // Renderer
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -140,7 +121,9 @@ function init() {
     // Controls
 
 	controls = new OrbitControls( camera, renderer.domElement );
-    controls.enableZoom = false;
+    //controls.enableZoom = false;
+
+    setupAnnotations(annotationsData);
 
     window.addEventListener("resize", onWindowResize, false);
 }
@@ -160,48 +143,85 @@ function animate() {
 
 function render() {
     renderer.render(scene, camera);
-    updateAnnotationOpacity();
-
-    // NEW | updateScreenPosition now sets position for each annotation in HTML
-    for( let i = 0; i < annotations.length; i++) {
-        updateScreenPosition(positions[i], annotations[i]);
-    }
 }
 
-function updateAnnotationOpacity() {
-    if(telescope == undefined) {
+
+function setupAnnotations (annotations) {
+    //walk through array of annotations
+    for (let i = 0; i < annotations.length; i++) {
+        let annotation = annotations[i];
+
+        let location = new THREE.Vector3();
+        location.copy(annotation.location);
+
+        let annotationOffsetPosition = calculateAnnotationOffset(annotation.location);
+
+        let annotationLine = generateAnnotationLine(location, annotationOffsetPosition);
+        scene.add(annotationLine);
+    }
+    render();
+}
+
+// calculate and return annotation offset
+function calculateAnnotationOffset (annotationFixtureLocation) {
+    if (!annotationFixtureLocation.isVector3) {
+        console.error("calculateAnnotationOffset requires THREE.Vector3 but has been given incorrect type!");
+        return;
+    }
+    //get normalized vector of location for direction
+    let annotationDirection = annotationFixtureLocation.normalize();
+
+    //multiply direction of travel with annotation offset as magnitude
+    let annotationVector = annotationDirection.multiplyScalar(annotationOffset);
+
+    //now we add this vector to original fixture location of the annotation, to get the point where annotation can be written
+    let annotationLocation = annotationFixtureLocation.add(annotationVector);
+
+    return annotationLocation;
+}
+
+
+// generate and return line between original fixture location of the annotation and the point where annotation will be written
+function generateAnnotationLine (annotationFixtureLocation, annotationLocation) {
+    if (!annotationFixtureLocation.isVector3 || !annotationLocation.isVector3) {
+        console.error("drawAnnotationLine requires THREE.Vector3 but has been given incorrect type(s)!");
         return;
     }
 
-    const meshDistance = camera.position.distanceTo(telescope.position);
-    const spriteDistance = camera.position.distanceTo(sprite.position);
-    spriteBehindObject = spriteDistance > meshDistance;
-    sprite.material.opacity = spriteBehindObject ? 0.25 : 1;
+    //create array with points & cast geometry
+    let points = [annotationFixtureLocation, annotationLocation];
+    let annotationLineGeometry = new THREE.BufferGeometry().setFromPoints( points );
 
-    // Do you want a number that changes size according to its position?
-    // Comment out the following line and the `::before` pseudo-element.
-    sprite.material.opacity = 0;
+    //create line with geometry and material;
+    let line = new THREE.Line( annotationLineGeometry, annotationMaterial );
+    return line;
 }
 
-function updateScreenPosition(position, annotation) {
-    // const vector = new THREE.Vector3(0,4,0);
-    const vector = new THREE.Vector3(position[0], position[1], position[2]);
-    const canvas = renderer.domElement;
 
-    vector.project(camera);
+function generateAnnotationText (annotationLocation, title, text) {
+    if (!annotationLocation.isVector3) {
+        console.error("generateAnnotationText requires THREE.Vector3 but has been given incorrect type!");
+        return;
+    }
 
-    vector.x = Math.round((0.5 + vector.x / 2) * (canvas.width / window.devicePixelRatio));
-    vector.y = Math.round((0.5 - vector.y / 2) * (canvas.height / window.devicePixelRatio));
+    loader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
 
-    annotation.style.top = `${vector.y}px`;
-    annotation.style.left = `${vector.x}px`;
-    annotation.style.opacity = spriteBehindObject ? 0.25 : 1;
+    	let text = new TextGeometry( title, {
+    		font: font,
+    		size: 80,
+    		height: 5,
+    		curveSegments: 12,
+    		bevelEnabled: true,
+    		bevelThickness: 10,
+    		bevelSize: 8,
+    		bevelOffset: 0,
+    		bevelSegments: 5
+    	} );
+        text.position.set(0,10,0)
+        text.lookAt(camera.position);
+        scene.add(text);
+        console.log(text);
+        render();
+    } );
 }
-
-// NEW || Click event for toggling annotation display
-for (var i = 0; i < annotations.length; i++) {
-    annotations[i].addEventListener('click', function() {
-      let annotationBox = this.getElementsByClassName("annotation__box")[0];
-      annotationBox.style.display == "block" ? annotationBox.style.display = "none" : annotationBox.style.display = "block";
-  });
-}
+generateAnnotationText(new THREE.Vector3(0,0,0), "test", "testext")

@@ -46,12 +46,12 @@ dirLight.castShadow = true;
 const draggableObjects = [];
 const meshes = [backpanel, BUS, goldPlating, ISIS, secondaryMirror, solarPanels, sunscreens];
 
-for (let i = 0; i < meshes.length; i++)
-{
-    let draggableObject = addDraggablePart(meshes[i]);
-    scene.add(draggableObject);
-    draggableObjects.push(draggableObject);
-}
+// for (let i = 0; i < meshes.length; i++)
+// {
+//     let draggableObject = addDraggablePart(meshes[i]);
+//     scene.add(draggableObject);
+//     draggableObjects.push(draggableObject);
+// }
 
 const dragControls = new DragControls( draggableObjects, camera, renderer.domElement );
 
@@ -135,23 +135,77 @@ const dropContainerMaterial = new THREE.MeshBasicMaterial(
         opacity: 0.2, depthTest: false
     });
 
-function addDropContainer()
-{
-    const dropContainer = drawBox(10, 10, 10, dropContainerMaterial);
-    scene.add(dropContainer);
 
-    let boundingBox = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
-    boundingBox.setFromObject(dropContainer);
-    console.log(boundingBox);
+
+
+// CUBE 2
+const cube2 = new THREE.Mesh(
+    new THREE.BoxGeometry(2, 2, 2),
+    new THREE.MeshPhongMaterial({color: 0x0000ff})
+);
+cube2.position.set(-3, 0, 0);
+
+let cube2BB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
+cube2BB.setFromObject(cube2);
+
+cube2.geometry.computeBoundingBox();
+
+
+// SNAPPING POINT
+const snappingPointRadius = 0.5;
+
+const snappingPointMesh = new THREE.Mesh(
+    new THREE.SphereGeometry(snappingPointRadius),
+    new THREE.MeshPhongMaterial({color: 0xffffff})
+);
+
+snappingPointMesh.material.transparent = true;
+snappingPointMesh.material.opacity = 0.5;
+
+snappingPointMesh.position.set(0, 0, 0);
+
+let snappingPointBB = new THREE.Sphere(snappingPointMesh.position, snappingPointRadius);
+
+scene.add(cube2, snappingPointMesh);
+draggableObjects.push(cube2);
+
+
+let hasCollided = false;
+function checkCollisions()
+{
+    if (cube2BB.intersectsSphere(snappingPointBB))
+    {
+        const snappingPointPos = snappingPointBB.center;
+
+        if (!hasCollided)
+        {
+            hasCollided = true;
+            cube2.position.set(snappingPointPos.x, snappingPointPos.y, snappingPointPos.z);
+
+            // TODO: find better way
+            dragControls.enabled = false;
+            setTimeout(enableDragControls, 1000);
+        }
+    }
+    else
+    {
+        hasCollided = false;
+    }
 }
 
-addDropContainer();
-
+function enableDragControls()
+{
+    dragControls.enabled = true;
+}
 
 function animate()
 {
-    requestAnimationFrame( animate );
+    cube2BB.copy(cube2.geometry.boundingBox).applyMatrix4(cube2.matrixWorld);
+
+    checkCollisions();
+
     renderer.render( scene, camera );
+    requestAnimationFrame( animate );
 
     // for (let i = 0; i < draggableObjects.length; i++)
     // {

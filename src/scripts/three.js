@@ -1,10 +1,10 @@
 const THREE = require('three');
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import modelBin from '../models/scene.bin'
+import modelBin from '../models/scene.bin' // REVIEW | bin files are not necessary, webpack.config auto loads these
 import model from '../models/scene.gltf'
 
-//ui DOM
+// ui DOM
 const ui = document.getElementById("js--ui");
 // this is the distance the annotation will have from the annotation fixture point
 const annotationOffset = 5;
@@ -19,6 +19,7 @@ const annotationTextOffset = {
 
 // array with annotation points
 // id used to link with text HTML later
+// REVIEW | if this becomes to large we can put this data inside of a JSON
 const annotationsData = [
     {
     id: 1,
@@ -36,40 +37,36 @@ const annotationsData = [
     title: "Test annotation Title",
     },
 ];
-//annotation color
+// annotation color
 const annotationcolor = 0xffffff;
-//annotation line material
+// annotation line material
 const annotationMaterial = new THREE.LineBasicMaterial({
         color: annotationcolor,
     });
-//annotation sphere material
+// annotation sphere material
 const annotationSphereMaterial = new THREE.MeshBasicMaterial( { color: annotationcolor } );
 const annotationSphereRadius = 0.1;
 
-// three.js
+// three.js variables
 let telescope;
 let nodes;
 let camera;
 let controls;
 let scene;
 let renderer;
-let sprite;
-let spriteBehindObject;
 
 init();
 animate();
 
 function init() {
 
-    // Camera
-
+    // camera
     camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 2, 2000);
     camera.position.set(4, 0, 20);
-    // Scene
-
+    
+    // scene
     scene = new THREE.Scene();
 
-    //lighting
     //sun lighting
     const sun = new THREE.PointLight( 0xffffff , 1, 500 );
     sun.position.set( 20, -20, 0 );
@@ -81,6 +78,7 @@ function init() {
     sun2.castShadow = true;
     sun2.shadow.radius = 2;
     scene.add( sun2 );
+
     //general lighting
     const sceneLight = new THREE.AmbientLight(0xffffb8, 0.2);
     scene.add(sceneLight);
@@ -110,25 +108,24 @@ function init() {
 	    console.error( error );
 	} );
 
-
-    // Renderer
-
+    // renderer
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x333333, 1);
     document.body.appendChild(renderer.domElement);
 
-    // Controls
-
+    // controls
 	controls = new OrbitControls( camera, renderer.domElement );
     //controls.enableZoom = false;
 
-     //setup all the annotations
+    // setup all the annotations
     setupAnnotations(annotationsData);
 
+    // eventlisteners
     window.addEventListener("resize", onWindowResize, false);
 }
+
 
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -136,6 +133,7 @@ function onWindowResize() {
 
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
+
 
 function animate() {
     requestAnimationFrame(animate);
@@ -145,6 +143,7 @@ function animate() {
 
     render();
 }
+
 
 function render() {
     renderer.render(scene, camera);
@@ -178,9 +177,11 @@ function setupAnnotations (annotations) {
         generateAnnotationText(annotationOffsetPosition, annotation, annotationTextOffset.x, annotationTextOffset.y);
     }
 
-    //rerender when setup done
-    render();
+    //rerender when setup done 
+    // REVIEW | render deleted, doesn't affect anything (as far as we know)
+    // render();
 }
+
 
 // calculate and return annotation offset
 function calculateAnnotationOffset (annotationFixtureLocation) {

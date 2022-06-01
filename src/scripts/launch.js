@@ -24,26 +24,19 @@ function init() {
     // Scene
     scene = new THREE.Scene();
 
-    
-    //lighting
+    // Lighting
     //sun lighting
     const sun = new THREE.PointLight( 0xffffff , 1, 500 );
     sun.position.set( 0, 10, 0 );
     sun.castShadow = true;
     sun.shadow.radius = 2;
     scene.add( sun );
-    const sun2 = new THREE.PointLight( 0xffffff , 1, 500 );
-    sun2.position.set( 0, 0, -1 );
-    sun2.castShadow = true;
-    sun2.shadow.radius = 2;
-    scene.add( sun2 );
     // general lighting
     const sceneLight = new THREE.AmbientLight(0xffffb8, 0.2);
     scene.add(sceneLight);
 
-	// Model
+	// Models
 	const gltfLoader = new GLTFLoader();
-
 	gltfLoader.load( modelButton, function ( gltf ) {
         button = gltf.scene;
         button.castShadow = true;
@@ -71,23 +64,16 @@ function init() {
 	//     console.error( error );
 	// } );
 
+    // Video
     video = document.createElement('video');
     video.src = launch;
     video.load();
-    
-    // let videoCanvas = document.createElement('canvas');
-    // let videoCtx = videoCanvas.getContext('2d');
-    // videoCanvas.width = 640;
-    // videoCanvas.height = 480;
-    // videoCtx.fillStyle = '#000000';
-    // videoCtx.fillRect(0, 0, 640, 480);
 
     let videoTexture = new THREE.VideoTexture(video);
     videoTexture.needsUpdate = true;
     videoTexture.minFilter = THREE.LinearFilter;
     videoTexture.magFilter = THREE.LinearFilter;
     // videoTexture.format= THREE.RGBFormat;
-    videoTexture.crossOrigin = 'anonymous';
 
     let videoMaterial = new THREE.MeshBasicMaterial( {map: videoTexture, side: THREE.DoubleSide});
     let videoPlane = new THREE.PlaneGeometry(4, 2);
@@ -95,10 +81,9 @@ function init() {
 
     videoMesh.position.set(0, 1.5, -1.5 );
 
-
     scene.add(videoMesh)
 
-    // Button
+    // Button Base (just add this to blender model)
     geometry = new THREE.CylinderGeometry(1.1, 1.1, 0.2);
     material = new THREE.MeshBasicMaterial({color: 0x000000});
     cylinder = new THREE.Mesh( geometry, material);
@@ -112,9 +97,8 @@ function init() {
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild(renderer.domElement);
 
-
-    
     window.addEventListener("resize", onWindowResize, false);
+    window.addEventListener('mousedown', onMouseDown, false);
 }
 
 function onWindowResize() {
@@ -132,11 +116,6 @@ function animate() {
 }
 
 function render() {
-    // if(video.readyState === video.HAVE_ENOGUH_DATA) {
-    //     videoCtx.drawImage(video, 0, 0);
-       
-    // }
-
     renderer.render(scene, camera);
 }
 
@@ -146,14 +125,14 @@ function onMouseDown(event) {
     mouse.y = - (event.clientY / renderer.domElement.clientHeight) * 2 + 1;
 
     raycaster.setFromCamera(mouse, camera);
-
+   
     let intersects = raycaster.intersectObjects(scene.children);
     if (intersects.length > 0) {
         target = intersects[0].object.name;
-        target == "Cylinder" ?  push.play().reset(): console.log('niet'); 
-        video.play();       
+
+        if (target == "Cylinder") {
+            push.play();
+            video.play();
+        }
     }
-
 }
-
-window.addEventListener('mousedown', onMouseDown, false);

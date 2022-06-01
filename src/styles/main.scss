@@ -1,62 +1,64 @@
+@import 'reset';
+
 canvas {
     width: 100%;
     height: 100px;
     display: block;
 }
 
-.annotation {
-    position: absolute;
-    cursor: pointer;
-    user-select: none;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    margin-left: 15px;
-    margin-top: 15px;
-    // padding: 1em;
-    // width: 200px;
-    color: #fff;
-    background: rgba(0, 0, 0, 0.8);
-    border-radius: .5em;
-    font-size: 12px;
-    line-height: 1.2;
-    transition: opacity .5s;
-    &::before {
-        content: attr(data-number);
-        position: absolute;
-        top: -30px;
-        left: -30px;
-        width: 30px;
-        height: 30px;
-        border: 2px solid #fff;
-        border-radius: 50%;
-        font-size: 16px;
-        line-height: 30px;
-        text-align: center;
-        background: rgba(0, 0, 0, 0.8);
-    }
-    &:hover {
-        &::before {
-            animation: pulse 1.5s;
-        }
-    }
-    &__box {
-        display: none;
-        padding: 1em;
-        width: 200px;
-    }
-}
+// .annotation {
+//     position: absolute;
+//     cursor: pointer;
+//     user-select: none;
+//     top: 0;
+//     left: 0;
+//     z-index: 1;
+//     margin-left: 15px;
+//     margin-top: 15px;
+//     // padding: 1em;
+//     // width: 200px;
+//     color: #fff;
+//     background: rgba(0, 0, 0, 0.8);
+//     border-radius: .5em;
+//     font-size: 12px;
+//     line-height: 1.2;
+//     transition: opacity .5s;
+//     &::before {
+//         content: attr(data-number);
+//         position: absolute;
+//         top: -30px;
+//         left: -30px;
+//         width: 30px;
+//         height: 30px;
+//         border: 2px solid #fff;
+//         border-radius: 50%;
+//         font-size: 16px;
+//         line-height: 30px;
+//         text-align: center;
+//         background: rgba(0, 0, 0, 0.8);
+//     }
+//     &:hover {
+//         &::before {
+//             animation: pulse 1.5s;
+//         }
+//     }
+//     &__box {
+//         display: none;
+//         padding: 1em;
+//         width: 200px;
+//     }
+// }
 
-#number {
-    position: absolute;
-    z-index: -1;
-}
+// #number {
+//     position: absolute;
+//     z-index: -1;
+// }
 
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.2);
-  }
-  100% {
-    box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
-  }
-}
+// @keyframes pulse {
+//   0% {
+//     box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.2);
+//   }
+//   100% {
+//     box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+//   }
+// }

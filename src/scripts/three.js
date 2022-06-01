@@ -168,11 +168,14 @@ function setupAnnotations (annotations) {
         let annotationLine = generateAnnotationLine(location, annotationOffsetPosition);
         scene.add(annotationLine);
 
-        //add little ball on line
+        //add little ball on ends of line
         let geometry = new THREE.SphereGeometry( annotationSphereRadius, 16, 16 );
-        let sphere = new THREE.Mesh( geometry, annotationSphereMaterial );
-        sphere.position.set(annotationOffsetPosition.x, annotationOffsetPosition.y, annotationOffsetPosition.z);
-        scene.add( sphere );
+        let sphereStart = new THREE.Mesh( geometry, annotationSphereMaterial );
+        let sphereEnd = new THREE.Mesh( geometry, annotationSphereMaterial );
+        sphereStart.position.set(location.x, location.y, location.z);
+        scene.add( sphereStart );
+        sphereEnd.position.set(annotationOffsetPosition.x, annotationOffsetPosition.y, annotationOffsetPosition.z);
+        scene.add( sphereEnd );
 
         //generate text for annotation
         generateAnnotationText(annotationOffsetPosition, annotation, annotationTextOffset.x, annotationTextOffset.y);

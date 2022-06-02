@@ -47,7 +47,7 @@ $panel-transition-time: .6s;
         }
     }
 
-    .text {
+    .textPanel {
         display: flex;
         flex-direction: column;
 
@@ -92,6 +92,16 @@ $panel-transition-time: .6s;
                 column-count: 2;
                 display: block;
             }
+        }
+    }
+
+    .close-button {
+        position: absolute;
+        right: 4rem;
+        top: 4rem;
+
+        .button {
+            background-color: none;
         }
     }
 }

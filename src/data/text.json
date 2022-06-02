@@ -1,0 +1,60 @@
+{
+    "text": {
+        "JWSTParts": {
+            "primarymirror": {
+                "id": 1,
+                "title": "Primaire spiegel",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque cum dolor ducimus in, expedita hic recusandae tempora quasi molestias nulla incidunt quidem sunt minus non illum dicta velit id, autem, dignissimos aliquam maxime, quam. Perferendis et animi quia consequuntur modi, iste possimus similique quaerat ab nesciunt, iusto quis commodi asperiores quod tempore sapiente. Illum voluptates, quae consequuntur eum nobis nemo eius earum vitae cum unde fuga, esse amet accusantium totam, atque labore. Est fugit aspernatur, iste quas, ullam numquam libero saepe ea animi modi cumque quasi quis ducimus accusamus dolorum in, odio, neque voluptatem maxime nemo sed enim hic eaque!",
+                "location": {
+                    "x": 0,
+                    "y": 5,
+                    "z": 1.75
+                }
+            },
+
+            "secundarymirror": {
+                "id": 2,
+                "title": "Secundaire spiegel",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque cum dolor ducimus in, expedita hic recusandae tempora quasi molestias nulla incidunt quidem sunt minus non illum dicta velit id, autem, dignissimos aliquam maxime, quam. Perferendis et animi quia consequuntur modi, iste possimus similique quaerat ab nesciunt, iusto quis commodi asperiores quod tempore sapiente. Illum voluptates, quae consequuntur eum nobis nemo eius earum vitae cum unde fuga, esse amet accusantium totam, atque labore. Est fugit aspernatur, iste quas, ullam numquam libero saepe ea animi modi cumque quasi quis ducimus accusamus dolorum in, odio, neque voluptatem maxime nemo sed enim hic eaque!",
+                "location": {
+                    "x": 0,
+                    "y": 3.5,
+                    "z": 8.5
+                }
+            },
+
+            "sunscreens": {
+                "id": 3,
+                "title": "Zonneschermen",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque cum dolor ducimus in, expedita hic recusandae tempora quasi molestias nulla incidunt quidem sunt minus non illum dicta velit id, autem, dignissimos aliquam maxime, quam. Perferendis et animi quia consequuntur modi, iste possimus similique quaerat ab nesciunt, iusto quis commodi asperiores quod tempore sapiente. Illum voluptates, quae consequuntur eum nobis nemo eius earum vitae cum unde fuga, esse amet accusantium totam, atque labore. Est fugit aspernatur, iste quas, ullam numquam libero saepe ea animi modi cumque quasi quis ducimus accusamus dolorum in, odio, neque voluptatem maxime nemo sed enim hic eaque!",
+                "location": {
+                    "x": 3,
+                    "y": 1.25,
+                    "z": -2
+                }
+            },
+
+            "spacecraftbus": {
+                "id": 4,
+                "title": "ruimtevaartuig BUS",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque cum dolor ducimus in, expedita hic recusandae tempora quasi molestias nulla incidunt quidem sunt minus non illum dicta velit id, autem, dignissimos aliquam maxime, quam. Perferendis et animi quia consequuntur modi, iste possimus similique quaerat ab nesciunt, iusto quis commodi asperiores quod tempore sapiente. Illum voluptates, quae consequuntur eum nobis nemo eius earum vitae cum unde fuga, esse amet accusantium totam, atque labore. Est fugit aspernatur, iste quas, ullam numquam libero saepe ea animi modi cumque quasi quis ducimus accusamus dolorum in, odio, neque voluptatem maxime nemo sed enim hic eaque!",
+                "location": {
+                    "x": 1.5,
+                    "y": -2,
+                    "z": 0
+                }
+            },
+
+            "solarpanels": {
+                "id": 5,
+                "title": "Zonnepanelen",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque cum dolor ducimus in, expedita hic recusandae tempora quasi molestias nulla incidunt quidem sunt minus non illum dicta velit id, autem, dignissimos aliquam maxime, quam. Perferendis et animi quia consequuntur modi, iste possimus similique quaerat ab nesciunt, iusto quis commodi asperiores quod tempore sapiente. Illum voluptates, quae consequuntur eum nobis nemo eius earum vitae cum unde fuga, esse amet accusantium totam, atque labore. Est fugit aspernatur, iste quas, ullam numquam libero saepe ea animi modi cumque quasi quis ducimus accusamus dolorum in, odio, neque voluptatem maxime nemo sed enim hic eaque!",
+                "location": {
+                    "x": 0,
+                    "y": -1.25,
+                    "z": -5
+                }
+            }
+        }
+    }
+}

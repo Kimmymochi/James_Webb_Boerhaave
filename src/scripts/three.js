@@ -4,6 +4,8 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import modelBin from '../models/scene.bin'
 import model from '../models/scene.gltf'
 
+import textData from '../data/text.json';
+
 //ui DOM
 const ui = document.getElementById("js--ui");
 // this is the distance the annotation will have from the annotation fixture point
@@ -19,23 +21,7 @@ const annotationTextOffset = {
 
 // array with annotation points
 // id used to link with text HTML later
-const annotationsData = [
-    {
-    id: 1,
-    location: new THREE.Vector3(0,2,-2),
-    title: "Test annotation Title",
-    },
-    {
-    id: 2,
-    location: new THREE.Vector3(2,2,0),
-    title: "Test annotation Title",
-    },
-    {
-    id: 3,
-    location: new THREE.Vector3(2,0,0),
-    title: "Test annotation Title",
-    },
-];
+const annotationsData = textData.text.JWSTParts;
 //annotation color
 const annotationcolor = 0xffffff;
 //annotation line material
@@ -153,16 +139,27 @@ function render() {
 
 // create and add annotations
 function setupAnnotations (annotations) {
+
+    //get keys of JSON object
+    let keys = Object.keys(annotations);
+
     //walk through array of annotations
-    for (let i = 0; i < annotations.length; i++) {
-        let annotation = annotations[i];
+    for (let i = 0; i < keys.length; i++) {
+        let annotation = annotations[keys[i]];
 
         //get location
-        let location = new THREE.Vector3();
-        location.copy(annotation.location);
+        let location = new THREE.Vector3(
+            annotation.location.x,
+            annotation.location.y,
+            annotation.location.z
+        );
 
         //calculate offset
-        let annotationOffsetPosition = calculateAnnotationOffset(annotation.location);
+        let annotationOffsetPosition = calculateAnnotationOffset(new THREE.Vector3(
+            annotation.location.x,
+            annotation.location.y,
+            annotation.location.z
+        ));
 
         //create line and add it to scene
         let annotationLine = generateAnnotationLine(location, annotationOffsetPosition);
@@ -281,15 +278,30 @@ function updateAnnotationLocations (offsetX = 0, offsetY = 0) {
     //get all annotations
     let annotationsInUi = document.querySelectorAll('#js--ui .js--ui-annotation');
 
+    //walk through UI annotations
     for (let i = 0; i < annotationsInUi.length; i++) {
 
-        //get corresponding annotation data
-        let annotationData = annotationsData.filter(
-            item => item.id == annotationsInUi[i].getAttribute("data-id")
-        )[0];
+        //var to set to corresponding annotation data
+        let annotationData;
+        //get keys of JSON object
+        let keys = Object.keys(annotationsData);
 
+        //walk through array of annotations
+        for (let j = 0; j < keys.length; j++) {
+            let annotation = annotationsData[keys[j]];
+
+            // if id matches, set annotation data var
+            if (annotation.id == annotationsInUi[i].getAttribute("data-id")) {
+                annotationData = annotation;
+            }
+        }
         //calculate new screenposition
-        let updatedPosition = generateScreenSpaceCoords(calculateAnnotationOffset(annotationData.location));
+        let location = new THREE.Vector3(
+            annotationData.location.x,
+            annotationData.location.y,
+            annotationData.location.z
+        );
+        let updatedPosition = generateScreenSpaceCoords(calculateAnnotationOffset(location));
 
         //update screenposition
         annotationsInUi[i].style.top = `${updatedPosition.y + offsetY}px`;
@@ -319,9 +331,47 @@ function updateAnnotationLocations (offsetX = 0, offsetY = 0) {
 function annotationOnclick (event) {
 
     //get corresponding annotation data
-    let annotationData = annotationsData.filter(
-        item => item.id == event.target.getAttribute("data-id")
-    )[0];
+    let annotationData;
+    //get keys
+    let keys = Object.keys(annotationsData);
 
-    console.log("clicked annotation ID:" + annotationData.id);
+    //walk through array of annotations
+    for (let i = 0; i < keys.length; i++) {
+        let item = annotationsData[keys[i]];
+
+        //check if JSON id is same as clicked element ID
+        if (item.id == event.target.getAttribute("data-id")) {
+            annotationData = item;
+        }
+    }
+
+    //set ui panel with data from correct annotation
+    setUIPanel(annotationData.title, annotationData.description)
 }
+
+
+//function for setting data in UI panel
+function setUIPanel (title, text) {
+    //get DOM elements
+    let panelDOM = document.querySelector('#js--ui #js--ui-panel');
+    let titleDOM = document.querySelector('#js--ui #js--ui-panel .textPanel .title');
+    let textDOM = document.querySelector('#js--ui #js--ui-panel .textPanel .text');
+
+    //set text values
+    titleDOM.innerHTML = title;
+    textDOM.innerHTML = text;
+
+    //open ui panel
+    panelDOM.classList.add("open");
+}
+
+
+//closes UI panel
+function closePanel() {
+    //get DOM element
+    let panelDOM = document.querySelector('#js--ui #js--ui-panel');
+    //close ui panel
+    panelDOM.classList.remove("open");
+}
+//bind to button
+document.getElementById("js--panel-close").onclick = function(){closePanel()};

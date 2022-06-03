@@ -36,7 +36,7 @@
 
             "spacecraftbus": {
                 "id": 4,
-                "title": "ruimtevaartuig BUS",
+                "title": "Ruimtevaartuig BUS",
                 "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque cum dolor ducimus in, expedita hic recusandae tempora quasi molestias nulla incidunt quidem sunt minus non illum dicta velit id, autem, dignissimos aliquam maxime, quam. Perferendis et animi quia consequuntur modi, iste possimus similique quaerat ab nesciunt, iusto quis commodi asperiores quod tempore sapiente. Illum voluptates, quae consequuntur eum nobis nemo eius earum vitae cum unde fuga, esse amet accusantium totam, atque labore. Est fugit aspernatur, iste quas, ullam numquam libero saepe ea animi modi cumque quasi quis ducimus accusamus dolorum in, odio, neque voluptatem maxime nemo sed enim hic eaque!",
                 "location": {
                     "x": 1.5,
@@ -45,8 +45,19 @@
                 }
             },
 
-            "solarpanels": {
+            "tools": {
                 "id": 5,
+                "title": "Meetinstrumenten",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque cum dolor ducimus in, expedita hic recusandae tempora quasi molestias nulla incidunt quidem sunt minus non illum dicta velit id, autem, dignissimos aliquam maxime, quam. Perferendis et animi quia consequuntur modi, iste possimus similique quaerat ab nesciunt, iusto quis commodi asperiores quod tempore sapiente. Illum voluptates, quae consequuntur eum nobis nemo eius earum vitae cum unde fuga, esse amet accusantium totam, atque labore. Est fugit aspernatur, iste quas, ullam numquam libero saepe ea animi modi cumque quasi quis ducimus accusamus dolorum in, odio, neque voluptatem maxime nemo sed enim hic eaque!",
+                "location": {
+                    "x": 0,
+                    "y": 4,
+                    "z": -1.25
+                }
+            },
+
+            "solarpanels": {
+                "id": 6,
                 "title": "Zonnepanelen",
                 "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque cum dolor ducimus in, expedita hic recusandae tempora quasi molestias nulla incidunt quidem sunt minus non illum dicta velit id, autem, dignissimos aliquam maxime, quam. Perferendis et animi quia consequuntur modi, iste possimus similique quaerat ab nesciunt, iusto quis commodi asperiores quod tempore sapiente. Illum voluptates, quae consequuntur eum nobis nemo eius earum vitae cum unde fuga, esse amet accusantium totam, atque labore. Est fugit aspernatur, iste quas, ullam numquam libero saepe ea animi modi cumque quasi quis ducimus accusamus dolorum in, odio, neque voluptatem maxime nemo sed enim hic eaque!",
                 "location": {

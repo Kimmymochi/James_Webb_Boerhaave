@@ -329,6 +329,13 @@ function updateAnnotationLocations (offsetX = 0, offsetY = 0) {
 
 //this function is bound to annotations and will fire when clicked
 function annotationOnclick (event) {
+    //reset all previous active classes
+    let annotationsInUi = document.querySelectorAll('#js--ui .js--ui-annotation');
+    for (let i = 0; i < annotationsInUi.length; i++) {
+        annotationsInUi[i].classList.remove("active");
+    }
+    //then add active class to clicked annotation
+    event.target.classList.add("active");
 
     //get corresponding annotation data
     let annotationData;
@@ -372,6 +379,12 @@ function closePanel() {
     let panelDOM = document.querySelector('#js--ui #js--ui-panel');
     //close ui panel
     panelDOM.classList.remove("open");
+
+    //remove all active tags on UI annotations
+    let annotationsInUi = document.querySelectorAll('#js--ui .js--ui-annotation');
+    for (let i = 0; i < annotationsInUi.length; i++) {
+        annotationsInUi[i].classList.remove("active");
+    }
 }
 //bind to button
 document.getElementById("js--panel-close").onclick = function(){closePanel()};

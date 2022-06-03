@@ -15,6 +15,14 @@
     transition: color .3s;
     overflow: hidden;
 
+    &.active {
+        color: #E56528;
+
+        &:after {
+            background-color: #E56528;
+        }
+    }
+
     &::before {
         content: "";
 
@@ -60,7 +68,6 @@
             background-color: #E56528;
         }
     }
-
 
     &.visibilityLowered {
         opacity: .3;

@@ -73,6 +73,8 @@ function init() {
     animate();
 }
 
+let currentlyDragging = false;
+
 // DRAG & DROP
 const dragControls = new DragControls( draggableObjects, camera, renderer.domElement );
 
@@ -80,11 +82,15 @@ dragControls.addEventListener( 'dragstart', function ( event )
 {
     orbitControls.enabled = false;
     collisionsEnabled = true;
+
+    currentlyDragging = true;
 });
 
 dragControls.addEventListener( 'dragend', function ( event )
 {
     orbitControls.enabled = true;
+
+    currentlyDragging = false;
 });
 
 function drawBox(objectWidth, objectHeight, objectDepth, material)
@@ -136,6 +142,7 @@ function addDraggablePart(mesh)
         partsData.push({
             mesh: hitBox,
             boundingBox: boundingBox,
+            snappingPoint: null,
         },);
 
         mesh.position.set(-meshPosition.x, -meshPosition.y, -meshPosition.z);
@@ -174,50 +181,137 @@ function addSnappingPoint(radius, pos)
         boundingBox: snappingPointBB,
         snappedObject: null,
         hasRecentlyCollided: false,
+        unsnappableObjects: [],
     });
 
     return snappingPointMesh;
 }
 
+
+const snappingDistance = 10;
+const toleranceDistance = 0.1;
+
 function checkCollisions()
 {
-    // Loop through all parts
-    for (let partsIndex = 0; partsIndex < partsData.length; partsIndex++)
+    for (let SPIndex = 0; SPIndex < snappingPointsData.length; SPIndex++)
     {
-        for (let SPIndex = 0; SPIndex < snappingPointsData.length; SPIndex++)
+        snappingPointsData[SPIndex].mesh.material.color.setHex(0xffffff);
+
+        if (snappingPointsData[SPIndex].snappedObject == null )
         {
-            let isIntersecting = partsData[partsIndex].boundingBox.intersectsSphere(
-                snappingPointsData[SPIndex].boundingBox);
+            let closestPartDistance = 10000000;
+            let closestPart = null;
 
-            // Check if any parts are intersecting with a snapping point
-            if (isIntersecting || snappingPointsData[SPIndex].hasRecentlyCollided)
+            for (let partsIndex = 0; partsIndex < partsData.length; partsIndex++)
             {
-                snappingPointsData[SPIndex].snappedObject = partsData[partsIndex].mesh;
-
-                if (!snappingPointsData[SPIndex].hasRecentlyCollided)
+                if(partsData[partsIndex].snappingPoint == null && !containsObject(partsData[partsIndex], snappingPointsData[SPIndex].unsnappableObjects))
                 {
-                    // Place part in center of snapping point
-                    let snappingPointPos = snappingPointsData[SPIndex].boundingBox.center;
-                    partsData[partsIndex].mesh.position.set(snappingPointPos.x, snappingPointPos.y, snappingPointPos.z);
+                    const partPos = partsData[partsIndex].mesh.position;
+                    const SPPos = snappingPointsData[SPIndex].mesh.position;
+                    const distance = partPos.distanceTo(SPPos);
 
-                    //
-                    dragControls.enabled = false;
-                    setTimeout(function ()
+                    if(distance < closestPartDistance)
                     {
-                        dragControls.enabled = true;
-                    }, 1000);
+                        closestPartDistance = distance;
+                        closestPart = partsData[partsIndex];
+                    }
                 }
-                snappingPointsData[SPIndex].hasRecentlyCollided = true;
             }
-
-            if(!isIntersecting)
+            if(closestPartDistance <= snappingDistance)
             {
-                snappingPointsData[SPIndex].hasRecentlyCollided = false;
+                snappingPointsData[SPIndex].mesh.material.color.setHex(0xeb4034);
+                if (!currentlyDragging)
+                {
+                    snappingPointsData[SPIndex].snappedObject = closestPart;
+                    closestPart.snappingPoint = snappingPointsData[SPIndex];
+
+                    const snappingPointPos = snappingPointsData[SPIndex].mesh.position;
+                    closestPart.mesh.position.set(snappingPointPos.x, snappingPointPos.y, snappingPointPos.z);
+                }
+            }
+        }
+        else
+        {
+            const partPos = snappingPointsData[SPIndex].snappedObject.mesh.position;
+            const SPPos = snappingPointsData[SPIndex].mesh.position;
+            const distance = partPos.distanceTo(SPPos);
+
+            if (distance >= toleranceDistance)
+            {
+                snappingPointsData[SPIndex].unsnappableObjects.push(snappingPointsData[SPIndex].snappedObject);
+                snappingPointsData[SPIndex].snappedObject.snappingPoint = null;
                 snappingPointsData[SPIndex].snappedObject = null;
             }
         }
+
+        const tempUnsnappbleObjects = [];
+
+        for (let i = 0; i < snappingPointsData[SPIndex].unsnappableObjects.length; i++)
+        {
+            const partPos = snappingPointsData[SPIndex].unsnappableObjects[i].mesh.position;
+            const SPPos = snappingPointsData[SPIndex].mesh.position;
+            const distance = partPos.distanceTo(SPPos);
+
+            if (distance <= snappingDistance)
+            {
+                tempUnsnappbleObjects.push(snappingPointsData[SPIndex].unsnappableObjects[i]);
+            }
+        }
+        snappingPointsData[SPIndex].unsnappableObjects = tempUnsnappbleObjects;
     }
+
 }
+
+function containsObject(obj, list) {
+    var i;
+    for (i = 0; i < list.length; i++) {
+        if (list[i] === obj) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+// function checkCollisions()
+// {
+//     // Loop through all parts
+//     for (let partsIndex = 0; partsIndex < partsData.length; partsIndex++)
+//     {
+//         for (let SPIndex = 0; SPIndex < snappingPointsData.length; SPIndex++)
+//         {
+//             let isIntersecting = partsData[partsIndex].boundingBox.intersectsSphere(
+//                 snappingPointsData[SPIndex].boundingBox);
+//
+//             // Check if any parts are intersecting with a snapping point
+//             if (isIntersecting || snappingPointsData[SPIndex].hasRecentlyCollided)
+//             {
+//                 snappingPointsData[SPIndex].snappedObject = partsData[partsIndex].mesh;
+//
+//                 if (!snappingPointsData[SPIndex].hasRecentlyCollided)
+//                 {
+//                     // Place part in center of snapping point
+//                     let snappingPointPos = snappingPointsData[SPIndex].boundingBox.center;
+//                     partsData[partsIndex].mesh.position.set(snappingPointPos.x, snappingPointPos.y, snappingPointPos.z);
+//
+//                     //
+//                     dragControls.enabled = false;
+//                     setTimeout(function ()
+//                     {
+//                         dragControls.enabled = true;
+//                     }, 1000);
+//                 }
+//                 snappingPointsData[SPIndex].hasRecentlyCollided = true;
+//             }
+//
+//             if(!isIntersecting)
+//             {
+//                 snappingPointsData[SPIndex].hasRecentlyCollided = false;
+//                 snappingPointsData[SPIndex].snappedObject = null;
+//             }
+//         }
+//     }
+// }
 
 function animate()
 {

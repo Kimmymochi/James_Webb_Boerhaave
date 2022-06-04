@@ -6,7 +6,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import backpanel from '../models/backpanel.gltf'
 import BUS from '../models/BUS.gltf'
 import goldPlating from '../models/gold_plating.gltf'
-import ISIS from '../models/ISIS.gltf'
+// import ISIS from '../models/ISIS.gltf'
 import secondaryMirror from '../models/secondary_mirror.gltf'
 import solarPanels from '../models/solar_panels.gltf'
 import sunscreens from '../models/sunscreens.gltf'
@@ -17,12 +17,10 @@ const scene = new THREE.Scene();
 
 // RENDERER
 const renderer = new THREE.WebGLRenderer({ antialias: true });
-
 renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.shadowMap.enabled = true;
-// renderer.setClearColor( 0x000000,1 );
 document.body.appendChild( renderer.domElement );
 
 
@@ -42,29 +40,52 @@ dirLight.position.set(1, 2, -1);
 scene.add(dirLight);
 dirLight.castShadow = true;
 
-// DRAG & DROP
-const draggableObjects = [];
-// const meshes = [backpanel, BUS, goldPlating, ISIS, secondaryMirror, solarPanels, sunscreens];
-const meshes = [sunscreens];
 
-for (let i = 0; i < meshes.length; i++)
-{
-    let draggableObject = addDraggablePart(meshes[i]);
-    scene.add(draggableObject);
-    draggableObjects.push(draggableObject);
+// INITIATION
+const draggableObjects = [];
+const meshes = [backpanel, BUS, goldPlating, secondaryMirror, solarPanels, sunscreens];
+// const meshes = [backpanel];
+
+let snappingPointsData = [];
+let partsData = [];
+
+const snappingPointRadius = 1;
+
+let collisionsEnabled = false;
+
+await init();
+
+function init() {
+    // Create a draggable part for all 3D models
+    for (let i = 0; i < meshes.length; i++) {
+        let draggablePart = addDraggablePart(meshes[i]);
+        scene.add(draggablePart);
+        draggableObjects.push(draggablePart);
+    }
+
+    addSnappingPoint(snappingPointRadius, new THREE.Vector3(0.05, -10.45, -2.18)); // backpanel
+    addSnappingPoint(snappingPointRadius, new THREE.Vector3(0.21, -6.34, -0.58)); // BUS
+    addSnappingPoint(snappingPointRadius, new THREE.Vector3(-0.04, 10.12, 4.64)); // gold plating
+    addSnappingPoint(snappingPointRadius, new THREE.Vector3(0, 11.70, 15.54)); // secondary mirror
+    addSnappingPoint(snappingPointRadius, new THREE.Vector3(0.01, 0.03, -16.95)); // solar panels
+    addSnappingPoint(snappingPointRadius, new THREE.Vector3(0, -0.21, 1.66)); // sunscreens
+
+    animate();
 }
 
+// DRAG & DROP
 const dragControls = new DragControls( draggableObjects, camera, renderer.domElement );
 
-dragControls.addEventListener( 'dragstart', function ( event ) {
+dragControls.addEventListener( 'dragstart', function ( event )
+{
     orbitControls.enabled = false;
-    // event.object.material.emissive.set( 0xaaaaaa );
-} );
+    collisionsEnabled = true;
+});
 
-dragControls.addEventListener( 'dragend', function ( event ) {
+dragControls.addEventListener( 'dragend', function ( event )
+{
     orbitControls.enabled = true;
-    // event.object.material.emissive.set( 0x000000 );
-} );
+});
 
 function drawBox(objectWidth, objectHeight, objectDepth, material)
 {
@@ -82,13 +103,6 @@ function drawBox(objectWidth, objectHeight, objectDepth, material)
 function getRandomNumber(min, max) {
     return Math.random() * (max - min) + min;
 }
-
-const hitBoxMaterial = new THREE.MeshBasicMaterial(
-    {color: 0xffffff, transparent: true,
-        opacity: 0.1, depthTest: false, wireframe: true
-    });
-
-let parts = [];
 
 function addDraggablePart(mesh)
 {
@@ -111,95 +125,109 @@ function addDraggablePart(mesh)
         boundingBox.getSize(meshSize);
         boundingBox.getCenter(meshPosition)
 
-        mesh.position.set(-meshPosition.x, -meshPosition.y, -meshPosition.z);
+        const hitBoxMaterial = new THREE.MeshBasicMaterial(
+            {color: 0xffffff, transparent: true,
+                opacity: 0.1, depthTest: false, wireframe: true
+            });
 
         const hitBox = drawBox(meshSize.x, meshSize.y, meshSize.z, hitBoxMaterial);
         hitBox.geometry.computeBoundingBox();
 
+        partsData.push({
+            mesh: hitBox,
+            boundingBox: boundingBox,
+        },);
+
+        mesh.position.set(-meshPosition.x, -meshPosition.y, -meshPosition.z);
+
         group.add(hitBox);
         hitBox.add(mesh);
 
-        parts.push({
-            mesh: hitBox,
-            boundingBox: boundingBox
-        });
-
         hitBox.position.set(
-            getRandomNumber(20, 50),
-            getRandomNumber(20, 50),
-            getRandomNumber(20, 50));
+            getRandomNumber(100, 50),
+            getRandomNumber(100, 50),
+            getRandomNumber(100, 50));
     });
     return group;
 }
 
-let snappingPoints = [];
 
 // SNAPPING POINT
-const snappingPointRadius = 4;
+function addSnappingPoint(radius, pos)
+{
+    const snappingPointMesh = new THREE.Mesh(
+        new THREE.SphereGeometry(radius),
+        new THREE.MeshPhongMaterial({color: 0xffffff})
+    );
 
-const snappingPointMesh = new THREE.Mesh(
-    new THREE.SphereGeometry(snappingPointRadius),
-    new THREE.MeshPhongMaterial({color: 0xffffff})
-);
+    snappingPointMesh.material.transparent = true;
+    snappingPointMesh.material.opacity = 0.5;
 
-snappingPointMesh.material.transparent = true;
-snappingPointMesh.material.opacity = 0.5;
+    let snappingPointBB = new THREE.Sphere(snappingPointMesh.position, radius);
+    snappingPointMesh.geometry.computeBoundingBox();
 
-snappingPointMesh.position.set(-30, 0, 0);
+    scene.add(snappingPointMesh);
+    snappingPointMesh.position.set(pos.x, pos.y, pos.z);
 
-let snappingPointBB = new THREE.Sphere(snappingPointMesh.position, snappingPointRadius);
+    snappingPointsData.push({
+        mesh: snappingPointMesh,
+        boundingBox: snappingPointBB,
+        snappedObject: null,
+        hasRecentlyCollided: false,
+    });
 
-scene.add(snappingPointMesh);
-
-snappingPoints.push({
-    mesh: snappingPointMesh,
-    boundingBox: snappingPointBB,
-    snappedObject: null,
-    hasRecentlyCollided: false,
-})
+    return snappingPointMesh;
+}
 
 function checkCollisions()
 {
-    for (let partsIndex = 0; partsIndex < parts.length; partsIndex++)
+    // Loop through all parts
+    for (let partsIndex = 0; partsIndex < partsData.length; partsIndex++)
     {
-        let isIntersecting = parts[partsIndex].boundingBox.intersectsSphere(snappingPointBB);
-
-        if (isIntersecting || snappingPoints[0].hasRecentlyCollided)
+        for (let SPIndex = 0; SPIndex < snappingPointsData.length; SPIndex++)
         {
-            snappingPoints[0].snappedObject = parts[partsIndex].mesh;
-            const snappingPointPos = snappingPoints[0].boundingBox.center;
+            let isIntersecting = partsData[partsIndex].boundingBox.intersectsSphere(
+                snappingPointsData[SPIndex].boundingBox);
 
-            if (!snappingPoints[0].hasRecentlyCollided)
+            // Check if any parts are intersecting with a snapping point
+            if (isIntersecting || snappingPointsData[SPIndex].hasRecentlyCollided)
             {
-                parts[partsIndex].mesh.position.set(snappingPointPos.x, snappingPointPos.y, snappingPointPos.z);
+                snappingPointsData[SPIndex].snappedObject = partsData[partsIndex].mesh;
 
-                dragControls.enabled = false;
-                setTimeout(function ()
+                if (!snappingPointsData[SPIndex].hasRecentlyCollided)
                 {
-                    dragControls.enabled = true;
-                }, 1000);
+                    // Place part in center of snapping point
+                    let snappingPointPos = snappingPointsData[SPIndex].boundingBox.center;
+                    partsData[partsIndex].mesh.position.set(snappingPointPos.x, snappingPointPos.y, snappingPointPos.z);
+
+                    //
+                    dragControls.enabled = false;
+                    setTimeout(function ()
+                    {
+                        dragControls.enabled = true;
+                    }, 1000);
+                }
+                snappingPointsData[SPIndex].hasRecentlyCollided = true;
             }
-            snappingPoints[0].hasRecentlyCollided = true;
-        }
-        if(!isIntersecting)
-        {
-            snappingPoints[0].hasRecentlyCollided = false;
-            snappingPoints[0].snappedObject = null;
+
+            if(!isIntersecting)
+            {
+                snappingPointsData[SPIndex].hasRecentlyCollided = false;
+                snappingPointsData[SPIndex].snappedObject = null;
+            }
         }
     }
 }
 
-
 function animate()
 {
-    for (let partsIndex = 0; partsIndex < parts.length; partsIndex++)
+    for (let partsIndex = 0; partsIndex < partsData.length; partsIndex++)
     {
-        parts[partsIndex].boundingBox.copy(parts[partsIndex].mesh.geometry.boundingBox)
-            .applyMatrix4(parts[partsIndex].mesh.matrixWorld);
+        partsData[partsIndex].boundingBox.copy(partsData[partsIndex].mesh.geometry.boundingBox)
+            .applyMatrix4(partsData[partsIndex].mesh.matrixWorld);
     }
 
-
-    checkCollisions();
+    if (collisionsEnabled) checkCollisions();
 
     renderer.render( scene, camera );
     requestAnimationFrame( animate );
@@ -211,4 +239,5 @@ function animate()
     //     if(position.x < 100) position.set(position.x + speed, position.y + speed, position.z + speed);
     // }
 }
-animate();
+
+

@@ -53,7 +53,7 @@ const snappingPointRadius = 1;
 
 let collisionsEnabled = false;
 
-await init();
+init();
 
 function init() {
     // Create a draggable part for all 3D models
@@ -146,14 +146,16 @@ function addDraggablePart(mesh)
         },);
 
         mesh.position.set(-meshPosition.x, -meshPosition.y, -meshPosition.z);
+        console.log(mesh.position);
+        // console.log(mesh.position);
 
         group.add(hitBox);
         hitBox.add(mesh);
 
-        hitBox.position.set(
-            getRandomNumber(100, 50),
-            getRandomNumber(100, 50),
-            getRandomNumber(100, 50));
+        // hitBox.position.set(
+        //     getRandomNumber(100, 50),
+        //     getRandomNumber(100, 50),
+        //     getRandomNumber(100, 50));
     });
     return group;
 }
@@ -181,7 +183,6 @@ function addSnappingPoint(radius, pos)
         boundingBox: snappingPointBB,
         snappedObject: null,
         hasRecentlyCollided: false,
-        unsnappableObjects: [],
     });
 
     return snappingPointMesh;
@@ -193,18 +194,19 @@ const toleranceDistance = 0.1;
 
 function checkCollisions()
 {
+    let closestPartDistance = 10000000;
+    let closestPart = null;
+    let closestSP = null;
+
     for (let SPIndex = 0; SPIndex < snappingPointsData.length; SPIndex++)
     {
         snappingPointsData[SPIndex].mesh.material.color.setHex(0xffffff);
 
         if (snappingPointsData[SPIndex].snappedObject == null )
         {
-            let closestPartDistance = 10000000;
-            let closestPart = null;
-
             for (let partsIndex = 0; partsIndex < partsData.length; partsIndex++)
             {
-                if(partsData[partsIndex].snappingPoint == null && !containsObject(partsData[partsIndex], snappingPointsData[SPIndex].unsnappableObjects))
+                if(partsData[partsIndex].snappingPoint == null)
                 {
                     const partPos = partsData[partsIndex].mesh.position;
                     const SPPos = snappingPointsData[SPIndex].mesh.position;
@@ -214,19 +216,8 @@ function checkCollisions()
                     {
                         closestPartDistance = distance;
                         closestPart = partsData[partsIndex];
+                        closestSP = snappingPointsData[SPIndex];
                     }
-                }
-            }
-            if(closestPartDistance <= snappingDistance)
-            {
-                snappingPointsData[SPIndex].mesh.material.color.setHex(0xeb4034);
-                if (!currentlyDragging)
-                {
-                    snappingPointsData[SPIndex].snappedObject = closestPart;
-                    closestPart.snappingPoint = snappingPointsData[SPIndex];
-
-                    const snappingPointPos = snappingPointsData[SPIndex].mesh.position;
-                    closestPart.mesh.position.set(snappingPointPos.x, snappingPointPos.y, snappingPointPos.z);
                 }
             }
         }
@@ -238,39 +229,23 @@ function checkCollisions()
 
             if (distance >= toleranceDistance)
             {
-                snappingPointsData[SPIndex].unsnappableObjects.push(snappingPointsData[SPIndex].snappedObject);
                 snappingPointsData[SPIndex].snappedObject.snappingPoint = null;
                 snappingPointsData[SPIndex].snappedObject = null;
             }
         }
-
-        const tempUnsnappbleObjects = [];
-
-        for (let i = 0; i < snappingPointsData[SPIndex].unsnappableObjects.length; i++)
+    }
+    if(closestPartDistance <= snappingDistance)
+    {
+        closestSP.mesh.material.color.setHex(0xeb4034);
+        if (!currentlyDragging)
         {
-            const partPos = snappingPointsData[SPIndex].unsnappableObjects[i].mesh.position;
-            const SPPos = snappingPointsData[SPIndex].mesh.position;
-            const distance = partPos.distanceTo(SPPos);
+            closestSP.snappedObject = closestPart;
+            closestPart.snappingPoint = closestSP;
 
-            if (distance <= snappingDistance)
-            {
-                tempUnsnappbleObjects.push(snappingPointsData[SPIndex].unsnappableObjects[i]);
-            }
-        }
-        snappingPointsData[SPIndex].unsnappableObjects = tempUnsnappbleObjects;
-    }
-
-}
-
-function containsObject(obj, list) {
-    var i;
-    for (i = 0; i < list.length; i++) {
-        if (list[i] === obj) {
-            return true;
+            const snappingPointPos = closestSP.mesh.position;
+            closestPart.mesh.position.set(snappingPointPos.x, snappingPointPos.y, snappingPointPos.z);
         }
     }
-
-    return false;
 }
 
 // function checkCollisions()

@@ -159,7 +159,12 @@ function addDraggablePart(mesh, pos)
                 wireframe: true
             });
 
-        const hitBox = drawBox(meshSize.x, meshSize.y, meshSize.z, hitBoxMaterial);
+        const hitBox = drawBox(
+            meshSize.x + 2,
+            meshSize.y + 2,
+            meshSize.z + 2,
+            hitBoxMaterial
+        );
         hitBox.geometry.computeBoundingBox();
 
         partsData.push({

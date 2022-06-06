@@ -189,6 +189,46 @@ function checkCollisions()
     }
 }
 
+const starColors = [0x6487C7, 0xD1C0A4, 0xB5754F, 0xFCFBF9];
+
+// STARS BACKROUND
+for (let i = 0; i < 25; i++)
+{
+    createStar(
+        getRandomNumber(-300, 300), // x
+        getRandomNumber(200, 300), // y
+        getRandomNumber(-300, 300)  // z
+    );
+}
+
+// for (let i = 0; i < 25; i++)
+// {
+//     createStar(
+//         getRandomNumber(-200, -300), // x
+//         getRandomNumber(-200, -300), // y
+//         getRandomNumber(-200, -300)  // z
+//     );
+// }
+
+createStar(0, 0, 0);
+
+function createStar(x, y, z)
+{
+    // let starColor = starColors[getRandomNumber(0, starColors.length)];
+
+    const star = new THREE.Mesh(
+        new THREE.SphereGeometry(getRandomNumber(0.3, 1)),
+        new THREE.MeshPhongMaterial({color: 0x6487C7})
+    );
+
+    star.material.emissive.set( 0x6487C7 )
+    star.material.emissiveIntensity = 5;
+
+    star.position.set(x, y, z);
+
+    scene.add(star);
+}
+
 
 function animate()
 {

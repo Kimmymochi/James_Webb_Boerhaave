@@ -1,0 +1,109 @@
+$size: 16rem;
+$size-mobile: 18rem;
+
+body {
+    background-color: black;
+}
+
+.overlay {
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.title {
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+    color: white;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    &__small {
+        font-family: "Lato", "sans-serif";
+        font-size: 4rem;
+        font-weight: 100;
+        background-color: black;
+        z-index: 2;
+    }
+
+    &__big {
+        font-family: "Prata", "serif";
+        font-size: 6rem;
+        font-weight: 100;
+        background-color: black;
+        z-index: 2;
+    }
+}
+
+.circle {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border: 0.5rem solid white;
+    border-bottom: none;
+    height: $size;
+    width: $size * 2;
+    border-top-left-radius: $size * 2;
+    border-top-right-radius: $size * 2;
+    margin-bottom: 4rem;
+
+    @media only screen and (min-width: 425px) {
+        height: $size-mobile;
+        width: $size-mobile * 2;
+        border-top-left-radius: $size-mobile * 2;
+        border-top-right-radius: $size-mobile * 2;
+
+    }
+}
+
+
+.rotate {
+    animation: 3s ease 1 rotate;
+    position: relative;
+    top: $size * -1;
+    transform-origin: 50% 100%;
+
+    @media only screen and (min-width: 425px) {
+        top: $size-mobile * -1;
+
+    }
+
+  }
+
+
+.fadeIn {
+    animation: fade ease 6s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+.fadeOut {
+    animation: fade ease 6s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-direction: reverse;
+}
+
+
+@keyframes fade {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes rotate {
+    from {
+      transform: rotate(0deg)
+    }
+    to {
+      transform: rotate(360deg)
+    }
+  }

@@ -1,8 +1,9 @@
-$size: 16rem;
-$size-mobile: 18rem;
+$size: 18rem;
+$size-mobile: 15rem;
 
 body {
     background-color: black;
+    overflow: hidden;
 }
 
 .overlay {
@@ -25,10 +26,14 @@ body {
     flex-direction: column;
     &__small {
         font-family: "Lato", "sans-serif";
-        font-size: 4rem;
+        font-size: 3rem;
         font-weight: 100;
         background-color: black;
         z-index: 2;
+
+        @media only screen and (min-width: 425px) and (max-width: 1500px) {
+            font-size: 2rem
+        }
     }
 
     &__big {
@@ -37,42 +42,42 @@ body {
         font-weight: 100;
         background-color: black;
         z-index: 2;
+        @media only screen and (min-width: 425px) and (max-width: 1500px) {
+            font-size: 4.5rem
+        }
     }
 }
 
 .circle {
     width: 100%;
     height: 100%;
+    top: $size ;
     position: absolute;
     border: 0.5rem solid white;
     border-bottom: none;
+    top: $size;
     height: $size;
     width: $size * 2;
     border-top-left-radius: $size * 2;
     border-top-right-radius: $size * 2;
-    margin-bottom: 4rem;
 
-    @media only screen and (min-width: 425px) {
+
+    @media only screen and (min-width: 425px) and (max-width: 1500px) {
         height: $size-mobile;
         width: $size-mobile * 2;
+        top: $size-mobile - 11;
         border-top-left-radius: $size-mobile * 2;
         border-top-right-radius: $size-mobile * 2;
-
     }
 }
 
 
 .rotate {
     animation: 3s ease 1 rotate;
-    position: relative;
-    top: $size * -1;
+    position: absolute;
+    opacity: 0;
     transform-origin: 50% 100%;
-
-    @media only screen and (min-width: 425px) {
-        top: $size-mobile * -1;
-
-    }
-
+    animation-fill-mode: forwards;
   }
 
 
@@ -101,9 +106,11 @@ body {
 
 @keyframes rotate {
     from {
-      transform: rotate(0deg)
+      transform: rotate(0deg);
+      opacity: 0;
     }
     to {
-      transform: rotate(360deg)
+      transform: rotate(360deg);
+      opacity: 1;
     }
-  }
+}

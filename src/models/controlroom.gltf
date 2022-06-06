@@ -8,7 +8,7 @@
         {
             "name" : "Scene",
             "nodes" : [
-                14
+                13
             ]
         }
     ],
@@ -55,14 +55,10 @@
         },
         {
             "mesh" : 10,
-            "name" : "jscmiscon1_44"
-        },
-        {
-            "mesh" : 11,
             "name" : "jscmiscon1_5"
         },
         {
-            "mesh" : 12,
+            "mesh" : 11,
             "name" : "jscmiscon1_6"
         },
         {
@@ -78,14 +74,13 @@
                 8,
                 9,
                 10,
-                11,
-                12
+                11
             ],
             "name" : "Node"
         },
         {
             "children" : [
-                13
+                12
             ],
             "name" : "AuxScene",
             "rotation" : [
@@ -102,8 +97,8 @@
             "name" : "purple_light",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.7083749175071716,
-                    0.693871259689331,
+                    0.8187933564186096,
+                    0.8084654211997986,
                     1,
                     1
                 ],
@@ -115,9 +110,9 @@
             "name" : "purple_dark",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.18447455763816833,
-                    0.18116404116153717,
-                    0.43965697288513184,
+                    0.27521246671676636,
+                    0.272007554769516,
+                    0.35883674025535583,
                     1
                 ],
                 "metallicFactor" : 0
@@ -128,9 +123,9 @@
             "name" : "purple",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.4564102292060852,
-                    0.41788449883461,
-                    1,
+                    0.49693235754966736,
+                    0.4910203516483307,
+                    0.6514056324958801,
                     1
                 ],
                 "metallicFactor" : 0
@@ -276,7 +271,7 @@
                         "NORMAL" : 25
                     },
                     "indices" : 26,
-                    "material" : 0
+                    "material" : 2
                 }
             ]
         },
@@ -294,7 +289,7 @@
             ]
         },
         {
-            "name" : "Mesh_44",
+            "name" : "Mesh_5",
             "primitives" : [
                 {
                     "attributes" : {
@@ -302,19 +297,6 @@
                         "NORMAL" : 31
                     },
                     "indices" : 32,
-                    "material" : 0
-                }
-            ]
-        },
-        {
-            "name" : "Mesh_5",
-            "primitives" : [
-                {
-                    "attributes" : {
-                        "POSITION" : 33,
-                        "NORMAL" : 34
-                    },
-                    "indices" : 35,
                     "material" : 2
                 }
             ]
@@ -324,10 +306,10 @@
             "primitives" : [
                 {
                     "attributes" : {
-                        "POSITION" : 36,
-                        "NORMAL" : 37
+                        "POSITION" : 33,
+                        "NORMAL" : 34
                     },
-                    "indices" : 38,
+                    "indices" : 35,
                     "material" : 1
                 }
             ]
@@ -617,34 +599,6 @@
         {
             "bufferView" : 30,
             "componentType" : 5126,
-            "count" : 12,
-            "max" : [
-                4.337629795074463,
-                10.348799705505371,
-                -3.6581199169158936
-            ],
-            "min" : [
-                4.337629795074463,
-                -8.669280052185059,
-                -5.877110004425049
-            ],
-            "type" : "VEC3"
-        },
-        {
-            "bufferView" : 31,
-            "componentType" : 5126,
-            "count" : 12,
-            "type" : "VEC3"
-        },
-        {
-            "bufferView" : 32,
-            "componentType" : 5123,
-            "count" : 12,
-            "type" : "SCALAR"
-        },
-        {
-            "bufferView" : 33,
-            "componentType" : 5126,
             "count" : 888,
             "max" : [
                 4.794159889221191,
@@ -659,19 +613,19 @@
             "type" : "VEC3"
         },
         {
-            "bufferView" : 34,
+            "bufferView" : 31,
             "componentType" : 5126,
             "count" : 888,
             "type" : "VEC3"
         },
         {
-            "bufferView" : 35,
+            "bufferView" : 32,
             "componentType" : 5123,
             "count" : 888,
             "type" : "SCALAR"
         },
         {
-            "bufferView" : 36,
+            "bufferView" : 33,
             "componentType" : 5126,
             "count" : 1452,
             "max" : [
@@ -687,13 +641,13 @@
             "type" : "VEC3"
         },
         {
-            "bufferView" : 37,
+            "bufferView" : 34,
             "componentType" : 5126,
             "count" : 1452,
             "type" : "VEC3"
         },
         {
-            "bufferView" : 38,
+            "bufferView" : 35,
             "componentType" : 5123,
             "count" : 1452,
             "type" : "SCALAR"
@@ -852,53 +806,38 @@
         },
         {
             "buffer" : 0,
-            "byteLength" : 144,
+            "byteLength" : 10656,
             "byteOffset" : 162476
         },
         {
             "buffer" : 0,
-            "byteLength" : 144,
-            "byteOffset" : 162620
-        },
-        {
-            "buffer" : 0,
-            "byteLength" : 24,
-            "byteOffset" : 162764
-        },
-        {
-            "buffer" : 0,
             "byteLength" : 10656,
-            "byteOffset" : 162788
-        },
-        {
-            "buffer" : 0,
-            "byteLength" : 10656,
-            "byteOffset" : 173444
+            "byteOffset" : 173132
         },
         {
             "buffer" : 0,
             "byteLength" : 1776,
-            "byteOffset" : 184100
+            "byteOffset" : 183788
         },
         {
             "buffer" : 0,
             "byteLength" : 17424,
-            "byteOffset" : 185876
+            "byteOffset" : 185564
         },
         {
             "buffer" : 0,
             "byteLength" : 17424,
-            "byteOffset" : 203300
+            "byteOffset" : 202988
         },
         {
             "buffer" : 0,
             "byteLength" : 2904,
-            "byteOffset" : 220724
+            "byteOffset" : 220412
         }
     ],
     "buffers" : [
         {
-            "byteLength" : 223628,
+            "byteLength" : 223316,
             "uri" : "controlroom.bin"
         }
     ]

@@ -25,7 +25,6 @@ let raycaster = new THREE.Raycaster();
 let mouse = new THREE.Vector2();
 let listener = new THREE.AudioListener();
 
-
 let hasLaunched = false;
 
 init();
@@ -41,7 +40,7 @@ function init() {
     scene = new THREE.Scene();
     
     // LIGHTS
-    const ambientLight = new THREE.AmbientLight( 0xa5bad7, 0.5 );
+    const ambientLight = new THREE.AmbientLight( 0x9698ff , 0.5 );
     scene.add( ambientLight );
 
 	const spotLight = new THREE.SpotLight( 0xffffff );
@@ -182,17 +181,17 @@ function onMouseDown(event) {
         if (target == "Button" && !hasLaunched) {
             pushAnimation.play();
             sound.setVolume( 0.2 );
-
+            showTitle();
             hasLaunched = true;         
-            video.src = launchVideo;
-            video.loop = false;
-            video.muted = false;
-            video.load();
-            video.play();
+            // video.src = launchVideo;
+            // video.loop = false;
+            // video.muted = false;
+            // video.load();
+            // video.play();
 
-            let newPosition = new THREE.Vector3( -0.2, 0, -0.4 );
-            let duration = 15000;
-            tweenCamera( newPosition, duration );
+            // let newPosition = new THREE.Vector3( -0.2, 0, -0.4 );
+            // let duration = 15000;
+            // tweenCamera( newPosition, duration );
         }
     }
 }

@@ -48,15 +48,18 @@ dirLight.castShadow = true;
 
 // INITIATION
 // ----------------------------------------------------------------------
-let draggableObjects = [];
+let draggableParts = [];
 const meshes = [backpanel, BUS, goldPlating, secondaryMirror, solarPanels, sunscreens];
 
-let snappingPointsData = [];
-let partsData = [];
+
 
 const snappingPointRadius = 1;
 
 let collisionsEnabled = false;
+
+
+let snappingPointsData = [];
+let partsData = [];
 
 const partPositions = [
     new THREE.Vector3(23, -4, 20),
@@ -86,10 +89,10 @@ function init() {
         // Create a draggable part for all 3D models
         let draggablePart = addDraggablePart(meshes[i], partPositions[i]);
         scene.add(draggablePart);
-        draggableObjects.push(draggablePart);
+        draggableParts.push(draggablePart);
 
         // Create a snapping point for each part
-        addSnappingPoint(snappingPointRadius, SPPositions[i]);
+        addSnappingPoint(snappingPointRadius, SPPositions[i], i);
     }
 
     animate();
@@ -98,7 +101,7 @@ function init() {
 
 // DRAG & DROP
 // ----------------------------------------------------------------------
-const dragControls = new DragControls( draggableObjects, camera, renderer.domElement );
+let dragControls = new DragControls( draggableParts, camera, renderer.domElement );
 let currentlyDragging = false;
 
 dragControls.addEventListener( 'dragstart', function ( event )
@@ -123,7 +126,7 @@ function drawBox(objectWidth, objectHeight, objectDepth, material)
     geometry = new THREE.BoxGeometry(objectWidth,objectHeight,objectDepth);
 
     box = new THREE.Mesh(geometry, material);
-    draggableObjects.push(box);
+    draggableParts.push(box);
     box.position.set(0, 0, 0);
 
     return box;
@@ -149,15 +152,17 @@ function addDraggablePart(mesh, pos)
         boundingBox.getCenter(meshPosition)
 
         const hitBoxMaterial = new THREE.MeshBasicMaterial(
-            {color: 0xffffff, transparent: true,
-                opacity: 0.1, depthTest: false, wireframe: true
+            {
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.1,
+                wireframe: true
             });
 
         const hitBox = drawBox(meshSize.x, meshSize.y, meshSize.z, hitBoxMaterial);
         hitBox.geometry.computeBoundingBox();
 
         partsData.push({
-            model: model,
             mesh: hitBox,
             boundingBox: boundingBox,
             snappingPoint: null,
@@ -176,7 +181,7 @@ function addDraggablePart(mesh, pos)
 
 // SNAPPING POINTS & COLLISION DETECTION
 // ----------------------------------------------------------------------
-function addSnappingPoint(radius, pos)
+function addSnappingPoint(radius, pos, correctPartId)
 {
     const snappingPointMesh = new THREE.Mesh(
         new THREE.SphereGeometry(radius),
@@ -196,6 +201,7 @@ function addSnappingPoint(radius, pos)
         mesh: snappingPointMesh,
         boundingBox: snappingPointBB,
         snappedObject: null,
+        correctPart: correctPartId
     });
 
     return snappingPointMesh;
@@ -210,6 +216,14 @@ const toleranceDistance = 0.1;
 
 function checkCollisions()
 {
+    closestPartDistance = 10000000;
+    closestPart = null;
+    closestSP = null;
+
+    let isPuzzleCompleted = true;
+
+    resetPartsToDefaultState();
+
     for (let SPIndex = 0; SPIndex < snappingPointsData.length; SPIndex++)
     {
         SPDefaultState(snappingPointsData[SPIndex]);
@@ -217,10 +231,23 @@ function checkCollisions()
         if (snappingPointsData[SPIndex].snappedObject == null )
         {
             findClosestPart(snappingPointsData[SPIndex]);
+        } else
+        {
+            ensureTolerableDistance(snappingPointsData[SPIndex]);
+        }
+
+        // If correct part is snapped
+        if (snappingPointsData[SPIndex].snappedObject === partsData[SPIndex])
+        {
+            partPlacedCorrectlyState(snappingPointsData[SPIndex].snappedObject);
         }
         else
         {
-            ensureTolerableDistance(snappingPointsData[SPIndex]);
+            isPuzzleCompleted = false;
+            if (snappingPointsData[SPIndex].snappedObject != null)
+            {
+                partPlacedIncorrectlyState(snappingPointsData[SPIndex].snappedObject);
+            }
         }
     }
     if(closestPartDistance <= snappingDistance)
@@ -229,9 +256,7 @@ function checkCollisions()
         snapPartToSP();
     }
 
-    closestPartDistance = 10000000;
-    closestPart = null;
-    closestSP = null;
+    if (isPuzzleCompleted) puzzleCompleted();
 }
 
 function findClosestPart(snappingPointData)
@@ -282,6 +307,13 @@ function snapPartToSP()
     }
 }
 
+function SPDefaultState(SP)
+{
+    SP.mesh.material.transparent = true;
+
+    SP.mesh.scale.set(snappingPointRadius, snappingPointRadius, snappingPointRadius);
+}
+
 function SPHoverState(SP)
 {
     SP.mesh.material.transparent = false;
@@ -290,11 +322,45 @@ function SPHoverState(SP)
     SP.mesh.scale.set(scale, scale, scale);
 }
 
-function SPDefaultState(SP)
+function resetPartsToDefaultState()
 {
-    SP.mesh.material.transparent = true;
+    for (let partsIndex = 0; partsIndex < partsData.length; partsIndex++)
+    {
+        partDefaultState(partsData[partsIndex]);
+    }
+}
 
-    SP.mesh.scale.set(snappingPointRadius, snappingPointRadius, snappingPointRadius);
+function partDefaultState(part)
+{
+    part.mesh.material.color = new THREE.Color( 0xffffff);
+    part.mesh.material.opacity = 0.1;
+}
+
+function partPlacedCorrectlyState(part)
+{
+    part.mesh.material.color = new THREE.Color( 0x32a852);
+    part.mesh.material.opacity = 0.5;
+}
+
+function partPlacedIncorrectlyState(part)
+{
+    part.mesh.material.color = new THREE.Color( 0xeb4034);
+    part.mesh.material.opacity = 0.5;
+}
+
+function puzzleCompleted()
+{
+    for (let partsIndex = 0; partsIndex < partsData.length; partsIndex++)
+    {
+        partsData[partsIndex].mesh.material.opacity = 0;
+    }
+
+    for (let SPIndex = 0; SPIndex < snappingPointsData.length; SPIndex++)
+    {
+        snappingPointsData[SPIndex].mesh.material.opacity = 0;
+    }
+
+    dragControls.dispose();
 }
 
 
@@ -324,28 +390,10 @@ function updatePartsBBLocation()
 // Makes parts float like they would in space
 function partsFloatAnimation()
 {
-    for (let i = 0; i < draggableObjects.length; i++)
+    for (let i = 0; i < draggableParts.length; i++)
     {
-        const position = draggableObjects[i].position;
+        const position = draggableParts[i].position;
         const speed = 0.002;
         if(position.x < 100) position.set(position.x + speed, position.y + speed, position.z + speed);
     }
 }
-
-
-document.addEventListener('keydown', logKey);
-
-function logKey(e) {
-
-    console.log("-----------------------------------------------------");
-
-    for (let partsIndex = 0; partsIndex < partsData.length; partsIndex++)
-    {
-        console.log(partsData[partsIndex].mesh.position);
-    }
-}
-
-
-
-
-

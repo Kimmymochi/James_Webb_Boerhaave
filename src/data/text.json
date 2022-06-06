@@ -9,7 +9,9 @@
                     "x": 0,
                     "y": 5,
                     "z": 1.75
-                }
+                },
+                "model": "Gold_Plating"
+                
             },
 
             "secundarymirror": {
@@ -20,7 +22,8 @@
                     "x": 0,
                     "y": 3.5,
                     "z": 8.5
-                }
+                },
+                "model": "Secondary_Mirror"
             },
 
             "sunscreens": {
@@ -31,7 +34,8 @@
                     "x": 3,
                     "y": 1.25,
                     "z": -2
-                }
+                },
+                "model": "Sunscreens"
             },
 
             "spacecraftbus": {
@@ -42,7 +46,8 @@
                     "x": 1.5,
                     "y": -2,
                     "z": 0
-                }
+                },
+                "model": "BUS"
             },
 
             "tools": {
@@ -53,7 +58,9 @@
                     "x": 0,
                     "y": 4,
                     "z": -1.25
-                }
+                },
+                "model": "ISIS"
+
             },
 
             "solarpanels": {
@@ -64,7 +71,8 @@
                     "x": 0,
                     "y": -1.25,
                     "z": -5
-                }
+                },
+                "model": "Solar_Panels"
             }
         }
     }

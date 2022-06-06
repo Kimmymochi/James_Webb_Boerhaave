@@ -1,9 +1,8 @@
 const THREE = require('three');
+const TWEEN = require('@tweenjs/tween.js')
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import modelBin from '../models/scene.bin'
-import model from '../models/scene.gltf'
-
+import model from '../models/jwst.gltf'
 import textData from '../data/text.json';
 
 //ui DOM
@@ -34,13 +33,10 @@ const annotationSphereRadius = 0.1;
 
 // three.js
 let telescope;
-let nodes;
 let camera;
 let controls;
 let scene;
 let renderer;
-let sprite;
-let spriteBehindObject;
 
 init();
 animate();
@@ -48,14 +44,13 @@ animate();
 function init() {
 
     // Camera
-
     camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 2, 2000);
     camera.position.set(4, 0, 20);
-    // Scene
 
+    // Scene
     scene = new THREE.Scene();
 
-    //lighting
+    // Lighting
     //sun lighting
     const sun = new THREE.PointLight( 0xffffff , 1, 500 );
     sun.position.set( 20, -20, 0 );
@@ -67,11 +62,12 @@ function init() {
     sun2.castShadow = true;
     sun2.shadow.radius = 2;
     scene.add( sun2 );
+
     //general lighting
     const sceneLight = new THREE.AmbientLight(0xffffb8, 0.2);
     scene.add(sceneLight);
 
-	//model
+	// Model
 	const gltfLoader = new GLTFLoader();
 
 	gltfLoader.load( model, function ( gltf ) {
@@ -80,17 +76,21 @@ function init() {
 
 	    scene.add( gltf.scene );
 
-        //assign var for later
         telescope = gltf.scene;
 
-        // bit dirty till model improved
-        // sets shadows on telescope
-        nodes = telescope.children[0].children[0].children[0].children[0].children;
-		for (let i = 0; i < nodes.length; i++) {
-			nodes[i].castShadow = true;
-			nodes[i].receiveShadow = true;
-			nodes[i].material.transparent = true;
-		}
+        // traverse checks all children of model
+        telescope.traverse( function ( object ) {
+            if ( object.isMesh ) {
+
+                // set shadows on telescope
+                object.castShadow = true;
+                object.receiveShadow = true;
+
+                // resets material, important for correct transparency
+                let clonedMaterial = object.material.clone();
+                object.material = clonedMaterial;
+            }
+        })
 
 	}, undefined, function ( error ) {
 	    console.error( error );
@@ -98,7 +98,6 @@ function init() {
 
 
     // Renderer
-
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -106,13 +105,13 @@ function init() {
     document.body.appendChild(renderer.domElement);
 
     // Controls
-
 	controls = new OrbitControls( camera, renderer.domElement );
     //controls.enableZoom = false;
 
-     //setup all the annotations
+    //setup all the annotations
     setupAnnotations(annotationsData);
 
+    // EventListeners
     window.addEventListener("resize", onWindowResize, false);
 }
 
@@ -123,19 +122,17 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function animate() {
+function animate(time) {
     requestAnimationFrame(animate);
     controls.update();
-
     updateAnnotationLocations(annotationTextOffset.x, annotationTextOffset.y)
-
+    TWEEN.update(time);
     render();
 }
 
 function render() {
     renderer.render(scene, camera);
 }
-
 
 // create and add annotations
 function setupAnnotations (annotations) {
@@ -342,6 +339,14 @@ function annotationOnclick (event) {
     //get keys
     let keys = Object.keys(annotationsData);
 
+    //make entire model transparent
+    telescope.traverse( function ( object ) {
+        if ( object.isMesh ) {
+            object.material.transparent = true;
+            object.material.opacity = 0.05;
+        }
+    });
+
     //walk through array of annotations
     for (let i = 0; i < keys.length; i++) {
         let item = annotationsData[keys[i]];
@@ -349,6 +354,20 @@ function annotationOnclick (event) {
         //check if JSON id is same as clicked element ID
         if (item.id == event.target.getAttribute("data-id")) {
             annotationData = item;
+
+            //get part of model that is clicked
+            let part = telescope.getObjectByName(item.model).children;
+
+            //make all materials of part visible
+            for (let i = 0; i < part.length; i++) {
+                part[i].material.transparent = false;
+                part[i].material.opacity = 1;
+            }
+
+            //zoom in on clicked item
+            let newPosition = new THREE.Vector3( camera.position.x, item.location.y, camera.position.z );
+            let duration = 1000;
+            tweenCamera( newPosition, duration );
         }
     }
 
@@ -385,6 +404,35 @@ function closePanel() {
     for (let i = 0; i < annotationsInUi.length; i++) {
         annotationsInUi[i].classList.remove("active");
     }
+
+    //make entire model visible again
+    telescope.traverse( function ( object ) {
+        if ( object.isMesh ) {
+            object.material.transparent = false;
+            object.material.opacity = 1;
+        }
+    })
+
+    // set target to it's original position
+    let newPosition = new THREE.Vector3( 4, 0, 20 );
+    let duration = 2000;
+    tweenCamera( newPosition, duration);
 }
+
 //bind to button
 document.getElementById("js--panel-close").onclick = function(){closePanel()};
+
+// animates the camera to given target
+function tweenCamera( targetPos, duration ) {
+    let pos = new THREE.Vector3().copy( camera.position );
+    const tween = new TWEEN.Tween( pos )
+        .to( targetPos, duration )
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .onUpdate( function () {
+            camera.position.copy( pos );
+        } )
+        .onComplete( function () {
+            camera.position.copy ( targetPos);
+        })
+        .start();
+}

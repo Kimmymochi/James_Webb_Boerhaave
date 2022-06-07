@@ -4,7 +4,7 @@
             "primarymirror": {
                 "id": 1,
                 "title": "Primaire spiegel",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque cum dolor ducimus in, expedita hic recusandae tempora quasi molestias nulla incidunt quidem sunt minus non illum dicta velit id, autem, dignissimos aliquam maxime, quam. Perferendis et animi quia consequuntur modi, iste possimus similique quaerat ab nesciunt, iusto quis commodi asperiores quod tempore sapiente. Illum voluptates, quae consequuntur eum nobis nemo eius earum vitae cum unde fuga, esse amet accusantium totam, atque labore. Est fugit aspernatur, iste quas, ullam numquam libero saepe ea animi modi cumque quasi quis ducimus accusamus dolorum in, odio, neque voluptatem maxime nemo sed enim hic eaque!",
+                "description": "18 aparte, zeshoekige spiegels - die elk 1.3 meter breed zijn - werken samen als één grote spiegel, die 6.5 meter hoog is. Deze enorme spiegel was berekend om nodig te zijn om de lichte van de verre sterrenstelsels te kunnen vangen. Een spiegel van deze grote was een technische uitdaging, al was het met dezelfde methode gemaakt als de primaire spiegel van de Hubble ruimtetelescoop <i>(die 6x kleiner is!)</i>, zou de spiegel te zwaar zijn om in de ruimte te krijgen.<br>Om dit te verhelpen was besloten om de spiegel in verschillende segmenten te maken, die <i>elk</i> maar 20 kilogram wegen, door hun constructie gemaakt van beryllium - gekozen voor de stevigheid en het weerstaan van extreem lage temperaturen - met een laag goud voor betere weerspiegeling van het infrarood licht. Elk van deze segmenten kan individueel gedraaid en gericht worden om uiteindelijk een zo correct mogelijk beeld te maken.<br>Om deze enorme telescoop in de raket te kunnen krijgen, moest de spiegel in stukken ingeklapt moeten worden, waarbij de 2 buitenste kolommen van segmenten naar achter draaien.",
                 "location": {
                     "x": 0,
                     "y": 5,
@@ -17,7 +17,7 @@
             "secundarymirror": {
                 "id": 2,
                 "title": "Secundaire spiegel",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque cum dolor ducimus in, expedita hic recusandae tempora quasi molestias nulla incidunt quidem sunt minus non illum dicta velit id, autem, dignissimos aliquam maxime, quam. Perferendis et animi quia consequuntur modi, iste possimus similique quaerat ab nesciunt, iusto quis commodi asperiores quod tempore sapiente. Illum voluptates, quae consequuntur eum nobis nemo eius earum vitae cum unde fuga, esse amet accusantium totam, atque labore. Est fugit aspernatur, iste quas, ullam numquam libero saepe ea animi modi cumque quasi quis ducimus accusamus dolorum in, odio, neque voluptatem maxime nemo sed enim hic eaque!",
+                "description": "De secundaire spiegel, die tijdens lancering ingeklapt tegen de primaire spiegel stond, is in de ruimte uitgeklapt en heeft als functie om het licht - wat van de primaire spiegel af weerkaatst is - te bundelen en terug te kaatsen naar de telescoop.<br>De primaire spiegel heeft <i>geen</> segment in het midden, waardoor de lichtbundels infrarood hier de telescoop kunnen binnentreden waar het nog van een kleinere, derde spiegel kaatst in het meetapparatuur. Deze spiegel is hierom ook kleiner, met een diameter van <i>maar</i> 74 centimeter.",
                 "location": {
                     "x": 0,
                     "y": 3.5,

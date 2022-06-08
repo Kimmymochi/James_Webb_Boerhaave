@@ -23,12 +23,17 @@ const annotationTextOffset = {
 const annotationsData = textData.text.JWSTParts;
 //annotation color
 const annotationcolor = 0xffffff;
+const annotationcolorSelected = 0xE56528;
 //annotation line material
 const annotationMaterial = new THREE.LineBasicMaterial({
         color: annotationcolor,
     });
+const annotationMaterialSelected = new THREE.LineBasicMaterial({
+        color: annotationcolorSelected,
+    });
 //annotation sphere material
 const annotationSphereMaterial = new THREE.MeshBasicMaterial( { color: annotationcolor } );
+const annotationSphereMaterialSelected = new THREE.MeshBasicMaterial( { color: annotationcolorSelected } );
 const annotationSphereRadius = 0.1;
 
 // three.js
@@ -37,6 +42,7 @@ let camera;
 let controls;
 let scene;
 let renderer;
+let annotationLines = [];
 
 init();
 animate();
@@ -170,6 +176,14 @@ function setupAnnotations (annotations) {
         scene.add( sphereStart );
         sphereEnd.position.set(annotationOffsetPosition.x, annotationOffsetPosition.y, annotationOffsetPosition.z);
         scene.add( sphereEnd );
+
+        //add meshes to array
+        annotationLines.push({
+                id: annotation.id,
+                sphereStart: sphereStart,
+                sphereEnd: sphereEnd,
+                line: annotationLine
+            })
 
         //generate text for annotation
         generateAnnotationText(annotationOffsetPosition, annotation, annotationTextOffset.x, annotationTextOffset.y);
@@ -334,6 +348,21 @@ function annotationOnclick (event) {
     //then add active class to clicked annotation
     event.target.classList.add("active");
 
+    //add (in)active color to material of selected line
+    for (let i = 0; i < annotationLines.length; i++) {
+        //change material to selected/active color
+        if (annotationLines[i].id == event.target.getAttribute("data-id")) {
+            annotationLines[i].sphereStart.material = annotationSphereMaterialSelected;
+            annotationLines[i].sphereEnd.material = annotationSphereMaterialSelected;
+            annotationLines[i].line.material = annotationMaterialSelected;
+        }
+        else {
+            annotationLines[i].sphereStart.material = annotationSphereMaterial;
+            annotationLines[i].sphereEnd.material = annotationSphereMaterial;
+            annotationLines[i].line.material = annotationMaterial;
+        }
+    }
+
     //get corresponding annotation data
     let annotationData;
     //get keys
@@ -403,6 +432,13 @@ function closePanel() {
     let annotationsInUi = document.querySelectorAll('#js--ui .js--ui-annotation');
     for (let i = 0; i < annotationsInUi.length; i++) {
         annotationsInUi[i].classList.remove("active");
+    }
+
+    //set default/inactive color to all annotation lines
+    for (let i = 0; i < annotationLines.length; i++) {
+            annotationLines[i].sphereStart.material = annotationSphereMaterial;
+            annotationLines[i].sphereEnd.material = annotationSphereMaterial;
+            annotationLines[i].line.material = annotationMaterial;
     }
 
     //make entire model visible again

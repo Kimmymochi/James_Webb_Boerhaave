@@ -11,7 +11,22 @@ document.body.appendChild( renderer.domElement );
 
 
 const fontLoader = new THREE.FontLoader();
-fontLoader(lato)
+
+fontLoader.load(lato, function (font: THREE.Font) {
+	const geometry = new THREE.TextGeometry('Hi\nHow are you?', {
+		font: font,
+		size: 6,
+		height: 2,
+	});
+
+	const textMesh = new THREE.Mesh(geometry, [
+		new THREE.MeshPhongMaterial({ color: 0xad4000 }),
+		new THREE.MeshPhongMaterial({ color: 0x5c2301 }),
+	]);
+
+	textMesh.castShadow = true;
+
+}) ;
 
 
 function animate() {

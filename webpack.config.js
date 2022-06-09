@@ -21,9 +21,29 @@ module.exports = {
                     "css-loader",
                     "sass-loader"
                 ]
+            },
+            {
+                test: /\.(gltf)$/,
+                use: [
+                    {
+                        loader: "gltf-webpack-loader"
+                    }
+                ]
+            },
+            {
+                test: /\.(bin)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                    }
+                ]
             }
         ]
     },
+    experiments: {
+        topLevelAwait: true
+    },
+
     plugins: [
         new HtmlWebPackPlugin({
             template: "./src/index.html",

@@ -3,8 +3,10 @@ const THREE = require('three');
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
+import { DragControls } from 'three/examples/jsm/controls/DragControls.js'
 
 import lato from '../fonts/Lato_Regular.json';
+import prata from '../fonts/Prata_Regular.json';
 
 
 const scene = new THREE.Scene();
@@ -24,9 +26,9 @@ document.body.appendChild( renderer.domElement );
 // ----------------------------------------------------------------------
 const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
 camera.position.set( 0, 20, 100 );
-const orbitControls = new OrbitControls( camera, renderer.domElement );
-// orbitControls.enableZoom = false;
-orbitControls.update();
+// const orbitControls = new OrbitControls( camera, renderer.domElement );
+// // orbitControls.enableZoom = false;
+// orbitControls.update();
 
 
 // RESIZE HANDLER
@@ -52,10 +54,7 @@ dirLight.castShadow = true;
 
 // TEXT
 // ----------------------------------------------------------------------
-const fontLoader = new FontLoader();
 let textMeshes = [];
-
-const headerFontURL = 'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json';
 
 const headerMaterials = [
     new THREE.MeshPhongMaterial({ color: 0xF29D1D }), // front
@@ -67,10 +66,13 @@ const paragraphMaterials = [
     new THREE.MeshPhongMaterial({ color: 0xC6C6C6 }) // side
 ];
 
+const latoFont = new FontLoader().parse(lato);
+const prataFont = new FontLoader().parse(prata);
+
 let headerGeometryParameters = {
-    font: null,
+    font: prataFont,
     size: 6,
-    height: 1,
+    height: 2,
     curveSegments: 10,
     bevelEnabled: false,
     bevelOffset: 0,
@@ -80,7 +82,7 @@ let headerGeometryParameters = {
 }
 
 let paragraphGeometryParameters = {
-    font: null,
+    font: latoFont,
     size: 4,
     height: 1,
     curveSegments: 10,
@@ -91,95 +93,69 @@ let paragraphGeometryParameters = {
     bevelThickness: 1
 }
 
+function createTextMesh(text, materials, geometryParameters, position, rotation)
+{
+    const geometry = new TextGeometry(text, geometryParameters);
+
+    let textMesh = new THREE.Mesh(geometry, materials);
+    textMesh.castShadow = true;
+
+    textMesh.position.set(position.x, position.y, position.z);
+    textMesh.rotation.set(rotation.x, rotation.y, rotation.z);
+
+    return textMesh;
+}
+
 let previousContributionPos = null;
+
 
 function addContribution(headerText, contributors)
 {
-    fontLoader.load(
-        headerFontURL,
-
-        function (font) {
-
-            // TODO: only works within here for some reason
-            function createTextMesh(text, materials, geometryParameters, position, rotation)
-            {
-                geometryParameters.font = font;
-                const geometry = new TextGeometry(text, geometryParameters);
-
-                let textMesh = new THREE.Mesh(geometry, materials);
-                textMesh.castShadow = true;
-
-                textMesh.position.set(position.x, position.y, position.z);
-                textMesh.rotation.set(rotation.x, rotation.y, rotation.z);
-
-                return textMesh;
-            }
-
-            // HEADER TEXT
-            let headerTextMesh = createTextMesh(
-                headerText,
-                headerMaterials,
-                headerGeometryParameters,
-                new THREE.Vector3(-35, 0, -50),
-                new THREE.Vector3(-Math.PI / 4, 0, 0)
-            );
-
-            // if (previousContributionPos === null) headerTextMesh.position.y = -100;
-            // else headerTextMesh.position.y = previousContributionPos.y + 20;
-            if (previousContributionPos != null) headerTextMesh.position.y = previousContributionPos.y - 60;
-
-            previousContributionPos = headerTextMesh.position;
-
-            scene.add(headerTextMesh);
-            textMeshes.push(headerTextMesh);
-
-
-            // PARAGRAPH TEXT
-            for (let i = 0; i < contributors.length; i++)
-            {
-                let paragraphTextMesh = createTextMesh(
-                    contributors[i],
-                    paragraphMaterials,
-                    paragraphGeometryParameters,
-                    new THREE.Vector3(-35, 0, -50),
-                    new THREE.Vector3(-Math.PI / 4, 0, 0)
-                );
-
-                if (i === 0) paragraphTextMesh.position.y = previousContributionPos.y - 15;
-
-                else if(previousContributionPos != null) paragraphTextMesh.position.y = previousContributionPos.y - 10;
-                previousContributionPos = paragraphTextMesh.position;
-
-                scene.add(paragraphTextMesh);
-                textMeshes.push(paragraphTextMesh);
-            }
-        }
+    // HEADER TEXT
+    let headerTextMesh = createTextMesh(
+        headerText,
+        headerMaterials,
+        headerGeometryParameters,
+        new THREE.Vector3(-35, 0, -80),
+        new THREE.Vector3()
     );
+
+    if (previousContributionPos === null) headerTextMesh.position.y = -60;
+    else headerTextMesh.position.y = previousContributionPos.y - 30;
+
+    previousContributionPos = headerTextMesh.position;
+
+    scene.add(headerTextMesh);
+    textMeshes.push(headerTextMesh);
+
+    // PARAGRAPH TEXT
+    for (let contributorIndex = 0; contributorIndex < contributors.length; contributorIndex++)
+    {
+        let paragraphTextMesh = createTextMesh(
+            contributors[contributorIndex],
+            paragraphMaterials,
+            paragraphGeometryParameters,
+            new THREE.Vector3(-35, 0, -80),
+            new THREE.Vector3()
+        );
+
+        if (contributorIndex === 0) paragraphTextMesh.position.y = previousContributionPos.y - 15;
+
+        else if(previousContributionPos != null) paragraphTextMesh.position.y = previousContributionPos.y - 10;
+        previousContributionPos = paragraphTextMesh.position;
+
+        scene.add(paragraphTextMesh);
+        textMeshes.push(paragraphTextMesh);
+    }
 }
-
-
-// function addTextMesh(fontURL, text, materials, geometryParameters)
-// {
-//     fontLoader.load(
-//         fontURL,
-//         function (font) {
-//             geometryParameters.font = font;
-//             const geometry = new TextGeometry(headerText, geometryParameters);
-//             let textMesh = new THREE.Mesh(geometry, materials);
-//             textMesh.castShadow = true;
-//             return textMesh;
-//         }
-//     );
-// }
 
 init();
 
 function init()
 {
-    addContribution("Developers", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
-    addContribution("Developers", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
-    // addContribution("Developers", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
-    // addContribution("Developers", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
+    addContribution("Collaboratie tussen", ["Hogeschool Leiden", "Museum Boerhaave"]);
+    addContribution("Ontwikkelaars", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
+    addContribution("Ondersteuning", ["Annelore Scholten", "Maarten Storm", "Nina Paris", "Gerolf Heida"]);
 
     animate();
 }
@@ -188,13 +164,17 @@ function init()
 // ANIMATE
 function animate()
 {
-    for (let i = 0; i < textMeshes.length; i++)
-    {
-        textMeshes[i].position.y += 0.05;
-        // textMeshes[i].position.z -= 0.05;
-    }
+    rollCredits();
 
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
+}
+
+function rollCredits()
+{
+    for (let i = 0; i < textMeshes.length; i++)
+    {
+        textMeshes[i].position.y += 0.05;
+    }
 }
 

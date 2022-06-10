@@ -53,13 +53,13 @@ dirLight.castShadow = true;
 // TEXT
 // ----------------------------------------------------------------------
 const fontLoader = new FontLoader();
-var textMeshes = [];
+let textMeshes = [];
 
 const headerFontURL = 'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json';
 
 const headerMaterials = [
-    new THREE.MeshPhongMaterial({ color: 0xffffff }), // front
-    new THREE.MeshPhongMaterial({ color: 0xC6C6C6 }) // side
+    new THREE.MeshPhongMaterial({ color: 0xF29D1D }), // front
+    new THREE.MeshPhongMaterial({ color: 0xE56528 }) // side
 ];
 
 const paragraphMaterials = [
@@ -100,53 +100,77 @@ function addContribution(headerText, contributors)
 
         function (font) {
 
-            // HEADER
-            headerGeometryParameters.font = font;
-            paragraphGeometryParameters.font = font;
-            const headerGeometry = new TextGeometry(headerText, headerGeometryParameters);
-
-            for (let i = 0; i < contributors.length; i++)
+            // TODO: only works within here for some reason
+            function createTextMesh(text, materials, geometryParameters, position, rotation)
             {
-                const paragraphGeometry = new TextGeometry(headerText, paragraphGeometryParameters);
+                geometryParameters.font = font;
+                const geometry = new TextGeometry(text, geometryParameters);
 
+                let textMesh = new THREE.Mesh(geometry, materials);
+                textMesh.castShadow = true;
+
+                textMesh.position.set(position.x, position.y, position.z);
+                textMesh.rotation.set(rotation.x, rotation.y, rotation.z);
+
+                return textMesh;
             }
 
+            // HEADER TEXT
+            let headerTextMesh = createTextMesh(
+                headerText,
+                headerMaterials,
+                headerGeometryParameters,
+                new THREE.Vector3(-35, 0, -50),
+                new THREE.Vector3(-Math.PI / 4, 0, 0)
+            );
 
-            let headerTextMesh = new THREE.Mesh(headerGeometry, headerMaterials);
-
-            headerTextMesh.castShadow = true;
-
-            if (previousContributionPos === null) headerTextMesh.position.y = -100;
-            else headerTextMesh.position.y = previousContributionPos.y + 20;
-
-            headerTextMesh.position.z = -50;
-            headerTextMesh.position.x = -35;
-            // textMesh.rotation.x = - Math.PI / 4;
+            // if (previousContributionPos === null) headerTextMesh.position.y = -100;
+            // else headerTextMesh.position.y = previousContributionPos.y + 20;
+            if (previousContributionPos != null) headerTextMesh.position.y = previousContributionPos.y - 60;
 
             previousContributionPos = headerTextMesh.position;
 
             scene.add(headerTextMesh);
-
             textMeshes.push(headerTextMesh);
 
+
+            // PARAGRAPH TEXT
+            for (let i = 0; i < contributors.length; i++)
+            {
+                let paragraphTextMesh = createTextMesh(
+                    contributors[i],
+                    paragraphMaterials,
+                    paragraphGeometryParameters,
+                    new THREE.Vector3(-35, 0, -50),
+                    new THREE.Vector3(-Math.PI / 4, 0, 0)
+                );
+
+                if (i === 0) paragraphTextMesh.position.y = previousContributionPos.y - 15;
+
+                else if(previousContributionPos != null) paragraphTextMesh.position.y = previousContributionPos.y - 10;
+                previousContributionPos = paragraphTextMesh.position;
+
+                scene.add(paragraphTextMesh);
+                textMeshes.push(paragraphTextMesh);
+            }
         }
     );
 }
 
 
-function addTextMesh(fontURL, text, materials, geometryParameters)
-{
-    fontLoader.load(
-        fontURL,
-        function (font) {
-            geometryParameters.font = font;
-            const geometry = new TextGeometry(headerText, geometryParameters);
-            let textMesh = new THREE.Mesh(geometry, materials);
-            textMesh.castShadow = true;
-            return textMesh;
-        }
-    );
-}
+// function addTextMesh(fontURL, text, materials, geometryParameters)
+// {
+//     fontLoader.load(
+//         fontURL,
+//         function (font) {
+//             geometryParameters.font = font;
+//             const geometry = new TextGeometry(headerText, geometryParameters);
+//             let textMesh = new THREE.Mesh(geometry, materials);
+//             textMesh.castShadow = true;
+//             return textMesh;
+//         }
+//     );
+// }
 
 init();
 
@@ -154,9 +178,8 @@ function init()
 {
     addContribution("Developers", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
     addContribution("Developers", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
-    addContribution("Developers", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
-    addContribution("Developers", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
-    addContribution("Developers", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
+    // addContribution("Developers", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
+    // addContribution("Developers", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
 
     animate();
 }
@@ -168,7 +191,7 @@ function animate()
     for (let i = 0; i < textMeshes.length; i++)
     {
         textMeshes[i].position.y += 0.05;
-        textMeshes[i].position.z -= 0.05;
+        // textMeshes[i].position.z -= 0.05;
     }
 
     renderer.render(scene, camera);

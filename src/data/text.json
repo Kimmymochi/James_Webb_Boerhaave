@@ -11,7 +11,7 @@
                     "z": 1.75
                 },
                 "model": "Gold_Plating"
-                
+
             },
 
             "secundarymirror": {
@@ -29,7 +29,7 @@
             "sunscreens": {
                 "id": 3,
                 "title": "Zonneschermen",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque cum dolor ducimus in, expedita hic recusandae tempora quasi molestias nulla incidunt quidem sunt minus non illum dicta velit id, autem, dignissimos aliquam maxime, quam. Perferendis et animi quia consequuntur modi, iste possimus similique quaerat ab nesciunt, iusto quis commodi asperiores quod tempore sapiente. Illum voluptates, quae consequuntur eum nobis nemo eius earum vitae cum unde fuga, esse amet accusantium totam, atque labore. Est fugit aspernatur, iste quas, ullam numquam libero saepe ea animi modi cumque quasi quis ducimus accusamus dolorum in, odio, neque voluptatem maxime nemo sed enim hic eaque!",
+                "description": "Om de meetinstrumenten goed te kunnen gebruiken, moeten deze op extreem lage temperaturen werken, tot ongeveer -234°C de instrumenten die licht gebruiken dicht tegen infrarood aan, of zelfs -266°C voor de MIRI, die infrarood licht gebruikt. Om te voorkomen dat deze instrumenten opwarmen door de zon, zijn er 5 zonneschermen - elk wel een tennisveld groot! - op elkaar gestapeld. Deze schermen blokkeren het licht, en de warmte, van de zon, waardoor de instrumenten in een stabiel koele omgevingen goed kunnen werken.<br>Het zonnescherm heeft een verschil van <b>300 graden Celsius</b> aan beide kanten! De kant die naar de zon is gericht, heeft een gemiddelde temperatuur van ongeveer  <b>90 graden Celsius</b>, terwijl de kant van de instrumenten een temperatuur heeft van  <b>-347 graden Celsius </b>, ofwel 36 graden Kelvin.",
                 "location": {
                     "x": 3,
                     "y": 1.25,
@@ -41,7 +41,7 @@
             "spacecraftbus": {
                 "id": 4,
                 "title": "Ruimtevaartuig BUS",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque cum dolor ducimus in, expedita hic recusandae tempora quasi molestias nulla incidunt quidem sunt minus non illum dicta velit id, autem, dignissimos aliquam maxime, quam. Perferendis et animi quia consequuntur modi, iste possimus similique quaerat ab nesciunt, iusto quis commodi asperiores quod tempore sapiente. Illum voluptates, quae consequuntur eum nobis nemo eius earum vitae cum unde fuga, esse amet accusantium totam, atque labore. Est fugit aspernatur, iste quas, ullam numquam libero saepe ea animi modi cumque quasi quis ducimus accusamus dolorum in, odio, neque voluptatem maxime nemo sed enim hic eaque!",
+                "description": "In dit compartiment, die zich onderaan de zonneschermen bevindt, bevat de nodige onderdelen om de James Webb ruimtetelescoop te laten functioneren. Dit compartiment- wat in totaal langer is dan 6 meter - bevat de zes primaire subsystemen:<br><ul><li><b>Electrical Power Subsystem</b>: Het systeem voor de stroomregeling, die verantwoordelijk is voor het converteren van zonlicht op de zonnepanelen naar stroom voor de telescoop.</li><li><b>Attitude Control Subsystem</b>: Dit systeem is verantwoordelijk voor het regelen van een stabiele baan van de telescoop, en het richten van de telescoop naar de juiste locatie in de ruimte voor onderzoek.</li><li><b>Communication Subsystem</b>: Zoals de naam al aanduidt, is de functie van dit systeem simpel maar cruciaal - het ontvangt commando’s van het controlecentrum, en stuurt de gevonden data terug naar Aarde.</li><li><b>Command And Data Handling System</b>: Dit systeem is de brein van dit compartiment, het regelt alle commando's van de communicatie en stuurt deze correct door. Verder bevindt zich in dit systeem ook de opslag voor het observatorium.</li><li><b>Propulsion System</b>: Dit systeem bevat alle brandstof en stuwraketten die het <i>‘Attitude Control System’</i> gebruikt om de telescoop stabiel te houden.</li><li><b>Thermal Control System</b>: Dit systeem is kort uit te leggen - maar het belang is niet te onderschatten. Dit systeem beheert en regelt de correcte operationele temperatuur van het gehele compartiment.</li></ul>",
                 "location": {
                     "x": 1.5,
                     "y": -2,
@@ -53,7 +53,7 @@
             "tools": {
                 "id": 5,
                 "title": "Meetinstrumenten",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque cum dolor ducimus in, expedita hic recusandae tempora quasi molestias nulla incidunt quidem sunt minus non illum dicta velit id, autem, dignissimos aliquam maxime, quam. Perferendis et animi quia consequuntur modi, iste possimus similique quaerat ab nesciunt, iusto quis commodi asperiores quod tempore sapiente. Illum voluptates, quae consequuntur eum nobis nemo eius earum vitae cum unde fuga, esse amet accusantium totam, atque labore. Est fugit aspernatur, iste quas, ullam numquam libero saepe ea animi modi cumque quasi quis ducimus accusamus dolorum in, odio, neque voluptatem maxime nemo sed enim hic eaque!",
+                "description": "De ISIM <i>(Integrated Instrument Module)</i> bevindt zich achter de primaire spiegel, en bevat alle meetinstrumenten voor het verzamelen en onderzoeken van het licht van de telescoop.<br>De ISIM bevat vier instrumenten:<ul><li><b>NIRCam (Near-Infrared Camera)</b>: Dit is het primaire optische element van de James Webb Ruimtetelescoop, die de golflengtes van <i>0.6 tot 5 micron detecteert</i> - dit zijn de golflengtes die van de vroegste sterren en sterrenstelsels die in het proces van vormen zijn afkomen.</li><li><b>NIRSpec (Near-Infrared Spectrograph)</b>: Het licht van de NIRCam komt in dit instrument, waar het licht van een object naar een spectrum verspreid wordt. Hierdoor kunnen de fysieke eigenschappen, zoals temperatuur, massa en chemische opbouw gemeten worden.</li><li><b>MIRI (Mid-Infrared Instrument)</b>: Dit instrument bevat zowel een camera als een spectrograaf, die het licht waarnemen van middenin het infrarode spectrum, van <i>5 tot 28 micron</i>. De lichtsensoren geven de mogelijkheidom verre sterrenstelsels, nieuw vormende sterren en kometen waar te nemen.</li><li><b>FGS (Fine Guidance Sensor)/NIRISS</b>: Door dit instrument kan de James Webb Ruimtetelescoop accuraat naar de juiste locatie wijzen, om zo de hoogste kwaliteit foto’s te maken van het doel. Gekoppelt met een ander instrument, de <i>NIRISS</i>, geeft de mogelijkheid om exoplaneten te vinden en karakteriseren, met hun eigenschappen.</li></ul>",
                 "location": {
                     "x": 0,
                     "y": 4,
@@ -66,7 +66,7 @@
             "solarpanels": {
                 "id": 6,
                 "title": "Zonnepanelen",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque cum dolor ducimus in, expedita hic recusandae tempora quasi molestias nulla incidunt quidem sunt minus non illum dicta velit id, autem, dignissimos aliquam maxime, quam. Perferendis et animi quia consequuntur modi, iste possimus similique quaerat ab nesciunt, iusto quis commodi asperiores quod tempore sapiente. Illum voluptates, quae consequuntur eum nobis nemo eius earum vitae cum unde fuga, esse amet accusantium totam, atque labore. Est fugit aspernatur, iste quas, ullam numquam libero saepe ea animi modi cumque quasi quis ducimus accusamus dolorum in, odio, neque voluptatem maxime nemo sed enim hic eaque!",
+                "description": "Alhoewel er een batterij aan boord van de ruimtetelescoop is, heeft deze maar de capaciteit om de telescoop voor enkele uren van stroom te voorzien. Na het lanceren van de telescoop, klappen de vijf panelen - die in totaal meer dan <i>6 meter lang</i> zijn - uit om van het directe zonlicht energie te verwekken voor de telescoop. <br>Hoewel de gehele ruimtetelescoop heeft maar <i>1 kilowatt</i> aan energie nodig, kunnen deze panelen samen bijna <i>dubbel</i> deze energiebehoefte leveren.",
                 "location": {
                     "x": 0,
                     "y": -1.25,

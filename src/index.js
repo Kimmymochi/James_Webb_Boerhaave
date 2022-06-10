@@ -1,3 +1,3 @@
-import './scripts/three.js';
+import './scripts/credits.js';
 import './styles/main.scss';
 

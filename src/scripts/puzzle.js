@@ -28,11 +28,29 @@ document.body.appendChild( renderer.domElement );
 
 // CAMERA
 // ----------------------------------------------------------------------
-const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
+
+// Ortographic camera
+const frustumSize = 100;
+const aspect = window.innerWidth / window.innerHeight;
+let camera = new THREE.OrthographicCamera(
+    frustumSize * aspect / - 2,
+    frustumSize * aspect / 2,
+    frustumSize / 2,
+    frustumSize / - 2, 1, 1000
+);
+camera.position.set( - 200, 200, 200 );
+
 const orbitControls = new OrbitControls( camera, renderer.domElement );
-camera.position.set( 0, 20, 100 );
 orbitControls.enableZoom = false;
 orbitControls.update();
+
+
+// Regular camera
+// const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
+// const orbitControls = new OrbitControls( camera, renderer.domElement );
+// camera.position.set( 0, 20, 100 );
+// orbitControls.enableZoom = false;
+// orbitControls.update();
 
 
 // LIGHTS

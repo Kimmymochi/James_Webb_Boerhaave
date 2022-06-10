@@ -4,31 +4,33 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 
+import lato from '../fonts/Lato_Regular.json';
 
-// SCENE
+
 const scene = new THREE.Scene();
 
-// CAMERA
-const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-// INIT CAMERA
-camera.position.z = 45;
-camera.position.x = 3;
-camera.position.y = 20;
 
 // RENDERER
+// ----------------------------------------------------------------------
 const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.setPixelRatio(window.devicePixelRatio);
-renderer.shadowMap.enabled = true
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.shadowMap.enabled = true;
+document.body.appendChild( renderer.domElement );
 
-document.body.appendChild(renderer.domElement);
 
-// CONTROLS
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.target = new THREE.Vector3(0, 0, -40);
-controls.update();
+// CAMERA
+// ----------------------------------------------------------------------
+const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
+camera.position.set( 0, 20, 100 );
+const orbitControls = new OrbitControls( camera, renderer.domElement );
+// orbitControls.enableZoom = false;
+orbitControls.update();
+
 
 // RESIZE HANDLER
+// ----------------------------------------------------------------------
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -36,62 +38,140 @@ function onWindowResize() {
 }
 window.addEventListener('resize', onWindowResize);
 
-// INIT HEMISPHERE LIGHT
-scene.add(new THREE.AmbientLight(0xffffff, 1.0));
 
-// SCENE
-scene.background = new THREE.Color(0x000000);
+// LIGHTS
+// ----------------------------------------------------------------------
+const light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
+scene.add( light );
+
+const dirLight = new THREE.DirectionalLight(0xffffff, 0.3, 50);
+dirLight.position.set(1, 2, -1);
+scene.add(dirLight);
+dirLight.castShadow = true;
+
 
 // TEXT
+// ----------------------------------------------------------------------
 const fontLoader = new FontLoader();
+var textMeshes = [];
 
-var starWarsText = THREE.Mesh;
-fontLoader.load(
-    'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json',
+const headerFontURL = 'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json';
 
-    function (font) {
+const headerMaterials = [
+    new THREE.MeshPhongMaterial({ color: 0xffffff }), // front
+    new THREE.MeshPhongMaterial({ color: 0xC6C6C6 }) // side
+];
 
-        const lorem = 'three.js\n3D Text Example\nYou can do cool stuff\nwith three.js fonts\n{ - } - $ - *\n% - # - +\n....\n...\n..\n.'
+const paragraphMaterials = [
+    new THREE.MeshPhongMaterial({ color: 0xffffff }), // front
+    new THREE.MeshPhongMaterial({ color: 0xC6C6C6 }) // side
+];
 
-        const geometry = new TextGeometry(lorem, {
-            font: font,
-            size: 4,
-            height: 1,
-            curveSegments: 10,
-            bevelEnabled: false,
-            bevelOffset: 0,
-            bevelSegments: 1,
-            bevelSize: 0.3,
-            bevelThickness: 1
-        });
-        const materials = [
-            new THREE.MeshPhongMaterial({ color: 0xffffff }), // front
-            new THREE.MeshPhongMaterial({ color: 0x999999 }) // side
-        ];
-        starWarsText = new THREE.Mesh(geometry, materials);
-        starWarsText.castShadow = true
-        // starWarsText.position.z = -50
-        // starWarsText.position.y = -10
-        // starWarsText.position.x = -35
-        // starWarsText.rotation.x = - Math.PI / 4
-        scene.add(starWarsText);
-        scene.updateMatrixWorld(true)
-    }
-);
+let headerGeometryParameters = {
+    font: null,
+    size: 6,
+    height: 1,
+    curveSegments: 10,
+    bevelEnabled: false,
+    bevelOffset: 0,
+    bevelSegments: 1,
+    bevelSize: 0.3,
+    bevelThickness: 1
+}
+
+let paragraphGeometryParameters = {
+    font: null,
+    size: 4,
+    height: 1,
+    curveSegments: 10,
+    bevelEnabled: false,
+    bevelOffset: 0,
+    bevelSegments: 1,
+    bevelSize: 0.3,
+    bevelThickness: 1
+}
+
+let previousContributionPos = null;
+
+function addContribution(headerText, contributors)
+{
+    fontLoader.load(
+        headerFontURL,
+
+        function (font) {
+
+            // HEADER
+            headerGeometryParameters.font = font;
+            paragraphGeometryParameters.font = font;
+            const headerGeometry = new TextGeometry(headerText, headerGeometryParameters);
+
+            for (let i = 0; i < contributors.length; i++)
+            {
+                const paragraphGeometry = new TextGeometry(headerText, paragraphGeometryParameters);
+
+            }
+
+
+            let headerTextMesh = new THREE.Mesh(headerGeometry, headerMaterials);
+
+            headerTextMesh.castShadow = true;
+
+            if (previousContributionPos === null) headerTextMesh.position.y = -100;
+            else headerTextMesh.position.y = previousContributionPos.y + 20;
+
+            headerTextMesh.position.z = -50;
+            headerTextMesh.position.x = -35;
+            // textMesh.rotation.x = - Math.PI / 4;
+
+            previousContributionPos = headerTextMesh.position;
+
+            scene.add(headerTextMesh);
+
+            textMeshes.push(headerTextMesh);
+
+        }
+    );
+}
+
+
+function addTextMesh(fontURL, text, materials, geometryParameters)
+{
+    fontLoader.load(
+        fontURL,
+        function (font) {
+            geometryParameters.font = font;
+            const geometry = new TextGeometry(headerText, geometryParameters);
+            let textMesh = new THREE.Mesh(geometry, materials);
+            textMesh.castShadow = true;
+            return textMesh;
+        }
+    );
+}
+
+init();
+
+function init()
+{
+    addContribution("Developers", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
+    addContribution("Developers", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
+    addContribution("Developers", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
+    addContribution("Developers", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
+    addContribution("Developers", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
+
+    animate();
+}
 
 
 // ANIMATE
-function animate() {
-    
-    starWarsText.position.set(
-        starWarsText.position.x,
-        starWarsText.position.y + 0.05,
-        starWarsText.position - 0.05
-    );
-
+function animate()
+{
+    for (let i = 0; i < textMeshes.length; i++)
+    {
+        textMeshes[i].position.y += 0.05;
+        textMeshes[i].position.z -= 0.05;
+    }
 
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
 }
-animate();
 

@@ -10,7 +10,13 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
+const light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
+scene.add( light );
 
+const dirLight = new THREE.DirectionalLight(0xffffff, 0.3, 50);
+dirLight.position.set(1, 2, -1);
+scene.add(dirLight);
+dirLight.castShadow = true;
 
 const loader = new FontLoader();
 const font = loader.load(

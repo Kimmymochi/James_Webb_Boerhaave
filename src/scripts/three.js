@@ -8,8 +8,9 @@ import textData from '../data/text.json';
 //ui DOM
 const ui = document.getElementById("js--ui");
 
-
-const infraredText = textData.text.infrared;
+//chapters
+const infraredText = textData.text.infrared.chapters;
+let currentChapterIndex = 0;
 
 // three.js
 let telescope;
@@ -26,7 +27,7 @@ function init() {
 
     // Camera
     camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 2, 2000);
-    camera.position.set(0, 0, 20);
+    camera.position.set(-4, 0, 4);
 
     // Scene
     scene = new THREE.Scene();
@@ -62,6 +63,7 @@ function init() {
 
     //setup infrared
     setupInfrared();
+    camera.rotation.set(0,0,0);
 
     // EventListeners
     window.addEventListener("resize", onWindowResize, false);
@@ -76,8 +78,8 @@ function onWindowResize() {
 
 function animate(time) {
     requestAnimationFrame(animate);
-    controls.update();
-
+    //controls.update();
+    TWEEN.update(time);
     render();
 }
 
@@ -86,7 +88,27 @@ function render() {
 }
 
 
+function chapterControl(chapter) {
+    let cameraPosition = new THREE.Vector3(chapter.cameraPosition.x, chapter.cameraPosition.y, chapter.cameraPosition.z);
+    tweenCamera(cameraPosition, 2000);
+
+    setUIPanel(chapter.text);
+}
+
+
 function setupInfrared() {
+    window.addEventListener("keydown", function(event) {
+        if (event.keyCode === 32) {
+            chapterControl(infraredText[Object.keys(infraredText)[currentChapterIndex]]);
+
+            if (Object.keys(infraredText).length - 1 == currentChapterIndex) {
+                //end
+            } else {
+                currentChapterIndex++;
+            }
+        }
+    });
+
     controls.enabled = false;
 
     let dashedLine = new THREE.LineDashedMaterial( {
@@ -107,16 +129,17 @@ function setupInfrared() {
     let dashedLine_purple = dashedLine.clone();
     dashedLine_purple.color.setHex(0xA020F0);
     //triangle
-    createLine([{x:-2, y:-2, z:0}, {x:2, y:-2, z:0}, {x:0, y:2, z:0}, {x:-2, y:-2, z:0}]);
+    //createLine([{x:-2, y:-2, z:0}, {x:2, y:-2, z:0}, {x:0, y:2, z:0}, {x:-2, y:-2, z:0}]);
     //lightsource
-    createLine([{x:-15, y:0, z:0}, {x:-1, y:0, z:0}], dashedLine);
+    createLine([{x:-15, y:0, z:0}, {x:0, y:0, z:0}], dashedLine);
     //color rays
-    let originPoint = new THREE.Vector3(0,0,0)
-    createLine([originPoint, {x:10, y:4, z:0}, {x:10, y:3, z:0}, originPoint], dashedLine_red);
-    createLine([originPoint, {x:5, y:1, z:0}, {x:5, y:0.5, z:0}, originPoint], dashedLine_yellow);
-    createLine([originPoint, {x:5, y:0, z:0}, {x:5, y:-0.5, z:0}, originPoint], dashedLine_green);
+    let originPoint = new THREE.Vector3(0,0,0);
+    createLine([originPoint, {x:10, y:4, z:0}, {x:15, y:4, z:0}, {x:16, y:3.5, z:0}, {x:15, y:3, z:0}, {x:10, y:3, z:0}, originPoint], dashedLine_red);
+	createLine([{x:16, y:3.5, z:0}, {x:20, y:3.5, z:0}], dashedLine);
+    createLine([originPoint, {x:7.5, y:1.5, z:0}, {x:7.5, y:1, z:0}, originPoint], dashedLine_yellow);
+    createLine([originPoint, {x:6.5, y:0, z:0}, {x:6.5, y:-0.5, z:0}, originPoint], dashedLine_green);
     createLine([originPoint, {x:5, y:-1, z:0}, {x:5, y:-1.5, z:0}, originPoint], dashedLine_blue);
-    createLine([originPoint, {x:5, y:-2, z:0}, {x:5, y:-2.5, z:0}, originPoint], dashedLine_purple);
+    createLine([originPoint, {x:2.5, y:-1, z:0}, {x:2.5, y:-1.5, z:0}, originPoint], dashedLine_purple);
 }
 
 
@@ -165,3 +188,18 @@ function closePanel() {
 }
 //bind to button
 document.getElementById("js--panel-close").onclick = function(){closePanel()};
+
+// animates the camera to given target
+function tweenCamera( targetPos, duration ) {
+    let pos = new THREE.Vector3().copy( camera.position );
+    const tween = new TWEEN.Tween( pos )
+        .to( targetPos, duration )
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .onUpdate( function () {
+            camera.position.copy( pos );
+        } )
+        .onComplete( function () {
+            camera.position.copy ( targetPos);
+        })
+        .start();
+}

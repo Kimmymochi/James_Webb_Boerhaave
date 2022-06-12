@@ -1,5 +1,48 @@
 {
     "text": {
+        "infrared": {
+            "chapters": {
+                "light": {
+                    "title": "aa",
+                    "text": "bla",
+                    "cameraPosition": {
+                        "x": -4,
+                        "y": 0,
+                        "z": 4
+                    }
+                },
+
+                "lightsplit": {
+                    "title": "aa",
+                    "text": "bla2",
+                    "cameraPosition": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 4
+                    }
+                },
+
+                "infrared": {
+                    "title": "aa",
+                    "text": "bla3",
+                    "cameraPosition": {
+                        "x": 12,
+                        "y": 3.5,
+                        "z": 4
+                    }
+                },
+
+                "jameswebb": {
+                    "title": "aa",
+                    "text": "bla4",
+                    "cameraPosition": {
+                        "x": 20.5,
+                        "y": 3.5,
+                        "z": 4
+                    }
+                }
+            }
+        },
         "JWSTParts": {
             "primarymirror": {
                 "id": 1,
@@ -11,7 +54,7 @@
                     "z": 1.75
                 },
                 "model": "Gold_Plating"
-                
+
             },
 
             "secundarymirror": {

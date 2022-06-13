@@ -1,5 +1,11 @@
 {
     "text": {
+        "ui": {
+            "collapseLabel": {
+                "collapsed": "uitklappen",
+                "open": "inklappen"
+            }
+        },
         "infrared": {
             "chapters": {
                 "light": {
@@ -16,7 +22,7 @@
                     "title": "aa",
                     "text": "bla2",
                     "cameraPosition": {
-                        "x": 0,
+                        "x": 3.75,
                         "y": 0,
                         "z": 4
                     }

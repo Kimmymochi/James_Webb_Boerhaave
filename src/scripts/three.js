@@ -92,7 +92,7 @@ function chapterControl(chapter) {
     let cameraPosition = new THREE.Vector3(chapter.cameraPosition.x, chapter.cameraPosition.y, chapter.cameraPosition.z);
     tweenCamera(cameraPosition, 2000);
 
-    setUIPanel(chapter.text);
+    setUIPanel(chapter.title, chapter.text);
 }
 
 
@@ -111,7 +111,7 @@ function setupInfrared() {
 
     controls.enabled = false;
 
-    let dashedLine = new THREE.LineDashedMaterial( {
+    let dashedLine = new THREE.LineBasicMaterial( {
     	color: 0xffffff,
     	linewidth: 1,
     	scale: 1,
@@ -188,6 +188,20 @@ function closePanel() {
 }
 //bind to button
 document.getElementById("js--panel-close").onclick = function(){closePanel()};
+
+//collapses UI panel
+function toggleCollapsePanel() {
+    //get DOM element
+    let panelDOM = document.querySelector('#js--ui #js--ui-panel');
+    let panelLabel = document.querySelector('#js--ui #js--panel-label');
+    //close ui panel
+    panelDOM.classList.toggle("collapsed");
+
+    //set text
+    panelLabel.innerHTML = panelDOM.classList.contains("collapsed") ? textData.text.ui.collapseLabel.collapsed : textData.text.ui.collapseLabel.open;
+}
+//bind to button
+document.getElementById("js--panel-collapse").onclick = function(){toggleCollapsePanel()};
 
 // animates the camera to given target
 function tweenCamera( targetPos, duration ) {

@@ -9,15 +9,17 @@ import launchAudio from '../media/launch.wav'
 
 const title = document.getElementById("js--title");
 const circle = document.getElementById("js--circle");
+const body = document.querySelector('body');
 
 let camera;
 let scene;
 let renderer;
 let button;
 let pushAnimation;
-let target;
 let video;
 let sound;
+let clickTarget;
+let hoverTarget = null;
 
 let mixer = new THREE.AnimationMixer();
 let clock = new THREE.Clock();
@@ -26,6 +28,9 @@ let mouse = new THREE.Vector2();
 let listener = new THREE.AudioListener();
 
 let hasLaunched = false;
+
+
+
 
 init();
 animate();
@@ -86,6 +91,8 @@ function init() {
         gltf.scene.position.set(-2.5, -1.5, 0)
         gltf.scene.rotateX(0.5);
 	    scene.add( gltf.scene );
+
+        
     
 	}, undefined, function ( error ) {
 	    console.error( error );
@@ -144,6 +151,7 @@ function init() {
     // Event Listeners
     window.addEventListener("resize", onWindowResize, false);
     window.addEventListener('mousedown', onMouseDown, false);
+    window.addEventListener('pointermove', onMouseMove, false);
 }
 
 
@@ -166,6 +174,25 @@ function render() {
     renderer.render(scene, camera);
 }
 
+function onMouseMove(event) {
+    mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+    mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObject(scene, true);
+    if (intersects.length > 0) {
+      hoverTarget = intersects[0].object.name;
+
+      console.log(hoverTarget);
+
+      if( (hoverTarget == "Button" || hoverTarget == "Text") && !hasLaunched) {
+          body.style.cursor = "pointer";
+      } else {
+          body.style.cursor = "default";
+      }
+    }
+
+  }
+
 function onMouseDown(event) {
     event.preventDefault();
     mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
@@ -175,23 +202,22 @@ function onMouseDown(event) {
    
     let intersects = raycaster.intersectObjects(scene.children);
     if (intersects.length > 0) {
-        target = intersects[0].object.name;
-
+        clickTarget = intersects[0].object.name;
         // Event when button is clicked
-        if (target == "Button" && !hasLaunched) {
+        if (clickTarget == "Button" && !hasLaunched) {  
             pushAnimation.play();
             sound.setVolume( 0.2 );
-            showTitle();
+            // showTitle();
             hasLaunched = true;         
-            // video.src = launchVideo;
-            // video.loop = false;
-            // video.muted = false;
-            // video.load();
-            // video.play();
+            video.src = launchVideo;
+            video.loop = false;
+            video.muted = false;
+            video.load();
+            video.play();
 
-            // let newPosition = new THREE.Vector3( -0.2, 0, -0.4 );
-            // let duration = 15000;
-            // tweenCamera( newPosition, duration );
+            let newPosition = new THREE.Vector3( -0.2, 0, -0.4 );
+            let duration = 15000;
+            tweenCamera( newPosition, duration );
         }
     }
 }

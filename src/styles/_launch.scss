@@ -1,5 +1,12 @@
-$size: 18rem;
-$size-mobile: 15rem;
+$size: 13rem;
+$size-600: 14rem;
+$size-1000: 16rem;
+
+$font: 3rem;
+$font-600: 3.5rem;
+$font-1000: 5rem;
+
+
 
 body {
     background-color: black;
@@ -11,6 +18,7 @@ body {
     width: 100%;
     height: 100%;
     position: absolute;
+    z-index: 1;
 }
 
 .title {
@@ -18,7 +26,6 @@ body {
     width: 100%;
     height: 100%;
     position: absolute;
-    z-index: 1;
     color: white;
     text-align: center;
     justify-content: center;
@@ -26,58 +33,73 @@ body {
     flex-direction: column;
     &__small {
         font-family: "Lato", "sans-serif";
-        font-size: 3rem;
+        font-size: $font - 1.5;
         font-weight: 100;
         background-color: black;
         z-index: 2;
 
-        @media only screen and (min-width: 425px) and (max-width: 1500px) {
-            font-size: 2rem
+        @media only screen and (min-width: 600px) {
+            font-size: $font-600 - 1.5;
+        }
+
+        @media only screen and (min-width: 1200px) {
+            font-size: $font-1000 - 1.5;
         }
     }
 
     &__big {
         font-family: "Prata", "serif";
-        font-size: 6rem;
+        font-size: $font;
         font-weight: 100;
         background-color: black;
         z-index: 2;
-        @media only screen and (min-width: 425px) and (max-width: 1500px) {
-            font-size: 4.5rem
+
+        @media only screen and (min-width: 600px)  {
+            font-size: $font-600
         }
+
+        @media only screen and (min-width: 1200px) {
+            font-size: $font-1000;
+        }
+        
     }
 }
 
 .circle {
     width: 100%;
     height: 100%;
-    top: $size ;
     position: absolute;
-    border: 0.5rem solid white;
+    border: 0.3rem solid white;
     border-bottom: none;
-    top: $size;
     height: $size;
     width: $size * 2;
     border-top-left-radius: $size * 2;
     border-top-right-radius: $size * 2;
 
 
-    @media only screen and (min-width: 425px) and (max-width: 1500px) {
-        height: $size-mobile;
-        width: $size-mobile * 2;
-        top: $size-mobile - 11;
-        border-top-left-radius: $size-mobile * 2;
-        border-top-right-radius: $size-mobile * 2;
+    @media only screen and (min-width: 600px)  {
+        height: $size-600;
+        width: $size-600 * 2;
+        border-top-left-radius: $size-600 * 2;
+        border-top-right-radius: $size-600 * 2;
+    }
+
+    @media only screen and (min-width: 1000px)  {
+        height: $size-1000;
+        width: $size-1000 * 2;
+        border-top-left-radius: $size-1000 * 2;
+        border-top-right-radius: $size-1000 * 2;
     }
 }
 
 
 .rotate {
-    animation: 3s ease 1 rotate;
+    animation: 4s ease 1 rotate;
     position: absolute;
     opacity: 0;
     transform-origin: 50% 100%;
     animation-fill-mode: forwards;
+    transform: translate(-50%, -50%);
   }
 
 
@@ -105,12 +127,17 @@ body {
 }
 
 @keyframes rotate {
-    from {
-      transform: rotate(0deg);
-      opacity: 0;
+    0% {
+        transform: rotate(0deg);
+        opacity: 0;
     }
-    to {
-      transform: rotate(360deg);
-      opacity: 1;
+
+    75% {
+        opacity: 0;
+    }
+
+    100% {
+        transform: rotate(360deg);
+        opacity: 1;
     }
 }

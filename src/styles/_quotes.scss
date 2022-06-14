@@ -11,10 +11,10 @@
     transition: opacity .5s ease-in-out;
 
     &__box {
-        width: 80rem;
-        height: 40rem;
+        width: 90rem;
+        height: 30rem;
         margin: 0 auto;
-        padding: 1.5rem;
+        padding: 2rem;
         display: flex;
         color: white;
         flex-direction: column;
@@ -22,6 +22,11 @@
         background-color: rgba(25, 25, 25, 0.5);
         backdrop-filter: blur(3rem);
         border-radius: 0.4rem;
+
+        @media only screen and (min-width: 1200px) {
+            height: 40rem;
+        }
+
 
         &__text{
             font-family: "Prata", "serif";
@@ -51,24 +56,30 @@
 
         &__image {
             z-index: 10;
-            width: 13rem;
-            height: 13rem;
+            width: 11rem;
+            height: 11rem;
             object-fit: cover;
             border-radius: 10rem;
-            border: #E56528 2px solid;
+            border: #E56528 0.2rem solid;
             pointer-events: all;
             cursor: pointer;
-            transition: 0.3s all ease-out;
+            transition: 0.3s all ease-in-out;
+
+            @media only screen and (min-width: 1200px) {
+                width: 15rem;
+                height: 15rem;
+            }
+
+            &:hover {
+                transform: scale(1.05);
+            }
         }
     }
 }
 
 .active {
     opacity: 0.2;
-    border: #E56528 5px solid;
     pointer-events: none;
-
-
 }
 
 .fadeIn {

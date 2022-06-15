@@ -1,5 +1,27 @@
-$bg: red;
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Prata&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+html {
+    font-size: 62.5%;
+}
 
 body {
     //background: $bg;
+
+    margin: 0;
+    width: 100vw;
+    overflow: hidden;
 }
+
+canvas {
+    width: 100vw;
+    height: 100vh;
+    display: block;
+}
+
+// @import 'ui';
+// @import 'annotation';
+// @import 'button';
+@import 'quotes';

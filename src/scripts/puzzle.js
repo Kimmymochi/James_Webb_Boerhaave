@@ -42,186 +42,94 @@ dirLight.position.set(1, 2, -1);
 scene.add(dirLight);
 dirLight.castShadow = true;
 
-// DRAG & DROP
-const draggableObjects = [];
-// const meshes = [backpanel, BUS, goldPlating, ISIS, secondaryMirror, solarPanels, sunscreens];
-const meshes = [sunscreens];
 
-for (let i = 0; i < meshes.length; i++)
-{
-    let draggableObject = addDraggablePart(meshes[i]);
-    scene.add(draggableObject);
-    draggableObjects.push(draggableObject);
-}
+import { UnrealBloomPass } from './jsm/postprocessing/UnrealBloomPass.js';
+import { EffectComposer } from './jsm/postprocessing/EffectComposer.js';
+import { ShaderPass } from './jsm/postprocessing/ShaderPass.js';
 
-const dragControls = new DragControls( draggableObjects, camera, renderer.domElement );
 
-dragControls.addEventListener( 'dragstart', function ( event ) {
-    orbitControls.enabled = false;
-    // event.object.material.emissive.set( 0xaaaaaa );
-} );
+const bloomPass = new UnrealBloomPass( new THREE.Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85 );
+bloomPass.threshold = params.bloomThreshold;
+bloomPass.strength = params.bloomStrength;
+bloomPass.radius = params.bloomRadius;
 
-dragControls.addEventListener( 'dragend', function ( event ) {
-    orbitControls.enabled = true;
-    // event.object.material.emissive.set( 0x000000 );
-} );
+const bloomComposer = new EffectComposer( renderer );
+bloomComposer.renderToScreen = false;
+bloomComposer.addPass( renderScene );
+bloomComposer.addPass( bloomPass );
 
-function drawBox(objectWidth, objectHeight, objectDepth, material)
-{
-    let geometry, box;
+const finalPass = new ShaderPass(
+    new THREE.ShaderMaterial( {
+        uniforms: {
+            baseTexture: { value: null },
+            bloomTexture: { value: bloomComposer.renderTarget2.texture }
+        },
+        vertexShader: document.getElementById( 'vertexshader' ).textContent,
+        fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
+        defines: {}
+    } ), 'baseTexture'
+);
+finalPass.needsSwap = true;
 
-    geometry = new THREE.BoxGeometry(objectWidth,objectHeight,objectDepth);
+const finalComposer = new EffectComposer( renderer );
+finalComposer.addPass( renderScene );
+finalComposer.addPass( finalPass );
 
-    box = new THREE.Mesh(geometry, material);
-    draggableObjects.push(box);
-    box.position.set(0, 0, 0);
+bloomComposer.renderToScreen = true;
+render();
 
-    return box;
-}
 
 function getRandomNumber(min, max) {
     return Math.random() * (max - min) + min;
 }
 
-const hitBoxMaterial = new THREE.MeshBasicMaterial(
-    {color: 0xffffff, transparent: true,
-        opacity: 0.1, depthTest: false, wireframe: true
-    });
 
-let parts = [];
-
-function addDraggablePart(mesh)
-{
-    let group = new THREE.Group();
-    const gltfLoader = new GLTFLoader();
-
-    gltfLoader.load( mesh, ( gltf ) =>
-    {
-        let mesh = gltf.scene;
-        mesh.scale.set( 3, 3, 3);
-
-        // TODO: shadows not working
-        mesh.castShadow = true;
-        mesh.receiveShadow = true;
-
-        const boundingBox = new THREE.Box3().setFromObject( mesh );
-
-        let meshSize = new THREE.Vector3();
-        let meshPosition = new THREE.Vector3();
-        boundingBox.getSize(meshSize);
-        boundingBox.getCenter(meshPosition)
-
-        mesh.position.set(-meshPosition.x, -meshPosition.y, -meshPosition.z);
-
-        const hitBox = drawBox(meshSize.x, meshSize.y, meshSize.z, hitBoxMaterial);
-        hitBox.geometry.computeBoundingBox();
-
-        group.add(hitBox);
-        hitBox.add(mesh);
-
-        parts.push({
-            mesh: hitBox,
-            boundingBox: boundingBox
-        });
-
-        hitBox.position.set(
-            getRandomNumber(20, 50),
-            getRandomNumber(20, 50),
-            getRandomNumber(20, 50));
-    });
-    return group;
-}
-
-let snappingPoints = [];
-
-// SNAPPING POINT
-const snappingPointRadius = 4;
-
-const snappingPointMesh = new THREE.Mesh(
-    new THREE.SphereGeometry(snappingPointRadius),
-    new THREE.MeshPhongMaterial({color: 0xffffff})
-);
-
-snappingPointMesh.material.transparent = true;
-snappingPointMesh.material.opacity = 0.5;
-
-snappingPointMesh.position.set(-30, 0, 0);
-
-let snappingPointBB = new THREE.Sphere(snappingPointMesh.position, snappingPointRadius);
-
-scene.add(snappingPointMesh);
-
-snappingPoints.push({
-    mesh: snappingPointMesh,
-    boundingBox: snappingPointBB,
-    snappedObject: null,
-    hasRecentlyCollided: false,
-})
-
-function checkCollisions()
-{
-    for (let partsIndex = 0; partsIndex < parts.length; partsIndex++)
-    {
-        let isIntersecting = parts[partsIndex].boundingBox.intersectsSphere(snappingPointBB);
-
-        if (isIntersecting || snappingPoints[0].hasRecentlyCollided)
-        {
-            snappingPoints[0].snappedObject = parts[partsIndex].mesh;
-            const snappingPointPos = snappingPoints[0].boundingBox.center;
-
-            if (!snappingPoints[0].hasRecentlyCollided)
-            {
-                parts[partsIndex].mesh.position.set(snappingPointPos.x, snappingPointPos.y, snappingPointPos.z);
-
-                dragControls.enabled = false;
-                setTimeout(function ()
-                {
-                    dragControls.enabled = true;
-                }, 1000);
-            }
-            snappingPoints[0].hasRecentlyCollided = true;
-        }
-        if(!isIntersecting)
-        {
-            snappingPoints[0].hasRecentlyCollided = false;
-            snappingPoints[0].snappedObject = null;
-        }
-    }
-}
+// STARS BACKROUND
 
 const starColors = [0x6487C7, 0xD1C0A4, 0xB5754F, 0xFCFBF9];
 
-// STARS BACKROUND
+
 for (let i = 0; i < 25; i++)
 {
+    // top
     createStar(
         getRandomNumber(-300, 300), // x
         getRandomNumber(200, 300), // y
         getRandomNumber(-300, 300)  // z
     );
+
+    // bottom
+    createStar(
+        getRandomNumber(-300, 300), // x
+        getRandomNumber(-200, -300), // y
+        getRandomNumber(-300, 300)  // z
+    );
+
+    // right
+    createStar(
+        getRandomNumber(200, 300), // x
+        getRandomNumber(-200, 300), // y
+        getRandomNumber(-300, 300)  // z
+    );
+
+    // left
+    createStar(
+        getRandomNumber(-200, -300), // x
+        getRandomNumber(-200, 300), // y
+        getRandomNumber(-300, 300)  // z
+    );
 }
-
-// for (let i = 0; i < 25; i++)
-// {
-//     createStar(
-//         getRandomNumber(-200, -300), // x
-//         getRandomNumber(-200, -300), // y
-//         getRandomNumber(-200, -300)  // z
-//     );
-// }
-
-createStar(0, 0, 0);
 
 function createStar(x, y, z)
 {
-    // let starColor = starColors[getRandomNumber(0, starColors.length)];
+    let starColor = starColors[getRandomNumber(0, starColors.length)];
 
     const star = new THREE.Mesh(
         new THREE.SphereGeometry(getRandomNumber(0.3, 1)),
-        new THREE.MeshPhongMaterial({color: 0x6487C7})
+        new THREE.MeshPhongMaterial({color: starColor})
     );
 
-    star.material.emissive.set( 0x6487C7 )
+    star.material.emissive.set( starColor )
     star.material.emissiveIntensity = 5;
 
     star.position.set(x, y, z);
@@ -229,26 +137,9 @@ function createStar(x, y, z)
     scene.add(star);
 }
 
-
 function animate()
 {
-    for (let partsIndex = 0; partsIndex < parts.length; partsIndex++)
-    {
-        parts[partsIndex].boundingBox.copy(parts[partsIndex].mesh.geometry.boundingBox)
-            .applyMatrix4(parts[partsIndex].mesh.matrixWorld);
-    }
-
-
-    checkCollisions();
-
     renderer.render( scene, camera );
     requestAnimationFrame( animate );
-
-    // for (let i = 0; i < draggableObjects.length; i++)
-    // {
-    //     const position = draggableObjects[i].position;
-    //     const speed = 0.002;
-    //     if(position.x < 100) position.set(position.x + speed, position.y + speed, position.z + speed);
-    // }
 }
 animate();

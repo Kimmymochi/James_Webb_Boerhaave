@@ -153,6 +153,7 @@ init();
 
 function init()
 {
+    addContribution("Grote vragen", ["Bezoek de tentoonstelling grote vragen in", "museum Boerhaave voor meer informatie", "over de James Webb ruimtetelescoop"]);
     addContribution("Collaboratie tussen", ["Hogeschool Leiden", "Museum Boerhaave"]);
     addContribution("Ontwikkelaars", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
     addContribution("Ondersteuning", ["Annelore Scholten", "Maarten Storm", "Nina Paris", "Gerolf Heida"]);
@@ -174,7 +175,7 @@ function rollCredits()
 {
     for (let i = 0; i < textMeshes.length; i++)
     {
-        textMeshes[i].position.y += 0.05;
+        textMeshes[i].position.y += 0.07;
     }
 }
 

@@ -83,6 +83,7 @@ $label-height: 4rem;
 
             font-weight: 100;
             margin: 0;
+            text-transform: uppercase;
 
             @media only screen and (min-width: 425px) {
                 width: 30%;
@@ -144,10 +145,10 @@ $label-height: 4rem;
 
         transition: opacity .4s, top .4s;
 
-        @media only screen and (min-width: 425px) {
-            display: none;
-            visibility: hidden;
-        }
+        // @media only screen and (min-width: 425px) {
+        //     display: none;
+        //     visibility: hidden;
+        // }
 
         button {
             background-color: transparent;

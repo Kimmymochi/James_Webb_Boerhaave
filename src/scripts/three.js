@@ -176,6 +176,7 @@ function setUIPanel (title, text) {
 
     //open ui panel
     panelDOM.classList.add("open");
+    document.getElementById("js--panel-close").removeAttribute("disabled");
 }
 
 
@@ -185,6 +186,9 @@ function closePanel() {
     let panelDOM = document.querySelector('#js--ui #js--ui-panel');
     //close ui panel
     panelDOM.classList.remove("open");
+
+    //disable close button to prevent any bugs on reopening panel next time
+    document.getElementById("js--panel-close").setAttribute("disabled", true);
 }
 //bind to button
 document.getElementById("js--panel-close").onclick = function(){closePanel()};

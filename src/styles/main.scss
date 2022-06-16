@@ -8,8 +8,6 @@ html {
 }
 
 body {
-    //background: $bg;
-
     margin: 0;
     width: 100vw;
     overflow: hidden;
@@ -21,7 +19,7 @@ canvas {
     display: block;
 }
 
-// @import 'ui';
-// @import 'annotation';
-// @import 'button';
+@import 'ui';
+@import 'annotation';
+@import 'button';
 @import 'quotes';

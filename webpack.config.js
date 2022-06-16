@@ -32,7 +32,7 @@ module.exports = {
             },
             {
                 test: /\.(bin)$/,
-                use: [
+                    use: [
                     {
                         loader: 'file-loader',
                     }

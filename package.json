@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Kimmymochi/James_Webb_Boerhaave#readme",
   "devDependencies": {
     "css-loader": "^6.7.1",
+    "file-loader": "^6.2.0",
     "html-loader": "^3.1.0",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.0",
@@ -33,6 +34,7 @@
   },
   "dependencies": {
     "@compai/font-recursive": "^0.0.4",
+    "gltf-webpack-loader": "^1.0.6",
     "three-dragcontrols": "^0.88.2"
   }
 }

@@ -126,6 +126,7 @@ export function createCredits(renderer, camera) {
     quote.classList.add('fadeOut');
 
     setTimeout( () => {
+        quote.style.display ="none";
         addContribution("Grote vragen", ["Bezoek de tentoonstelling Grote Vragen in", "Rijksmuseum Boerhaave voor meer informatie", "over de James Webb Ruimtetelescoop"]);
         addContribution("Collaboratie tussen", ["Hogeschool Leiden", "Museum Boerhaave"]);
         addContribution("Ontwikkelaars", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);

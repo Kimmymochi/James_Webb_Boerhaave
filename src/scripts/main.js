@@ -1,8 +1,9 @@
 const THREE = require('three');
 
+import { createExplore } from './explore.js';
+import { createPuzzle } from './puzzle.js';
 import { createQuotes } from './quotes.js';
 import { createCredits } from './credits.js';
-import { createPuzzle } from './puzzle.js';
 
 let camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 2, 2000);
 
@@ -16,6 +17,7 @@ renderer.shadowMap.enabled = true;
 
 let scene = new THREE.Scene();
 let currentScene;
+let exploreScene;
 let puzzleScene;
 let quotesScene;
 let creditsScene;
@@ -51,10 +53,15 @@ function changeScene() {
     console.log(currentScene);
 
     if ( currentScene === "start" ) {
+        exploreScene = createExplore(renderer, camera);
+        scene = exploreScene;
+        currentScene = "explore";
+
+    } else if ( currentScene === "explore" ) {
         puzzleScene = createPuzzle(renderer, camera);
         scene = puzzleScene;
         currentScene = "puzzle";
-    
+
     } else if ( currentScene === "puzzle" ) {
         quotesScene = createQuotes(renderer, camera);
         scene = quotesScene
@@ -68,9 +75,3 @@ function changeScene() {
     }
 }
 document.getElementById( "js--sceneChanger" ).onclick = function() { changeScene() };
-
-// // turn on / off the OrbitControls
-// function orbitController( canUse ) {
-//     controls.enableRotate = canUse;
-//     controls.enablePan = canUse;
-// }

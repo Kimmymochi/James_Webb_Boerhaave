@@ -1,5 +1,54 @@
 {
     "text": {
+        "ui": {
+            "collapseLabel": {
+                "collapsed": "uitklappen",
+                "open": "inklappen"
+            }
+        },
+        "infrared": {
+            "chapters": {
+                "light": {
+                    "title": "Een lichtstraal geboren",
+                    "text": "Elk fysiek object kan fotonen afgeven als het op een bepaald energieniveau komt. Dit zien wij als licht - als je naar de sterrenhemel kijkt naar een ster zijn dat lichtstralen die tot wel <i>(duizenden)</i> jaren onderweg zijn geweest om in je oog te landen.<br>Hier volgen wij een enkele lichtstraal van een ver sterrenstelsel, diep in het heelal, om te kijken wat de James Webb Ruimtetelescoop hiermee kan en waarom.",
+                    "cameraPosition": {
+                        "x": -4,
+                        "y": 0,
+                        "z": 4
+                    }
+                },
+
+                "lightsplit": {
+                    "title": "Maar wat is licht?",
+                    "text": "Een lichtstraal is niet maar één golf, maar vaak een combinatie van lichtgolven met verschillende frequenties <i>(de trillingen per seconde)</i>. Dit heet <i>polychromatisch</i> licht en dit is het licht wat het meest in het natuur voorkomt. Deze verschillende golflengtes en lichtkleuren heet het <i>elektromagnetisch spectrum</i>, welke frequenties er in het licht zitten wat je oog binnenkomt is wat bepaalt welke kleur je ziet.<br>Hier is een abstract voorbeeld van een spectrum van een lichtstraal opgebroken in verschillende banden van licht, met bovenaan ons punt van interesse: <b>infrarood licht.</b>",
+                    "cameraPosition": {
+                        "x": 3.75,
+                        "y": 0,
+                        "z": 4
+                    }
+                },
+
+                "infrared": {
+                    "title": "Infrarood in het groot",
+                    "text": "Nu we weten waar infrarood-licht vandaan komt, is de vraag nog waarom dit zo belangrijk is voor de ervaring - en natuurlijk de James Webb ruimtetelescoop. Infrarood kom je waarschijnlijk vaker tegen in het dagelijks leven dan je verwacht. Afstandsbedieningen, warmtecamera’s en elektrische kachels gebruiken allemaal infrarood voor het versturen van signalen of voor de eigenschap van infrarood: het uitzenden van warmtestraling.<br>Dit is ook de reden waarom het veel in sterrenkunde wordt gebruikt: voor hele verre sterren<i>(-stelsels)</i> is normaal licht te zwak om op te vangen over de lange afstanden, maar met infrarood licht kunnen we deze nog goed observeren. Ook geeft infrarood het voordeel dat het door stofwolken heen gaat, waar normaal licht geblokkeerd zou worden - dit zijn beide eigenschappen die erg goed uitkomen voor een ruimtetelescoop, die zo ver mogelijk weg heldere beelden wilt kunnen maken.",
+                    "cameraPosition": {
+                        "x": 12,
+                        "y": 3.5,
+                        "z": 4
+                    }
+                },
+
+                "jameswebb": {
+                    "title": "Van het universum naar ons oog",
+                    "text": "Door lichtstralen, zoals deze die we hier gevolgd hebben, reizen duizenden tot miljoenen jaren door het universum. Al zou je deze lichtstralen bekijken zou je daardoor een beeld krijgen hoe het er destijds uitzag. Dit is ook het idee achter de James Webb Ruimtetelescoop, die <b>100 tot 250 miljoen jaar na de Big Bang</b><i>(meer dan 13.5 miljard jaar geleden!)</i> terug kan kijken, toen de eerste sterren begonnen te ontstaan.<br>Het doel van de ruimtetelescoop is om naar deze vroege sterren(stelsels) te kijken - en om naar andere planeten in onze sterrenstelsen te kijken, en deze te onderzoeken naar hun eigenschappen en bewoonbaarheid.",
+                    "cameraPosition": {
+                        "x": 20.5,
+                        "y": 3.5,
+                        "z": 4
+                    }
+                }
+            }
+        },
         "JWSTParts": {
             "primarymirror": {
                 "id": 1,

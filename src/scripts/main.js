@@ -1,11 +1,12 @@
 const THREE = require('three');
 
+import { createLaunch } from './launch.js';
 import { createExplore } from './explore.js';
 import { createPuzzle } from './puzzle.js';
 import { createQuotes } from './quotes.js';
 import { createCredits } from './credits.js';
 
-let camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 2, 2000);
+let camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
 // NOTE: using renderer more than once will result in multiple canvases
 let renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -17,6 +18,7 @@ renderer.shadowMap.enabled = true;
 
 let scene = new THREE.Scene();
 let currentScene;
+let launchScene;
 let exploreScene;
 let puzzleScene;
 let quotesScene;
@@ -26,8 +28,12 @@ init();
 animate();
 
 function init() {
-    currentScene = "start";
     camera.position.set(0, 0, 0);
+
+    launchScene = createLaunch(renderer, camera);
+    scene = launchScene;
+    currentScene = "launch";
+
     document.body.appendChild(renderer.domElement);
     window.addEventListener("resize", onWindowResize, false);
 }
@@ -52,7 +58,7 @@ function render() {
 function changeScene() {
     console.log(currentScene);
 
-    if ( currentScene === "start" ) {
+    if ( currentScene === "launch" ) {
         exploreScene = createExplore(renderer, camera);
         scene = exploreScene;
         currentScene = "explore";

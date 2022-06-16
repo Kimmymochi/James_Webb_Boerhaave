@@ -1,5 +1,6 @@
 const THREE = require('three')
 const TWEEN = require('@tweenjs/tween.js')
+
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import modelControlroom from '../models/controlroom.gltf'
 import modelButton from '../models/button.gltf'
@@ -7,39 +8,31 @@ import launchVideo from '../media/launch.mp4'
 import staticVideo from '../media/static.mp4'
 import launchAudio from '../media/launch.wav'
 
-const title = document.getElementById("js--title");
-const circle = document.getElementById("js--circle");
-const body = document.querySelector('body');
+export function createLaunch(renderer, camera) {
+    const launchTitle = document.getElementById("js--launchTitle");
+    const launchCircle = document.getElementById("js--launchCircle");
+    const body = document.querySelector('body');
 
-let camera;
-let scene;
-let renderer;
-let button;
-let pushAnimation;
-let video;
-let sound;
-let clickTarget;
-let hoverTarget = null;
+    let scene;
+    let button;
+    let pushAnimation;
+    let video;
+    let sound;
+    let clickTarget;
+    let hoverTarget = null;
 
-let mixer = new THREE.AnimationMixer();
-let clock = new THREE.Clock();
-let raycaster = new THREE.Raycaster();
-let mouse = new THREE.Vector2();
-let listener = new THREE.AudioListener();
+    let mixer = new THREE.AnimationMixer();
+    let clock = new THREE.Clock();
+    let raycaster = new THREE.Raycaster();
+    let mouse = new THREE.Vector2();
+    let listener = new THREE.AudioListener();
 
-let hasLaunched = false;
+    let hasLaunched = false;
 
-
-
-
-init();
-animate();
-
-function init() {
     // CAMERA
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
     camera.position.set( 0.1, 0, 0 );
-    camera.add( listener )
+    camera.add( listener );
     
     // SCENE
     scene = new THREE.Scene();
@@ -48,18 +41,18 @@ function init() {
     const ambientLight = new THREE.AmbientLight( 0x9698ff , 0.5 );
     scene.add( ambientLight );
 
-	const spotLight = new THREE.SpotLight( 0xffffff );
+    const spotLight = new THREE.SpotLight( 0xffffff );
     spotLight.position.set( 0, 3, 3 );
     spotLight.castShadow = true;
     scene.add( spotLight );
 
     // MODELS
-	// Button Model
-	const gltfLoader = new GLTFLoader();
-	gltfLoader.load( modelButton, function ( gltf ) {
+    // Button Model
+    const gltfLoader = new GLTFLoader();
+    gltfLoader.load( modelButton, function ( gltf ) {
         button = gltf.scene;
         button.castShadow = true;
-		button.receiveShadow = true;
+        button.receiveShadow = true;
         button.scale.set( 0.1, 0.1, 0.1 );
         button.position.set( 0.25, -0.25, -0.75 )
         button.rotateX( 0.2 );
@@ -68,14 +61,14 @@ function init() {
         const animations = gltf.animations;
         mixer = new THREE.AnimationMixer( button );
         pushAnimation = mixer.clipAction( animations[0] ).setLoop( THREE.LoopOnce );
-	    
+        
         scene.add( button );
 
-	}, undefined, function ( error ) {
-	    console.error( error );
-	});
+    }, undefined, function ( error ) {
+        console.error( error );
+    });
 
-	// Controlroom Model
+    // Controlroom Model
     gltfLoader.load( modelControlroom, function ( gltf ) {
 
         //Set new material to screens
@@ -90,13 +83,13 @@ function init() {
 
         gltf.scene.position.set(-2.5, -1.5, 0)
         gltf.scene.rotateX(0.5);
-	    scene.add( gltf.scene );
+        scene.add( gltf.scene );
 
         
     
-	}, undefined, function ( error ) {
-	    console.error( error );
-	} );
+    }, undefined, function ( error ) {
+        console.error( error );
+    } );
 
     // VIDEO
     // Set the video element
@@ -139,109 +132,101 @@ function init() {
         sound.play();
     })
 
-
-    // Renderer
-    renderer = new THREE.WebGLRenderer({ alpha: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize( window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x000000, 1);
-    document.body.appendChild(renderer.domElement);
-
+    animate();
 
     // Event Listeners
     window.addEventListener("resize", onWindowResize, false);
     window.addEventListener('mousedown', onMouseDown, false);
     window.addEventListener('pointermove', onMouseMove, false);
-}
 
-
-function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    
-    renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-function animate(time) {
-    requestAnimationFrame(animate);
-    let mixerUpdateDelta = clock.getDelta();
-    mixer.update(mixerUpdateDelta);
-    TWEEN.update(time);
-    render();
-}
-
-function render() {
-    renderer.render(scene, camera);
-}
-
-function onMouseMove(event) {
-    mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
-    mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObject(scene, true);
-    if (intersects.length > 0) {
-      hoverTarget = intersects[0].object.name;
-
-      console.log(hoverTarget);
-
-      if( (hoverTarget == "Button" || hoverTarget == "Text") && !hasLaunched) {
-          body.style.cursor = "pointer";
-      } else {
-          body.style.cursor = "default";
-      }
+    function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
-  }
+    function animate(time) {
+        requestAnimationFrame(animate);
+        let mixerUpdateDelta = clock.getDelta();
+        mixer.update(mixerUpdateDelta);
+        TWEEN.update(time);
+        render();
+    }
 
-function onMouseDown(event) {
-    event.preventDefault();
-    mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
-    mouse.y = - (event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+    function render() {
+        renderer.render(scene, camera);
+    }
 
-    raycaster.setFromCamera(mouse, camera);
-   
-    let intersects = raycaster.intersectObjects(scene.children);
-    if (intersects.length > 0) {
-        clickTarget = intersects[0].object.name;
-        // Event when button is clicked
-        if (clickTarget == "Button" && !hasLaunched) {  
-            pushAnimation.play();
-            sound.setVolume( 0.2 );
-            // showTitle();
-            hasLaunched = true;         
-            video.src = launchVideo;
-            video.loop = false;
-            video.muted = false;
-            video.load();
-            video.play();
-
-            let newPosition = new THREE.Vector3( -0.2, 0, -0.4 );
-            let duration = 15000;
-            tweenCamera( newPosition, duration );
+    function onMouseMove(event) {
+        mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+        mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObject(scene, true);
+        if (intersects.length > 0) {
+            hoverTarget = intersects[0].object.name;
+            
+            if( (hoverTarget == "Button" || hoverTarget == "Text") && !hasLaunched) {
+                body.style.cursor = "pointer";
+            } else {
+                body.style.cursor = "default";
+            }
         }
     }
-}
 
-// Animates the camera to given target
-function tweenCamera( targetPos, duration ) {
-    let pos = new THREE.Vector3().copy( camera.position );
-    const tween = new TWEEN.Tween( pos )
-        .to( targetPos, duration )
-        .easing(TWEEN.Easing.Quadratic.Out)
-        .onUpdate( function () {
-            camera.position.copy( pos );
-        } )
-        .onComplete( function () {
-            camera.position.copy ( targetPos);
-            showTitle();
-        })
-        .start();
-}
+    function onMouseDown(event) {
+        event.preventDefault();
+        mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+        mouse.y = - (event.clientY / renderer.domElement.clientHeight) * 2 + 1;
 
-// Fades out screen and shows title
-function showTitle() {
-    title.style.display = "flex";
-    title.classList.add('fadeIn');
-    circle.classList.add('rotate');
-    sound.setVolume( 0 );
+        raycaster.setFromCamera(mouse, camera);
+    
+        let intersects = raycaster.intersectObjects(scene.children);
+        if (intersects.length > 0) {
+            clickTarget = intersects[0].object.name;
+            // Event when button is clicked
+            if (clickTarget == "Button" && !hasLaunched) {  
+                window.removeEventListener('mousedown', onMouseDown);
+                window.removeEventListener('pointermove', onMouseMove);
+                pushAnimation.play();
+                sound.setVolume( 0.2 );
+                hasLaunched = true;         
+                video.src = launchVideo;
+                video.loop = false;
+                video.muted = false;
+                video.load();
+                video.play();
+
+                let newPosition = new THREE.Vector3( -0.2, 0, -0.4 );
+                let duration = 15000;
+                tweenCamera( newPosition, duration );
+            }
+        }
+    }
+
+    // Animates the camera to given target
+    function tweenCamera( targetPos, duration ) {
+        let pos = new THREE.Vector3().copy( camera.position );
+        const tween = new TWEEN.Tween( pos )
+            .to( targetPos, duration )
+            .easing(TWEEN.Easing.Quadratic.Out)
+            .onUpdate( function () {
+                camera.position.copy( pos );
+            } )
+            .onComplete( function () {
+                camera.position.copy ( targetPos);
+                showTitle();
+            })
+            .start();
+    }
+
+    // Fades out screen and shows title
+    function showTitle() {
+        launchTitle.style.display = "flex";
+        launchTitle.classList.add('fadeIn');
+        launchCircle.classList.add('rotate');
+        sound.setVolume( 0 );
+    }
+
+    return scene;
 }

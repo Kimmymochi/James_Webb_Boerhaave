@@ -6,15 +6,19 @@
     <title>Title</title>
 </head>
 <body>
-    <div class="overlay fadeOut"></div>
 
-    <div id="js--title" class="title" style="display: none">
-        <h2 class="title__small">Het verhaal van de </h2>
-        <h1 class="title__big">James Webb Ruimtetelescoop</h1>
-        <div id="js--circle" class="circle">
+    <!-- BLACK OVERLAY -->
+    <div class="overlay fadeOutOverlay"></div>
+
+    <!-- LAUNCH -->
+    <div id="js--launchTitle" class="launchTitle" style="display: none">
+        <h2 class="launchTitle__small">Het verhaal van de </h2>
+        <h1 class="launchTitle__big">James Webb Ruimtetelescoop</h1>
+        <div id="js--launchCircle" class="launchTitle__circle">
         </div>
     </div>
 
+    <!-- EXPLORE -->
     <div id="js--ui" class="ui-container" style="display: none">
         <div id="js--ui-panel" class="panel">
             <div class="textPanel">
@@ -26,7 +30,10 @@
                     <img src="images/icons/close.svg" alt="close icon">
                 </button>
             </span>
+        </div>
+    </div>
 
+    <!-- QUOTES -->
     <div id="js--quote" class="quote" style="display: none">
         <div id="js--quoteBox" class="quote__box">
             <h2 id="js--quoteText" class="quote__box__text"></h2>
@@ -44,6 +51,7 @@
         </div>
     </div>
 
+    <!-- BUTTON TO CHANGE SCENES -->
     <button id="js--sceneChanger" class="button" style="position: absolute">Next Scene</button>
 
 </body>

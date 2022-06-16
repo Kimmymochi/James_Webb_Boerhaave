@@ -19,9 +19,10 @@ body {
     height: 100%;
     position: absolute;
     z-index: 1;
+    pointer-events: none;
 }
 
-.title {
+.launchTitle {
     background-color: black;
     width: 100%;
     height: 100%;
@@ -37,6 +38,7 @@ body {
         font-weight: 100;
         background-color: black;
         z-index: 2;
+        margin: 0;
 
         @media only screen and (min-width: 600px) {
             font-size: $font-600 - 1.5;
@@ -53,6 +55,7 @@ body {
         font-weight: 100;
         background-color: black;
         z-index: 2;
+        margin: 0;
 
         @media only screen and (min-width: 600px)  {
             font-size: $font-600
@@ -63,34 +66,36 @@ body {
         }
         
     }
+
+    &__circle {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        border: 0.3rem solid white;
+        border-bottom: none;
+        height: $size;
+        width: $size * 2;
+        border-top-left-radius: $size * 2;
+        border-top-right-radius: $size * 2;
+    
+    
+        @media only screen and (min-width: 600px)  {
+            height: $size-600;
+            width: $size-600 * 2;
+            border-top-left-radius: $size-600 * 2;
+            border-top-right-radius: $size-600 * 2;
+        }
+    
+        @media only screen and (min-width: 1000px)  {
+            height: $size-1000;
+            width: $size-1000 * 2;
+            border-top-left-radius: $size-1000 * 2;
+            border-top-right-radius: $size-1000 * 2;
+        }
+    }
+    
 }
 
-.circle {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    border: 0.3rem solid white;
-    border-bottom: none;
-    height: $size;
-    width: $size * 2;
-    border-top-left-radius: $size * 2;
-    border-top-right-radius: $size * 2;
-
-
-    @media only screen and (min-width: 600px)  {
-        height: $size-600;
-        width: $size-600 * 2;
-        border-top-left-radius: $size-600 * 2;
-        border-top-right-radius: $size-600 * 2;
-    }
-
-    @media only screen and (min-width: 1000px)  {
-        height: $size-1000;
-        width: $size-1000 * 2;
-        border-top-left-radius: $size-1000 * 2;
-        border-top-right-radius: $size-1000 * 2;
-    }
-}
 
 
 .rotate {
@@ -103,13 +108,13 @@ body {
   }
 
 
-.fadeIn {
+.fadeInOverlay {
     animation: fade ease 6s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
 }
 
-.fadeOut {
+.fadeOutOverlay {
     animation: fade ease 6s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;

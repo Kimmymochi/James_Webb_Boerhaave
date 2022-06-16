@@ -1,11 +1,12 @@
 const THREE = require('three');
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+
 import { createQuotes } from './quotes.js';
 import { createCredits } from './credits.js';
+import { createPuzzle } from './puzzle.js';
 
 let camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 2, 2000);
-let controls; 
 
+// NOTE: using renderer more than once will result in multiple canvases
 let renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -13,8 +14,9 @@ renderer.setClearColor(0x333333, 1);
 renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.shadowMap.enabled = true;
 
-let scene
+let scene = new THREE.Scene();
 let currentScene;
+let puzzleScene;
 let quotesScene;
 let creditsScene;
 
@@ -22,16 +24,9 @@ init();
 animate();
 
 function init() {
-    
-    // loads first scene
-    quotesScene = createQuotes(renderer, camera);
-    scene = quotesScene
-    currentScene ="quotes"
-
+    currentScene = "start";
+    camera.position.set(0, 0, 0);
     document.body.appendChild(renderer.domElement);
-
-    controls = new OrbitControls( camera, renderer.domElement );
-
     window.addEventListener("resize", onWindowResize, false);
 }
 
@@ -44,7 +39,6 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame(animate);
-    controls.update();
     render();
 }
 
@@ -54,19 +48,29 @@ function render() {
 
 // change scene on click, bind to button
 function changeScene() {
-    if( currentScene === "quotes" ) {
+    console.log(currentScene);
+
+    if ( currentScene === "start" ) {
+        puzzleScene = createPuzzle(renderer, camera);
+        scene = puzzleScene;
+        currentScene = "puzzle";
+    
+    } else if ( currentScene === "puzzle" ) {
+        quotesScene = createQuotes(renderer, camera);
+        scene = quotesScene
+        currentScene ="quotes"
+
+    } else if ( currentScene === "quotes" ) {
         creditsScene = createCredits(renderer, camera);
         scene = creditsScene;
         currentScene = "credits";
 
-        orbitController( false );
     }
 }
-document.getElementById("js--sceneChanger").onclick = function(){changeScene()};
+document.getElementById( "js--sceneChanger" ).onclick = function() { changeScene() };
 
-// turn on / off the OrbitControls
-function orbitController( canUse ) {
-    controls.enableRotate = canUse;
-    controls.enableZoom = canUse;
-    controls.enablePan = canUse;
-}
+// // turn on / off the OrbitControls
+// function orbitController( canUse ) {
+//     controls.enableRotate = canUse;
+//     controls.enablePan = canUse;
+// }

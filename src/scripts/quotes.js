@@ -13,7 +13,8 @@ export function createQuotes(renderer, camera) {
     const scene = new THREE.Scene();
 
     // set parameter camera to new position
-    camera.position.set(0, 0, 5);
+    camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 2, 2000);
+    camera.position.set(0, 0, 0);
 
     // set intro text
     setQuote(0)
@@ -21,14 +22,21 @@ export function createQuotes(renderer, camera) {
     quote.classList.add('fadeIn');
     animate();
 
-    function animate() {
-        requestAnimationFrame(animate);
-        render();
+
+    // window resizer
+    window.addEventListener("resize", onWindowResize, false);
+
+    function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+    
+        renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
-    function render() {
+    function animate() {
+        requestAnimationFrame(animate);
         renderer.render(scene, camera);
-    }
+    } 
 
     // sets quote field to corresponding id number
     function setQuote(quote) {

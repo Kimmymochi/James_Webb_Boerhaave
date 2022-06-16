@@ -1,4 +1,5 @@
 const THREE = require('three');
+
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 import lato from '../fonts/Lato_Regular.json';
@@ -10,6 +11,7 @@ export function createCredits(renderer, camera) {
     const quote = document.getElementById("js--quote");
 
     // set parameter camera to new position
+    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
     camera.position.set( 0, 20, 100 );
 
     // LIGHTS
@@ -131,12 +133,24 @@ export function createCredits(renderer, camera) {
         animate();
     }, "2000");
 
+    
+    // WINDOW RESIZE
+    window.addEventListener("resize", onWindowResize, false);
+
+    function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+    
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
     // ANIMATE
     function animate() {
+        requestAnimationFrame(animate);
+
         rollCredits();
 
         renderer.render(scene, camera);
-        requestAnimationFrame(animate);
     }
 
     function rollCredits() {

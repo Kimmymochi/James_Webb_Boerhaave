@@ -87,7 +87,16 @@
     animation: 2s ease-in forwards fadeIn;
 }
 
+.fadeOut {
+    animation: 1s ease-in forwards fadeOut;
+}
+
 @keyframes fadeIn {
     0% { opacity: 0; }
     100% { opacity: 1; }
+  }
+
+  @keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
   }

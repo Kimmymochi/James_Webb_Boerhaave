@@ -1,49 +1,34 @@
 const THREE = require('three');
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import textData from '../data/text.json';
 
-export function createQuotes() {
+export function createQuotes(renderer, camera) {
+    
     const quotesData = textData.text.quotes;
+
     const quote = document.getElementById("js--quote");
     const quoteText = document.getElementById('js--quoteText');
     const quotePerson = document.getElementById('js--quotePerson');
     const quoteImages = document.querySelectorAll('.quote__imagebox__image');
 
-    // Scene
     const scene = new THREE.Scene();
 
-    // Renderer
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x333333, 1);
-    document.body.appendChild(renderer.domElement);
-
-    // Camera
-    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 2, 2000);
+    // set parameter camera to new position
     camera.position.set(0, 0, 5);
-    
-    // Controls
-    const controls = new OrbitControls( camera, renderer.domElement );
-       controls.enableZoom = false;
 
-    // Lighting
-    //sun lighting
-    const sun = new THREE.PointLight( 0xffffff , 1, 500 );
-    sun.position.set( 20, -20, 0 );
-    sun.castShadow = true;
-    sun.shadow.radius = 2;
-    scene.add( sun );
-    const sun2 = new THREE.PointLight( 0xffffff , 1, 500 );
-    sun2.position.set( 20, 10, 0 );
-    sun2.castShadow = true;
-    sun2.shadow.radius = 2;
-    scene.add( sun2 );
+    // set intro text
+    setQuote(0)
+    quote.style.display = "flex";
+    quote.classList.add('fadeIn');
+    animate();
 
-    //general lighting
-    const sceneLight = new THREE.AmbientLight(0xffffb8, 0.2);
-    scene.add(sceneLight);
+    function animate() {
+        requestAnimationFrame(animate);
+        render();
+    }
 
+    function render() {
+        renderer.render(scene, camera);
+    }
 
     // sets quote field to corresponding id number
     function setQuote(quote) {
@@ -52,10 +37,7 @@ export function createQuotes() {
 
         for( let i = 0; i < keys.length; i++) {
             let item = quotesData[keys[i]];
-            
-            if(item.id == quote) {
-                quoteData = item;
-            }
+            if( item.id == quote ) { quoteData = item; }
         }
         changeQuote(quoteData.text, quoteData.name, quoteData.background)
     }
@@ -93,36 +75,12 @@ export function createQuotes() {
         setQuote(clickedQuote);
     }
 
-    // prevent dragging image, bind function to image
+    // prevent dragging & bind click function to all images
     document.querySelectorAll(".quote__imagebox__image").forEach( item => {
         item.setAttribute('draggable', false);
         item.onclick = function(){quoteOnClick(item)};
     });
 
-    init();
-
-    function init() {
-        // Set intro text
-        setQuote(0)
-        quote.style.display = "flex";
-        quote.classList.add('fadeIn');
-
-        animate()
-    }
-
-
-
-    function animate() {
-        requestAnimationFrame(animate);
-        // controls.update();
-        render();
-    }
-
-    function render() {
-        renderer.render(scene, camera);
-    }
-
     return scene;
-
 }
 

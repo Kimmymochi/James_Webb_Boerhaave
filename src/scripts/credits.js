@@ -7,6 +7,9 @@ import prata from '../fonts/Prata_Regular.json';
 export function createCredits(renderer, camera) {
 
     const scene = new THREE.Scene();
+    const quote = document.getElementById("js--quote");
+
+    // set parameter camera to new position
     camera.position.set( 0, 20, 100 );
 
     // LIGHTS
@@ -114,21 +117,19 @@ export function createCredits(renderer, camera) {
             scene.add(paragraphTextMesh);
             textMeshes.push(paragraphTextMesh);
         }
-
-      
     }
 
-    init();
+    // REMOVE THE QUOTE HTML
+    quote.classList.remove('fadeIn');
+    quote.classList.add('fadeOut');
 
-    function init() {
-        addContribution("Grote vragen", ["Bezoek de tentoonstelling grote vragen in", "museum Boerhaave voor meer informatie", "over de James Webb ruimtetelescoop"]);
+    setTimeout( () => {
+        addContribution("Grote vragen", ["Bezoek de tentoonstelling Grote Vragen in", "Rijksmuseum Boerhaave voor meer informatie", "over de James Webb Ruimtetelescoop"]);
         addContribution("Collaboratie tussen", ["Hogeschool Leiden", "Museum Boerhaave"]);
         addContribution("Ontwikkelaars", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
         addContribution("Ondersteuning", ["Annelore Scholten", "Maarten Storm", "Nina Paris", "Gerolf Heida"]);        
         animate();
-    }
-
-
+    }, "2000");
 
     // ANIMATE
     function animate() {

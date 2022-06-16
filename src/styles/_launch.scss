@@ -1,0 +1,143 @@
+$size: 13rem;
+$size-600: 14rem;
+$size-1000: 16rem;
+
+$font: 3rem;
+$font-600: 3.5rem;
+$font-1000: 5rem;
+
+
+
+body {
+    background-color: black;
+    overflow: hidden;
+}
+
+.overlay {
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+}
+
+.title {
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    color: white;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    &__small {
+        font-family: "Lato", "sans-serif";
+        font-size: $font - 1.5;
+        font-weight: 100;
+        background-color: black;
+        z-index: 2;
+
+        @media only screen and (min-width: 600px) {
+            font-size: $font-600 - 1.5;
+        }
+
+        @media only screen and (min-width: 1200px) {
+            font-size: $font-1000 - 1.5;
+        }
+    }
+
+    &__big {
+        font-family: "Prata", "serif";
+        font-size: $font;
+        font-weight: 100;
+        background-color: black;
+        z-index: 2;
+
+        @media only screen and (min-width: 600px)  {
+            font-size: $font-600
+        }
+
+        @media only screen and (min-width: 1200px) {
+            font-size: $font-1000;
+        }
+        
+    }
+}
+
+.circle {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border: 0.3rem solid white;
+    border-bottom: none;
+    height: $size;
+    width: $size * 2;
+    border-top-left-radius: $size * 2;
+    border-top-right-radius: $size * 2;
+
+
+    @media only screen and (min-width: 600px)  {
+        height: $size-600;
+        width: $size-600 * 2;
+        border-top-left-radius: $size-600 * 2;
+        border-top-right-radius: $size-600 * 2;
+    }
+
+    @media only screen and (min-width: 1000px)  {
+        height: $size-1000;
+        width: $size-1000 * 2;
+        border-top-left-radius: $size-1000 * 2;
+        border-top-right-radius: $size-1000 * 2;
+    }
+}
+
+
+.rotate {
+    animation: 4s ease 1 rotate;
+    position: absolute;
+    opacity: 0;
+    transform-origin: 50% 100%;
+    animation-fill-mode: forwards;
+    transform: translate(-50%, -50%);
+  }
+
+
+.fadeIn {
+    animation: fade ease 6s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+.fadeOut {
+    animation: fade ease 6s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-direction: reverse;
+}
+
+
+@keyframes fade {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+        opacity: 0;
+    }
+
+    75% {
+        opacity: 0;
+    }
+
+    100% {
+        transform: rotate(360deg);
+        opacity: 1;
+    }
+}

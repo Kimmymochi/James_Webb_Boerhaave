@@ -3,6 +3,7 @@
 * {
     box-sizing: border-box;
 }
+
 html {
     font-size: 62.5%;
 }
@@ -19,7 +20,10 @@ canvas {
     display: block;
 }
 
+
+@import 'reset';
 @import 'animations';
+@import 'launch';
 @import 'ui';
 @import 'annotation';
 @import 'button';

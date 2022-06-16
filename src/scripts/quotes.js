@@ -14,7 +14,7 @@ export function createQuotes(renderer, camera) {
 
     // set parameter camera to new position
     camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 2, 2000);
-    camera.position.set(0, 0, 0);
+    camera.position.set(10, 0, 0);
 
     // set intro text
     setQuote(0)

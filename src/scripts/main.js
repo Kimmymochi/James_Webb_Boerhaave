@@ -1,10 +1,13 @@
 const THREE = require('three');
 
 import { createLaunch } from './launch.js';
+import { createInfrared } from './infrared.js';
 import { createExplore } from './explore.js';
 import { createPuzzle } from './puzzle.js';
 import { createQuotes } from './quotes.js';
 import { createCredits } from './credits.js';
+
+let overlay = document.getElementById('js--overlay');
 
 let camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
@@ -17,8 +20,10 @@ renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.shadowMap.enabled = true;
 
 let scene = new THREE.Scene();
+
 let currentScene;
 let launchScene;
+let infraredScene;
 let exploreScene;
 let puzzleScene;
 let quotesScene;
@@ -29,7 +34,7 @@ animate();
 
 function init() {
     camera.position.set(0, 0, 0);
-
+    
     launchScene = createLaunch(renderer, camera);
     scene = launchScene;
     currentScene = "launch";
@@ -56,28 +61,45 @@ function render() {
 
 // change scene on click, bind to button
 function changeScene() {
-    console.log(currentScene);
 
-    if ( currentScene === "launch" ) {
-        exploreScene = createExplore(renderer, camera);
-        scene = exploreScene;
-        currentScene = "explore";
+    overlay.classList.remove('firstFade');
+    overlay.classList.add('fadeInOut');
 
-    } else if ( currentScene === "explore" ) {
-        puzzleScene = createPuzzle(renderer, camera);
-        scene = puzzleScene;
-        currentScene = "puzzle";
+    setTimeout( function () {
+        overlay.classList.remove('fadeInOut');
+        overlay.style.opacity = 0;
+    }, "4000");
 
-    } else if ( currentScene === "puzzle" ) {
-        quotesScene = createQuotes(renderer, camera);
-        scene = quotesScene
-        currentScene ="quotes"
-
-    } else if ( currentScene === "quotes" ) {
-        creditsScene = createCredits(renderer, camera);
-        scene = creditsScene;
-        currentScene = "credits";
+    setTimeout( function () {
+        if ( currentScene === "launch" ) {
+            infraredScene = createInfrared(renderer, camera);
+            scene = infraredScene;
+            currentScene = "infrared";
+    
+        } else if ( currentScene === "infrared" ) {
+            exploreScene = createExplore(renderer, camera);
+            scene = exploreScene;
+            currentScene = "explore";
+    
+        } else if ( currentScene === "explore" ) {
+            puzzleScene = createPuzzle(renderer, camera);
+            scene = puzzleScene;
+            currentScene = "puzzle";
+    
+        } else if ( currentScene === "puzzle" ) {
+            quotesScene = createQuotes(renderer, camera);
+            scene = quotesScene
+            currentScene ="quotes"
+    
+        } else if ( currentScene === "quotes" ) {
+            creditsScene = createCredits(renderer, camera);
+            scene = creditsScene;
+            currentScene = "credits";
+    
+        }
+    }, "1000");
 
     }
-}
+
 document.getElementById( "js--sceneChanger" ).onclick = function() { changeScene() };
+document.getElementById( "js--sceneChanger" ).onkeydown = function() { false }

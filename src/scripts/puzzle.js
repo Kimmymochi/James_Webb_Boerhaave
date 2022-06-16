@@ -86,21 +86,19 @@ export function createPuzzle( renderer, camera ) {
         new THREE.Vector3(0.60, 5.22, 1.15) // sunscreens
     ];
 
-    setTimeout( () => {
-        ui.style.display = "none";
-        for (let i = 0; i < meshes.length; i++) {
+    ui.style.display = "none";
+    for (let i = 0; i < meshes.length; i++) {
 
-            // Create a draggable part for all 3D models
-            let draggablePart = addDraggablePart(meshes[i], partPositions[i]);
-            scene.add(draggablePart);
-            draggableParts.push(draggablePart);
-    
-            // Create a snapping point for each part
-            addSnappingPoint(snappingPointRadius, SPPositions[i], i);
-        }
-    
-        animate();
-    }, "1000");
+        // Create a draggable part for all 3D models
+        let draggablePart = addDraggablePart(meshes[i], partPositions[i]);
+        scene.add(draggablePart);
+        draggableParts.push(draggablePart);
+
+        // Create a snapping point for each part
+        addSnappingPoint(snappingPointRadius, SPPositions[i], i);
+    }
+
+    animate();
 
 
 

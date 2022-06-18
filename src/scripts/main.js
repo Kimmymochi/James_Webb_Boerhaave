@@ -76,6 +76,7 @@ function changeScene() {
             scene = infraredScene;
             currentScene = "infrared";
     
+        // EXPLORE FIRST TEST
         } else if ( currentScene === "infrared" ) {
             exploreScene = createExplore(renderer, camera);
             scene = exploreScene;
@@ -85,11 +86,28 @@ function changeScene() {
             puzzleScene = createPuzzle(renderer, camera);
             scene = puzzleScene;
             currentScene = "puzzle";
-    
+
         } else if ( currentScene === "puzzle" ) {
             quotesScene = createQuotes(renderer, camera);
             scene = quotesScene
             currentScene ="quotes"
+
+        // PUZZLE FIRST TEST
+
+        // } else if ( currentScene === "infrared" ) {
+        //     puzzleScene = createPuzzle(renderer, camera);
+        //     scene = puzzleScene;
+        //     currentScene = "puzzle";
+
+        // } else if ( currentScene === "puzzle" ) {
+        //     exploreScene = createExplore(renderer, camera);
+        //     scene = exploreScene;
+        //     currentScene = "explore";
+
+        // } else if ( currentScene === "explore" ) {
+        //     quotesScene = createQuotes(renderer, camera);
+        //     scene = quotesScene
+        //     currentScene ="quotes"
     
         } else if ( currentScene === "quotes" ) {
             creditsScene = createCredits(renderer, camera);

@@ -76,16 +76,10 @@
             }
         },
         "quotes": {
-            "intro": {
-                "id": 0,
-                "text": "Hoe ziet de toekomst van de James Webb Ruimtetelescoop eruit? <br> Dit zeggen experts uit het werkveld:",
-                "name": "- Klik op de foto's voor meer informatie -",
-                "background": ""
-            },
-
+ 
             "dishoeck": {
                 "id": 1,
-                "text": "Webb gaat ons straks radicaal nieuwe inzichten bezorgen over het heelal. Dankzij de enorme sprong in gevoeligheid en scherpte, ga je met Webb zeker ontdekkingen doen die als een verrassing komen.",
+                "text": "\"Webb gaat ons straks radicaal nieuwe inzichten bezorgen over het heelal. Dankzij de enorme sprong in gevoeligheid en scherpte, ga je met Webb zeker ontdekkingen doen die als een verrassing komen.\"",
                 "name": "Ewine van Dishoeck",
                 "background": "Hoogleraar moleculaire astrofysica, Universiteit Leiden"
                 
@@ -93,28 +87,28 @@
 
             "teplate": {
                 "id": 2,
-                "text": "Het is echt een ontdekkingsreis. Eerdere telescopen hebben prachtige beelden gemaakt, maar de foto’s en spectra van de allereerste sterren en stelsels in het heelal hebben we nog nooit gezien.",
+                "text": "\"Het is echt een ontdekkingsreis. Eerdere telescopen hebben prachtige beelden gemaakt, maar de foto’s en spectra van de allereerste sterren en stelsels in het heelal hebben we nog nooit gezien.\"",
                 "name": "Maurice te Plate",
                 "background": "JWST NIRSpec Systems Engineer, ESA"
             },
 
             "hooijer": {
                 "id": 3,
-                "text": "De gegevens die JWST gaat verzamelen vormen de basis voor decennialang onderzoek. De invloed van zo’n ontzaglijke hoeveelheid data op ons begrip van het heelal is nauwelijks te bevatten.",
+                "text": "\"De gegevens die JWST gaat verzamelen vormen de basis voor decennialang onderzoek. De invloed van zo’n ontzaglijke hoeveelheid data op ons begrip van het heelal is nauwelijks te bevatten.\"",
                 "name": "Christa Hooijer",
                 "background": "Director of Science, unit Industry bij TNO"
             },
 
             "robinson": {
                 "id": 4,
-                "text": "Het is prematuur om nu al een exacte schatting van de totale duur van de missie te geven, maar ik zou zeggen dat het om veel meer dan tien jaar gaat.",
+                "text": "\"Het is prematuur om nu al een exacte schatting van de totale duur van de missie te geven, maar ik zou zeggen dat het om veel meer dan tien jaar gaat.\"",
                 "name": "Greg Robinson",
-                "background": "Programmadirecteur James Webb, NASA"
+                "background": "Programmadirecteur James Webb-project, NASA"
             },
 
             "desert": {
                 "id": 5,
-                "text": "Ik heb nog nooit meegemaakt dat we zó’n bijzondere en krachtige telescoop lanceerde. De komende jaren worden voor de sterrenkunde ongekend spectaculair.",
+                "text": "\"Ik heb nog nooit meegemaakt dat we zo’n bijzondere en krachtige telescoop lanceerde. De komende jaren worden voor de sterrenkunde ongekend spectaculair.\"",
                 "name": "Jean-Michel Desert",
                 "background": "Astronoom, Universiteit van Amsterdam"
             }

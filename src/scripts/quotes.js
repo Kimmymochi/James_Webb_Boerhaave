@@ -53,7 +53,6 @@ function init() {
     controls.enableZoom = false;
     
     // Set intro text
-    setQuote(0)
     quote.style.display = "flex";
 
     // EventListeners

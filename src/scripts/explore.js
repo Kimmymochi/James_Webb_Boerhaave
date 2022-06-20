@@ -375,14 +375,16 @@ export function createExplore(renderer, camera) {
                 annotationData = item;
 
                 //get part of model that is clicked
-                let part = telescope.getObjectByName(item.model).children;
+                if (telescope.getObjectByName(item.model) !== undefined) {
+                    let part = telescope.getObjectByName(item.model).children;
 
-                //make all materials of part visible
-                for (let i = 0; i < part.length; i++) {
-                    part[i].material.transparent = false;
-                    part[i].material.opacity = 1;
+                    //make all materials of part visible
+                    for (let i = 0; i < part.length; i++) {
+                        part[i].material.transparent = false;
+                        part[i].material.opacity = 1;
+                    }
                 }
-
+                
                 //zoom in on clicked item
                 let newPosition = new THREE.Vector3( camera.position.x, item.location.y, camera.position.z );
                 let duration = 1000;
@@ -472,4 +474,3 @@ export function createExplore(renderer, camera) {
 
     return scene;
 }
-

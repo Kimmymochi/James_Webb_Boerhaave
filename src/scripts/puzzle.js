@@ -43,16 +43,22 @@ export function createPuzzle( renderer, camera ) {
     // orbitControls.enableZoom = false;
     // orbitControls.update();
 
+    // Lighting
+    //sun lighting
+    const sun = new THREE.PointLight( 0xffffff , 1, 500 );
+    sun.position.set( 20, -20, 0 );
+    sun.castShadow = true;
+    sun.shadow.radius = 2;
+    scene.add( sun );
+    const sun2 = new THREE.PointLight( 0xffffff , 1, 500 );
+    sun2.position.set( 20, 10, 0 );
+    sun2.castShadow = true;
+    sun2.shadow.radius = 2;
+    scene.add( sun2 );
 
-    // LIGHTS
-    // ----------------------------------------------------------------------
-    const light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
-    scene.add( light );
-
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.3, 50);
-    dirLight.position.set(1, 2, -1);
-    scene.add(dirLight);
-    dirLight.castShadow = true;
+    //general lighting
+    const sceneLight = new THREE.AmbientLight(0xffffb8, 0.2);
+    scene.add(sceneLight);
 
 
     // INITIATION
@@ -156,8 +162,12 @@ export function createPuzzle( renderer, camera ) {
             let model = gltf.scene;
             model.scale.set(3, 3, 3);
 
-            model.castShadow = true;
-            model.receiveShadow = true; // TODO: shadows not working
+            model.traverse( function ( model) {
+                if ( model.isMesh ) {
+                    model.castShadow = true;
+                    model.receiveShadow = true;
+                }
+            });
 
             const boundingBox = new THREE.Box3().setFromObject( model );
             let meshSize = new THREE.Vector3();

@@ -21,7 +21,6 @@ export function createQuotes(renderer, camera) {
     ui.style.display = "none";
 
     // set intro text
-    setQuote(0)
     quote.style.display = "flex";
     quote.classList.add('fadeIn');
     animate();

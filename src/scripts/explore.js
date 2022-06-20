@@ -100,6 +100,7 @@ export function createExplore(renderer, camera) {
     // Controls
 	controls = new OrbitControls( camera, renderer.domElement );
     controls.enableZoom = false;
+    controls.enablePan = false;
 
     //setup all the annotations
     setupAnnotations(annotationsData);
@@ -466,7 +467,6 @@ export function createExplore(renderer, camera) {
 
     function orbitController( canUse ) {
         controls.enabled = canUse;
-        controls.enablePan = canUse;
         controls.enableRotate = canUse;
     }
 

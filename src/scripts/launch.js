@@ -13,14 +13,13 @@ export function createLaunch(renderer, camera) {
     const launchCircle = document.getElementById("js--launchCircle");
     const body = document.querySelector('body');
 
+    let clickList = [];
     let scene;
+    let controlRoom;
     let button;
     let pushAnimation;
     let video;
     let sound;
-    let clickTarget;
-    let hoverTarget = null;
-
     let mixer = new THREE.AnimationMixer();
     let clock = new THREE.Clock();
     let raycaster = new THREE.Raycaster();
@@ -32,6 +31,7 @@ export function createLaunch(renderer, camera) {
     // CAMERA
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
     camera.position.set( 0.1, 0, 0 );
+
     camera.add( listener );
     
     // SCENE
@@ -63,6 +63,7 @@ export function createLaunch(renderer, camera) {
         pushAnimation = mixer.clipAction( animations[0] ).setLoop( THREE.LoopOnce );
         
         scene.add( button );
+        clickList.push(button);
 
     }, undefined, function ( error ) {
         console.error( error );
@@ -70,7 +71,7 @@ export function createLaunch(renderer, camera) {
 
     // Controlroom Model
     gltfLoader.load( modelControlroom, function ( gltf ) {
-
+        controlRoom = gltf.scene;
         //Set new material to screens
         let screenMaterial = new THREE.MeshPhongMaterial( { 
             color: 0x000000,
@@ -81,12 +82,10 @@ export function createLaunch(renderer, camera) {
         let screens = gltf.scene.children[0].children[0].children[7];
         screens.material = screenMaterial;
 
-        gltf.scene.position.set(-2.5, -1.5, 0)
-        gltf.scene.rotateX(0.5);
-        scene.add( gltf.scene );
+        controlRoom.position.set(-2.5, -1.5, 0)
+        controlRoom.rotateX(0.5);
+        scene.add( controlRoom );
 
-        
-    
     }, undefined, function ( error ) {
         console.error( error );
     } );
@@ -119,7 +118,6 @@ export function createLaunch(renderer, camera) {
     let bigVideoMesh = new THREE.Mesh( bigVideoPlane, videoMaterial );
     bigVideoMesh.position.set( -6, 6.5, -6.3 );
     scene.add(bigVideoMesh)
-
 
     // AUDIO
     // TODO: user gesture is needed to play audio, maybe add start screen where input is needed
@@ -159,33 +157,37 @@ export function createLaunch(renderer, camera) {
     }
 
     function onMouseMove(event) {
+        camera.updateMatrixWorld();
         mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
         mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+
         raycaster.setFromCamera(mouse, camera);
-        const intersects = raycaster.intersectObject(scene, true);
-        if (intersects.length > 0) {
-            hoverTarget = intersects[0].object.name;
-            
-            if( (hoverTarget == "Button" || hoverTarget == "Text") && !hasLaunched) {
+
+        let intersects = raycaster.intersectObjects(clickList);
+
+        if (intersects[0]) {
+            if( !hasLaunched) {
                 body.style.cursor = "pointer";
-            } else {
+            } 
+        } else {
                 body.style.cursor = "default";
-            }
         }
     }
 
     function onMouseDown(event) {
         event.preventDefault();
+
+
         mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
         mouse.y = - (event.clientY / renderer.domElement.clientHeight) * 2 + 1;
 
         raycaster.setFromCamera(mouse, camera);
-    
-        let intersects = raycaster.intersectObjects(scene.children);
-        if (intersects.length > 0) {
-            clickTarget = intersects[0].object.name;
-            // Event when button is clicked
-            if (clickTarget == "Button" && !hasLaunched) {  
+
+        let intersects = raycaster.intersectObjects(clickList);
+
+        if (intersects[0]) {
+            if(!hasLaunched) {
+                body.style.cursor = "default";
                 window.removeEventListener('mousedown', onMouseDown);
                 window.removeEventListener('pointermove', onMouseMove);
                 pushAnimation.play();
@@ -200,7 +202,7 @@ export function createLaunch(renderer, camera) {
                 let newPosition = new THREE.Vector3( -0.2, 0, -0.4 );
                 let duration = 15000;
                 tweenCamera( newPosition, duration );
-            }
+            } 
         }
     }
 
@@ -214,7 +216,7 @@ export function createLaunch(renderer, camera) {
                 camera.position.copy( pos );
             } )
             .onComplete( function () {
-                camera.position.copy ( targetPos);
+                camera.position.copy ( targetPos );
                 showTitle();
             })
             .start();

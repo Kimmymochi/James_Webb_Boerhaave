@@ -3,14 +3,6 @@ const THREE = require('three');
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
-import backpanel from '../models/backpanel.gltf'
-import BUS from '../models/BUS.gltf'
-import goldPlating from '../models/gold_plating.gltf'
-import ISIS from '../models/ISIS.gltf'
-import secondaryMirror from '../models/secondary_mirror.gltf'
-import solarPanels from '../models/solar_panels.gltf'
-import sunscreens from '../models/sunscreens.gltf'
-
 import DragControls from 'three-dragcontrols'
 
 const scene = new THREE.Scene();
@@ -31,6 +23,7 @@ const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.inner
 const orbitControls = new OrbitControls( camera, renderer.domElement );
 camera.position.set( 0, 20, 100 );
 orbitControls.update();
+orbitControls.enableZoom = false;
 
 
 // LIGHTS
@@ -43,103 +36,112 @@ scene.add(dirLight);
 dirLight.castShadow = true;
 
 
-import { UnrealBloomPass } from './jsm/postprocessing/UnrealBloomPass.js';
-import { EffectComposer } from './jsm/postprocessing/EffectComposer.js';
-import { ShaderPass } from './jsm/postprocessing/ShaderPass.js';
+// import { UnrealBloomPass } from './jsm/postprocessing/UnrealBloomPass.js';
+// import { EffectComposer } from './jsm/postprocessing/EffectComposer.js';
+// import { ShaderPass } from './jsm/postprocessing/ShaderPass.js';
 
-
-const bloomPass = new UnrealBloomPass( new THREE.Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85 );
-bloomPass.threshold = params.bloomThreshold;
-bloomPass.strength = params.bloomStrength;
-bloomPass.radius = params.bloomRadius;
-
-const bloomComposer = new EffectComposer( renderer );
-bloomComposer.renderToScreen = false;
-bloomComposer.addPass( renderScene );
-bloomComposer.addPass( bloomPass );
-
-const finalPass = new ShaderPass(
-    new THREE.ShaderMaterial( {
-        uniforms: {
-            baseTexture: { value: null },
-            bloomTexture: { value: bloomComposer.renderTarget2.texture }
-        },
-        vertexShader: document.getElementById( 'vertexshader' ).textContent,
-        fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
-        defines: {}
-    } ), 'baseTexture'
-);
-finalPass.needsSwap = true;
-
-const finalComposer = new EffectComposer( renderer );
-finalComposer.addPass( renderScene );
-finalComposer.addPass( finalPass );
-
-bloomComposer.renderToScreen = true;
-render();
-
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 function getRandomNumber(min, max) {
     return Math.random() * (max - min) + min;
 }
 
-
 // STARS BACKROUND
 
-const starColors = [0x6487C7, 0xD1C0A4, 0xB5754F, 0xFCFBF9];
 
+// var radius = 1;
+// var sphere = new THREE.Mesh(new THREE.SphereGeometry(radius, 32, 24), new THREE.MeshBasicMaterial({color: "gray", wireframe: true}));
+// scene.add(sphere);
+//
+// var box = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.2), new THREE.MeshBasicMaterial({color: "red", wireframe: true}));
+// box.position.setFromSphericalCoords(radius + 0.1, THREE.Math.degToRad(23), THREE.Math.degToRad(45));
+// box.lookAt(sphere.position);
+// scene.add(box);
 
-for (let i = 0; i < 25; i++)
+createStarEnvironment();
+
+function createStarEnvironment()
 {
-    // top
-    createStar(
-        getRandomNumber(-300, 300), // x
-        getRandomNumber(200, 300), // y
-        getRandomNumber(-300, 300)  // z
-    );
+    for (let i = 0; i < 25; i++)
+    {
+        // top
+        createStar(
+            getRandomNumber(-300, 300), // x
+            getRandomNumber(200, 300), // y
+            getRandomNumber(-300, 300)  // z
+        );
 
-    // bottom
-    createStar(
-        getRandomNumber(-300, 300), // x
-        getRandomNumber(-200, -300), // y
-        getRandomNumber(-300, 300)  // z
-    );
+        // bottom
+        createStar(
+            getRandomNumber(-300, 300), // x
+            getRandomNumber(-200, -300), // y
+            getRandomNumber(-300, 300)  // z
+        );
 
-    // right
-    createStar(
-        getRandomNumber(200, 300), // x
-        getRandomNumber(-200, 300), // y
-        getRandomNumber(-300, 300)  // z
-    );
+        // right
+        createStar(
+            getRandomNumber(200, 300), // x
+            getRandomNumber(-200, 300), // y
+            getRandomNumber(-300, 300)  // z
+        );
 
-    // left
-    createStar(
-        getRandomNumber(-200, -300), // x
-        getRandomNumber(-200, 300), // y
-        getRandomNumber(-300, 300)  // z
-    );
+        // left
+        createStar(
+            getRandomNumber(-200, -300), // x
+            getRandomNumber(-200, 300), // y
+            getRandomNumber(-300, 300)  // z
+        );
+    }
 }
 
 function createStar(x, y, z)
 {
-    let starColor = starColors[getRandomNumber(0, starColors.length)];
+    const starColors = [
+        new THREE.Color(0x6487C7),
+        new THREE.Color(0xD1C0A4),
+        new THREE.Color(0xB5754F),
+        new THREE.Color(0xFCFBF9)
+    ];
+
+    let starColor = starColors[Math.round(getRandomNumber(0, starColors.length - 1), 1)];
 
     const star = new THREE.Mesh(
-        new THREE.SphereGeometry(getRandomNumber(0.3, 1)),
+        new THREE.SphereGeometry(getRandomNumber(0.3, 0.6)),
         new THREE.MeshPhongMaterial({color: starColor})
     );
-
-    star.material.emissive.set( starColor )
-    star.material.emissiveIntensity = 5;
 
     star.position.set(x, y, z);
 
     scene.add(star);
 }
 
+
+
+
+
+const renderScene = new RenderPass(scene, camera);
+const bloomPass = new UnrealBloomPass(
+    new THREE.Vector2(window.innerWidth, window.innerHeight),
+    1.5,
+    0.4,
+    0.85
+);
+bloomPass.threshold = 0;
+bloomPass.strength = 5; //intensity of glow
+bloomPass.radius = 0;
+const bloomComposer = new EffectComposer(renderer);
+bloomComposer.setSize(window.innerWidth, window.innerHeight);
+bloomComposer.renderToScreen = true;
+bloomComposer.addPass(renderScene);
+bloomComposer.addPass(bloomPass);
+
+
 function animate()
 {
     renderer.render( scene, camera );
     requestAnimationFrame( animate );
+    bloomComposer.render();
 }
 animate();

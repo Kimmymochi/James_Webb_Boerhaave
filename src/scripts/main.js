@@ -71,49 +71,58 @@ function changeScene() {
     }, "4000");
 
     setTimeout( function () {
+
         if ( currentScene === "launch" ) {
+            sceneRemover(launchScene);
             infraredScene = createInfrared(renderer, camera);
             scene = infraredScene;
             currentScene = "infrared";
     
         // EXPLORE FIRST TEST
-        } else if ( currentScene === "infrared" ) {
-            exploreScene = createExplore(renderer, camera);
-            scene = exploreScene;
-            currentScene = "explore";
-    
-        } else if ( currentScene === "explore" ) {
-            puzzleScene = createPuzzle(renderer, camera);
-            scene = puzzleScene;
-            currentScene = "puzzle";
-
-        } else if ( currentScene === "puzzle" ) {
-            quotesScene = createQuotes(renderer, camera);
-            scene = quotesScene
-            currentScene ="quotes"
-
-        // PUZZLE FIRST TEST
-
         // } else if ( currentScene === "infrared" ) {
+        //     sceneRemover(infraredScene); 
+        //     exploreScene = createExplore(renderer, camera);
+        //     scene = exploreScene;
+        //     currentScene = "explore";
+    
+        // } else if ( currentScene === "explore" ) {
+        //     sceneRemover(exploreScene); 
         //     puzzleScene = createPuzzle(renderer, camera);
         //     scene = puzzleScene;
         //     currentScene = "puzzle";
 
         // } else if ( currentScene === "puzzle" ) {
-        //     exploreScene = createExplore(renderer, camera);
-        //     scene = exploreScene;
-        //     currentScene = "explore";
-
-        // } else if ( currentScene === "explore" ) {
+        //     sceneRemover(puzzleScene); 
         //     quotesScene = createQuotes(renderer, camera);
         //     scene = quotesScene
         //     currentScene ="quotes"
+
+        // PUZZLE FIRST TEST
+
+        } else if ( currentScene === "infrared" ) {
+            sceneRemover(infraredScene);
+            puzzleScene = createPuzzle(renderer, camera);
+            scene = puzzleScene;
+            currentScene = "puzzle";
+
+        } else if ( currentScene === "puzzle" ) {
+            sceneRemover(puzzleScene);
+            exploreScene = createExplore(renderer, camera);
+            scene = exploreScene;
+            currentScene = "explore";
+
+        } else if ( currentScene === "explore" ) {
+            sceneRemover(exploreScene);
+            quotesScene = createQuotes(renderer, camera);
+            scene = quotesScene
+            currentScene ="quotes"
     
         } else if ( currentScene === "quotes" ) {
+            sceneRemover(quotesScene);
             creditsScene = createCredits(renderer, camera);
             scene = creditsScene;
             currentScene = "credits";
-    
+
         }
     }, "1000");
 
@@ -121,3 +130,22 @@ function changeScene() {
 
 document.getElementById( "js--sceneChanger" ).onclick = function() { changeScene() };
 document.getElementById( "js--sceneChanger" ).onkeydown = function() { false }
+
+function sceneRemover(obj){
+    while(obj.children.length > 0){ 
+        sceneRemover(obj.children[0]);
+        obj.remove(obj.children[0]);
+    }
+    if(obj.geometry) obj.geometry.dispose();
+
+    if(obj.material){ 
+      Object.keys(obj.material).forEach(prop => {
+        if(!obj.material[prop])
+          return;
+        if(obj.material[prop] !== null && typeof obj.material[prop].dispose === 'function')                                  
+          obj.material[prop].dispose();                                                      
+      })
+      obj.material.dispose();
+    }
+  }   
+  

@@ -190,6 +190,7 @@ export function createLaunch(renderer, camera) {
                 body.style.cursor = "default";
                 window.removeEventListener('mousedown', onMouseDown);
                 window.removeEventListener('pointermove', onMouseMove);
+                body.style.cursor = "default";
                 pushAnimation.play();
                 sound.setVolume( 0.2 );
                 hasLaunched = true;         

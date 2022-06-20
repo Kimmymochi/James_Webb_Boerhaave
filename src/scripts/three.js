@@ -1,8 +1,9 @@
 const THREE = require('three');
-const TWEEN = require('@tweenjs/tween.js')
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import model from '../models/jwst.gltf'
+const TWEEN = require('@tweenjs/tween.js');
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import modelBin from '../models/scene.bin';
+import model from '../models/scene.gltf';
 import textData from '../data/text.json';
 
 //ui DOM
@@ -60,6 +61,24 @@ function init() {
 	controls = new OrbitControls( camera, renderer.domElement );
     //controls.enableZoom = false;
 
+    //model
+	const gltfLoader = new GLTFLoader();
+
+	gltfLoader.load( model, function ( gltf ) {
+        gltf.scene.castShadow = true;
+		gltf.scene.receiveShadow = true;
+
+	    scene.add( gltf.scene );
+        gltf.scene.position.set(22.5, 3, 0);
+        gltf.scene.scale.set(0.1, 0.1, 0.1);
+        gltf.scene.rotation.y = -Math.PI / 2.2;
+
+        //assign var for later
+        telescope = gltf.scene;
+
+	}, undefined, function ( error ) {
+	    console.error( error );
+	} );
 
     //setup infrared
     setupInfrared();
@@ -97,6 +116,7 @@ function chapterControl(chapter) {
 
 
 function setupInfrared() {
+    //temp controls
     window.addEventListener("keydown", function(event) {
         if (event.keyCode === 32) {
             chapterControl(infraredText[Object.keys(infraredText)[currentChapterIndex]]);
@@ -140,6 +160,10 @@ function setupInfrared() {
     createLine([originPoint, {x:6.5, y:0, z:0}, {x:6.5, y:-0.5, z:0}, originPoint], dashedLine_green);
     createLine([originPoint, {x:5, y:-1, z:0}, {x:5, y:-1.5, z:0}, originPoint], dashedLine_blue);
     createLine([originPoint, {x:2.5, y:-1, z:0}, {x:2.5, y:-1.5, z:0}, originPoint], dashedLine_purple);
+    //lines for telescope
+    let telescopeSecundaryMirror = new THREE.Vector3(21.735, 3.34, 0);
+    let telescopeTertiaryMirror = new THREE.Vector3(22.24, 3.35, 0);
+    createLine([{x:20, y:3.5, z:0}, {x: 22.35, y:3.5, z:0}, telescopeSecundaryMirror, telescopeTertiaryMirror])
 }
 
 

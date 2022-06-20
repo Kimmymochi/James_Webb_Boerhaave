@@ -5,28 +5,47 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
 import DragControls from 'three-dragcontrols'
 
+
 const scene = new THREE.Scene();
 
 // RENDERER
+// ----------------------------------------------------------------------
 const renderer = new THREE.WebGLRenderer({ antialias: true });
-
 renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.shadowMap.enabled = true;
-// renderer.setClearColor( 0x000000,1 );
 document.body.appendChild( renderer.domElement );
 
 
 // CAMERA
+// ----------------------------------------------------------------------
+
+// Ortographic camera
+// const frustumSize = 100;
+// const aspect = window.innerWidth / window.innerHeight;
+// let camera = new THREE.OrthographicCamera(
+//     frustumSize * aspect / - 2,
+//     frustumSize * aspect / 2,
+//     frustumSize / 2,
+//     frustumSize / - 2, 1, 1000
+// );
+// camera.position.set( - 200, 200, 200 );
+
+
+
+
+// Regular camera
 const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
-const orbitControls = new OrbitControls( camera, renderer.domElement );
 camera.position.set( 0, 20, 100 );
-orbitControls.update();
+
+const orbitControls = new OrbitControls( camera, renderer.domElement );
 orbitControls.enableZoom = false;
+orbitControls.update();
 
 
 // LIGHTS
+// ----------------------------------------------------------------------
 const light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
 scene.add( light );
 
@@ -35,10 +54,6 @@ dirLight.position.set(1, 2, -1);
 scene.add(dirLight);
 dirLight.castShadow = true;
 
-
-// import { UnrealBloomPass } from './jsm/postprocessing/UnrealBloomPass.js';
-// import { EffectComposer } from './jsm/postprocessing/EffectComposer.js';
-// import { ShaderPass } from './jsm/postprocessing/ShaderPass.js';
 
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
@@ -144,4 +159,25 @@ function animate()
     requestAnimationFrame( animate );
     bloomComposer.render();
 }
-animate();
+
+// Updates the location of parts bounding box so it will
+// stay in the right position when it is dragged
+function updatePartsBBLocation()
+{
+    for (let partsIndex = 0; partsIndex < partsData.length; partsIndex++)
+    {
+        partsData[partsIndex].boundingBox.copy(partsData[partsIndex].mesh.geometry.boundingBox)
+            .applyMatrix4(partsData[partsIndex].mesh.matrixWorld);
+    }
+}
+
+// Makes parts float like they would in space
+function partsFloatAnimation()
+{
+    for (let i = 0; i < draggableParts.length; i++)
+    {
+        const position = draggableParts[i].position;
+        const speed = 0.002;
+        if(position.x < 100) position.set(position.x + speed, position.y + speed, position.z + speed);
+    }
+}

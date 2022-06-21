@@ -1,7 +1,9 @@
 const THREE = require('three');
 const TWEEN = require('@tweenjs/tween.js')
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import textData from '../data/text.json';
+import model from '../models/jwst.gltf'
 
 export function createInfrared(renderer, camera, fireSceneChange) {
     //ui DOM
@@ -15,10 +17,30 @@ export function createInfrared(renderer, camera, fireSceneChange) {
     // three.js
     // let controls;
     let scene;
+    let telescope;
 
     // Camera
     camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 2, 2000);
     camera.position.set(-4, 0, 4);
+
+    //model
+	const gltfLoader = new GLTFLoader();
+
+	gltfLoader.load( model, function ( gltf ) {
+        gltf.scene.castShadow = true;
+		gltf.scene.receiveShadow = true;
+
+	    scene.add( gltf.scene );
+        gltf.scene.position.set(22.5, 3, 0);
+        gltf.scene.scale.set(0.1, 0.1, 0.1);
+        gltf.scene.rotation.y = -Math.PI / 2.2;
+
+        //assign var for later
+        telescope = gltf.scene;
+
+	}, undefined, function ( error ) {
+	    console.error( error );
+	} );
 
     // Scene
     scene = new THREE.Scene();
@@ -128,6 +150,10 @@ export function createInfrared(renderer, camera, fireSceneChange) {
         createLine([originPoint, {x:6.5, y:0, z:0}, {x:6.5, y:-0.5, z:0}, originPoint], dashedLine_green);
         createLine([originPoint, {x:5, y:-1, z:0}, {x:5, y:-1.5, z:0}, originPoint], dashedLine_blue);
         createLine([originPoint, {x:2.5, y:-1, z:0}, {x:2.5, y:-1.5, z:0}, originPoint], dashedLine_purple);
+        //lines for telescope
+       let telescopeSecundaryMirror = new THREE.Vector3(21.735, 3.34, 0);
+       let telescopeTertiaryMirror = new THREE.Vector3(22.24, 3.35, 0);
+       createLine([{x:20, y:3.5, z:0}, {x: 22.35, y:3.5, z:0}, telescopeSecundaryMirror, telescopeTertiaryMirror]);
     }
 
 
@@ -164,7 +190,6 @@ export function createInfrared(renderer, camera, fireSceneChange) {
 
         //open ui panel
         panelDOM.classList.add("open");
-        document.getElementById("js--panel-close").removeAttribute("disabled");
     }
 
 
@@ -174,18 +199,13 @@ export function createInfrared(renderer, camera, fireSceneChange) {
         let panelDOM = document.querySelector('#js--ui #js--ui-panel');
         //close ui panel
         panelDOM.classList.remove("open");
-
-        //disable close button to prevent any bugs on reopening panel next time
-        document.getElementById("js--panel-close").setAttribute("disabled", true);
     }
-    //bind to button
-    document.getElementById("js--panel-close").onclick = function(){closePanel()};
 
     //collapses UI panel
     function toggleCollapsePanel() {
         //get DOM element
         let panelDOM = document.querySelector('#js--ui #js--ui-panel');
-        let panelLabel = document.querySelector('#js--ui #js--panel-label');
+        let panelLabel = document.querySelector('#js--ui #js--panel-label-collapse');
         //close ui panel
         panelDOM.classList.toggle("collapsed");
 

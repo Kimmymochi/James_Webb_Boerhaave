@@ -99,7 +99,7 @@ export function createExplore(renderer, camera) {
 
     // Controls
 	controls = new OrbitControls( camera, renderer.domElement );
-    controls.enableZoom = false;
+    controls.enableZoom = true;
     controls.enablePan = false;
 
     //setup all the annotations
@@ -384,7 +384,7 @@ export function createExplore(renderer, camera) {
                         part[i].material.opacity = 1;
                     }
                 }
-                
+
                 //zoom in on clicked item
                 let newPosition = new THREE.Vector3( camera.position.x, item.location.y, camera.position.z );
                 let duration = 1000;
@@ -413,13 +413,8 @@ export function createExplore(renderer, camera) {
     }
 
 
-    //closes UI panel
-    function closePanel() {
-        //get DOM element
-        let panelDOM = document.querySelector('#js--ui #js--ui-panel');
-        //close ui panel
-        panelDOM.classList.remove("open");
-
+    //resets the UI focus on a telescope segment to neutral
+    function resetFocus() {
         //remove all active tags on UI annotations
         let annotationsInUi = document.querySelectorAll('#js--ui .js--ui-annotation');
         for (let i = 0; i < annotationsInUi.length; i++) {
@@ -446,9 +441,10 @@ export function createExplore(renderer, camera) {
         let duration = 2000;
         tweenCamera( newPosition, duration);
     }
-
     //bind to button
-    document.getElementById("js--panel-close").onclick = function(){closePanel()};
+    document.getElementById("js--panel-reset").onclick = function(){resetFocus()};
+    //set button to visible, it's hidden until this segment
+    document.getElementsByClassName("ui-label--reset")[0].classList.remove("hidden");
 
     // animates the camera to given target
     function tweenCamera( targetPos, duration ) {

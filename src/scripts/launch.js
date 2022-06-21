@@ -2,41 +2,45 @@ const THREE = require('three')
 const TWEEN = require('@tweenjs/tween.js')
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { InteractionManager } from "three.interactive";
 import modelControlroom from '../models/controlroom.gltf'
 import modelButton from '../models/button.gltf'
 import launchVideo from '../media/launch.mp4'
 import staticVideo from '../media/static.mp4'
 import launchAudio from '../media/launch.wav'
 
+
 export function createLaunch(renderer, camera) {
     const launchTitle = document.getElementById("js--launchTitle");
     const launchCircle = document.getElementById("js--launchCircle");
     const body = document.querySelector('body');
 
-    let clickList = [];
     let scene;
     let controlRoom;
     let button;
     let pushAnimation;
     let video;
     let sound;
+
     let mixer = new THREE.AnimationMixer();
     let clock = new THREE.Clock();
-    let raycaster = new THREE.Raycaster();
-    let mouse = new THREE.Vector2();
     let listener = new THREE.AudioListener();
 
     let hasLaunched = false;
 
     // CAMERA
-    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-    camera.position.set( 0.1, 0, 0 );
-
-    camera.add( listener );
+    // camera.add( listener );
     
     // SCENE
     scene = new THREE.Scene();
-    
+
+    // INTERACTIONMANAGER
+    const interactionManager = new InteractionManager(
+        renderer,
+        camera,
+        renderer.domElement
+        );
+        
     // LIGHTS
     const ambientLight = new THREE.AmbientLight( 0x9698ff , 0.5 );
     scene.add( ambientLight );
@@ -56,14 +60,41 @@ export function createLaunch(renderer, camera) {
         button.scale.set( 0.1, 0.1, 0.1 );
         button.position.set( 0.25, -0.25, -0.75 )
         button.rotateX( 0.2 );
-    
+
         // Set animation
         const animations = gltf.animations;
         mixer = new THREE.AnimationMixer( button );
         pushAnimation = mixer.clipAction( animations[0] ).setLoop( THREE.LoopOnce );
+
+        // Mouse events
+        button.addEventListener("mouseover", (event) => {
+            body.style.cursor = "pointer";
+        });
+
+        button.addEventListener("mouseout", (event) => {
+            body.style.cursor = "default";
+        });
         
+        button.addEventListener("click", (event) => {
+            if(!hasLaunched) {
+                body.style.cursor = "default";
+                pushAnimation.play();
+                sound.setVolume( 0.2 );
+                hasLaunched = true;         
+                video.src = launchVideo;
+                video.loop = false;
+                video.muted = false;
+                video.load();
+                video.play();
+
+                let newPosition = new THREE.Vector3( -0.2, 0, -0.4 );
+                let duration = 15000;
+                tweenCamera( newPosition, duration );
+            }
+        });
+
         scene.add( button );
-        clickList.push(button);
+        interactionManager.add(button);
 
     }, undefined, function ( error ) {
         console.error( error );
@@ -120,7 +151,7 @@ export function createLaunch(renderer, camera) {
     scene.add(bigVideoMesh)
 
     // AUDIO
-    // TODO: user gesture is needed to play audio, maybe add start screen where input is needed
+    // TODO: user gesture is sometimes needed to play audio, maybe add start screen where input is needed
     sound = new THREE.Audio( listener );
     let audioLoader = new THREE.AudioLoader();
     audioLoader.load( launchAudio, function ( buffer ) {
@@ -132,10 +163,8 @@ export function createLaunch(renderer, camera) {
 
     animate();
 
-    // Event Listeners
+    // WINDOW RESIZER
     window.addEventListener("resize", onWindowResize, false);
-    window.addEventListener('mousedown', onMouseDown, false);
-    window.addEventListener('pointermove', onMouseMove, false);
 
     function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
@@ -149,64 +178,14 @@ export function createLaunch(renderer, camera) {
         let mixerUpdateDelta = clock.getDelta();
         mixer.update(mixerUpdateDelta);
         TWEEN.update(time);
+        interactionManager.update();
         render();
     }
 
     function render() {
         renderer.render(scene, camera);
     }
-
-    function onMouseMove(event) {
-        camera.updateMatrixWorld();
-        mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
-        mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
-
-        raycaster.setFromCamera(mouse, camera);
-
-        let intersects = raycaster.intersectObjects(clickList);
-
-        if (intersects[0]) {
-            if( !hasLaunched) {
-                body.style.cursor = "pointer";
-            } 
-        } else {
-                body.style.cursor = "default";
-        }
-    }
-
-    function onMouseDown(event) {
-        event.preventDefault();
-
-
-        mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
-        mouse.y = - (event.clientY / renderer.domElement.clientHeight) * 2 + 1;
-
-        raycaster.setFromCamera(mouse, camera);
-
-        let intersects = raycaster.intersectObjects(clickList);
-
-        if (intersects[0]) {
-            if(!hasLaunched) {
-                body.style.cursor = "default";
-                window.removeEventListener('mousedown', onMouseDown);
-                window.removeEventListener('pointermove', onMouseMove);
-                body.style.cursor = "default";
-                pushAnimation.play();
-                sound.setVolume( 0.2 );
-                hasLaunched = true;         
-                video.src = launchVideo;
-                video.loop = false;
-                video.muted = false;
-                video.load();
-                video.play();
-
-                let newPosition = new THREE.Vector3( -0.2, 0, -0.4 );
-                let duration = 15000;
-                tweenCamera( newPosition, duration );
-            } 
-        }
-    }
-
+    
     // Animates the camera to given target
     function tweenCamera( targetPos, duration ) {
         let pos = new THREE.Vector3().copy( camera.position );

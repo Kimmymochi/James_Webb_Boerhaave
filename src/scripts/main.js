@@ -33,7 +33,8 @@ init();
 animate();
 
 function init() {
-    camera.position.set(0, 0, 0);
+    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    camera.position.set( 0.1, 0, 0 );
     
     launchScene = createLaunch(renderer, camera);
     scene = launchScene;
@@ -131,20 +132,23 @@ function changeScene() {
 document.getElementById( "js--sceneChanger" ).onclick = function() { changeScene() };
 document.getElementById( "js--sceneChanger" ).onkeydown = function() { false }
 
-function sceneRemover(obj){
+function sceneRemover(obj) {
     while(obj.children.length > 0){ 
         sceneRemover(obj.children[0]);
         obj.remove(obj.children[0]);
     }
+
     if(obj.geometry) obj.geometry.dispose();
 
     if(obj.material){ 
-      Object.keys(obj.material).forEach(prop => {
-        if(!obj.material[prop])
-          return;
-        if(obj.material[prop] !== null && typeof obj.material[prop].dispose === 'function')                                  
-          obj.material[prop].dispose();                                                      
-      })
+      Object.keys(obj.material).forEach( prop => {
+        if(!obj.material[prop]) return;
+
+        if(obj.material[prop] !== null && typeof obj.material[prop].dispose === 'function') {
+            obj.material[prop].dispose();   
+        }                                                                     
+      });
+
       obj.material.dispose();
     }
   }   

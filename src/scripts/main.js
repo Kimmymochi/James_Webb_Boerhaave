@@ -35,7 +35,7 @@ animate();
 function init() {
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
     camera.position.set( 0.1, 0, 0 );
-    
+
     launchScene = createLaunch(renderer, camera);
     scene = launchScene;
     currentScene = "launch";
@@ -62,7 +62,6 @@ function render() {
 
 // change scene on click, bind to button
 function changeScene() {
-
     overlay.classList.remove('firstFade');
     overlay.classList.add('fadeInOut');
 
@@ -75,25 +74,25 @@ function changeScene() {
 
         if ( currentScene === "launch" ) {
             sceneRemover(launchScene);
-            infraredScene = createInfrared(renderer, camera);
+            infraredScene = createInfrared(renderer, camera, changeScene);
             scene = infraredScene;
             currentScene = "infrared";
-    
+
         // EXPLORE FIRST TEST
         // } else if ( currentScene === "infrared" ) {
-        //     sceneRemover(infraredScene); 
+        //     sceneRemover(infraredScene);
         //     exploreScene = createExplore(renderer, camera);
         //     scene = exploreScene;
         //     currentScene = "explore";
-    
+
         // } else if ( currentScene === "explore" ) {
-        //     sceneRemover(exploreScene); 
+        //     sceneRemover(exploreScene);
         //     puzzleScene = createPuzzle(renderer, camera);
         //     scene = puzzleScene;
         //     currentScene = "puzzle";
 
         // } else if ( currentScene === "puzzle" ) {
-        //     sceneRemover(puzzleScene); 
+        //     sceneRemover(puzzleScene);
         //     quotesScene = createQuotes(renderer, camera);
         //     scene = quotesScene
         //     currentScene ="quotes"
@@ -117,7 +116,7 @@ function changeScene() {
             quotesScene = createQuotes(renderer, camera);
             scene = quotesScene
             currentScene ="quotes"
-    
+
         } else if ( currentScene === "quotes" ) {
             sceneRemover(quotesScene);
             creditsScene = createCredits(renderer, camera);
@@ -127,29 +126,28 @@ function changeScene() {
         }
     }, "1000");
 
-    }
+}
 
 document.getElementById( "js--sceneChanger" ).onclick = function() { changeScene() };
 document.getElementById( "js--sceneChanger" ).onkeydown = function() { false }
 
 function sceneRemover(obj) {
-    while(obj.children.length > 0){ 
+    while(obj.children.length > 0){
         sceneRemover(obj.children[0]);
         obj.remove(obj.children[0]);
     }
 
     if(obj.geometry) obj.geometry.dispose();
 
-    if(obj.material){ 
+    if(obj.material){
       Object.keys(obj.material).forEach( prop => {
         if(!obj.material[prop]) return;
 
         if(obj.material[prop] !== null && typeof obj.material[prop].dispose === 'function') {
-            obj.material[prop].dispose();   
-        }                                                                     
+            obj.material[prop].dispose();
+        }
       });
 
       obj.material.dispose();
     }
-  }   
-  
+  }

@@ -3,19 +3,19 @@ const TWEEN = require('@tweenjs/tween.js')
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import textData from '../data/text.json';
 
-export function createInfrared(renderer, camera) {
+export function createInfrared(renderer, camera, fireSceneChange) {
     //ui DOM
     const ui = document.getElementById("js--ui");
     const launchTitle = document.getElementById("js--launchTitle");
 
     //chapters
     const infraredText = textData.text.infrared.chapters;
-    let currentChapterIndex = 0;
+    let currentChapterIndex = -1;
 
     // three.js
     // let controls;
     let scene;
-    
+
     // Camera
     camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 2, 2000);
     camera.position.set(-4, 0, 4);
@@ -56,7 +56,7 @@ export function createInfrared(renderer, camera) {
     window.addEventListener("resize", onWindowResize, false);
 
     animate();
-    
+
     function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
@@ -85,17 +85,17 @@ export function createInfrared(renderer, camera) {
 
 
     function setupInfrared() {
-        window.addEventListener("keydown", function(event) {
-            if (event.keyCode === 32) {
+        document.getElementById( "js--sceneChanger" ).onclick = function(event) {
+            //if last chapter, run main.js function to change scene
+            if (Object.keys(infraredText).length - 1 == currentChapterIndex) {
+                closePanel();
+                fireSceneChange();
+            //otherwise, increment chapter and run setup
+            } else {
+                currentChapterIndex++;
                 chapterControl(infraredText[Object.keys(infraredText)[currentChapterIndex]]);
-
-                if (Object.keys(infraredText).length - 1 == currentChapterIndex) {
-                    //end
-                } else {
-                    currentChapterIndex++;
-                }
             }
-        });
+        };
 
         // controls.enabled = false;
 
@@ -211,4 +211,3 @@ export function createInfrared(renderer, camera) {
     }
     return scene;
 }
-

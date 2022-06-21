@@ -27,4 +27,22 @@
             height: 3.6rem;
         }
     }
+
+    &.sceneButton {
+        position: absolute;
+        right: 5rem;
+        top: 50%;
+        transform: translate(0, -50%);
+
+        border: none;
+        padding: .5rem;
+
+        height: 10rem;
+        border-radius: .4rem;
+        backdrop-filter: blur(1rem);
+
+        .icon {
+            height: 100%;
+        }
+    }
 }

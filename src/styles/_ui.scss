@@ -4,6 +4,7 @@ $panel-transition-time: .6s;
 
 $label-width: 12rem;
 $label-height: 4rem;
+$label-spacing: 2rem;
 
 .ui-container {
     pointer-events: none;
@@ -50,7 +51,7 @@ $label-height: 4rem;
                 top: calc(100% - #{$panel-height});
             }
 
-            .collapse-label {
+            .ui-label {
                 top: calc(-1 * #{$label-height});
                 opacity: 1;
             }
@@ -59,7 +60,7 @@ $label-height: 4rem;
         &.collapsed {
             top: 100vh;
 
-            .collapse-label img {
+            .ui-label--collapse img {
                 transform: rotate(180deg);
             }
         }
@@ -115,22 +116,11 @@ $label-height: 4rem;
         }
     }
 
-    .close-button {
-        position: absolute;
-        right: 4rem;
-        top: 4rem;
-
-        .button {
-            background-color: none;
-        }
-    }
-
-    .collapse-label {
+    .ui-label {
         display: flex;
         visibility: visible;
 
         position: absolute;
-        right: $label-width;
         top: 0;
 
         width: $label-width;
@@ -145,10 +135,27 @@ $label-height: 4rem;
 
         transition: opacity .4s, top .4s;
 
-        // @media only screen and (min-width: 425px) {
-        //     display: none;
-        //     visibility: hidden;
-        // }
+        &:hover {
+            button .label {
+                color: #E56528;
+            }
+        }
+
+        &--collapse {
+            right: $label-width;
+        }
+
+        &--reset {
+            //left of collapse label
+            right: calc((#{$label-width} * 2) + #{$label-spacing});
+
+            //hide this label until on exploration-screen
+            &.hidden {
+                display: none;
+                visibility: hidden;
+                pointer-events: none;
+            }
+        }
 
         button {
             background-color: transparent;
@@ -169,6 +176,8 @@ $label-height: 4rem;
                 color: #C6C6C6;
                 font-size: 1.2rem;
                 margin: 0;
+
+                transition: color .4s;
             }
 
             img {

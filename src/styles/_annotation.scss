@@ -1,10 +1,14 @@
+$annotation-fontsize: 1.6rem;
+$default-fontcolor: #efefef;
+$active-fontcolor: #E56528;
+
 .js--ui-annotation {
     display: block;
     transform: translate(-50%, -100%);
     position: absolute;
 
-    font-size: 1.6rem;
-    color: #efefef;
+    font-size: $annotation-fontsize;
+    color: $default-fontcolor;
     padding: .4rem;
     opacity: 1;
 
@@ -15,8 +19,10 @@
     transition: color .3s;
     overflow: hidden;
 
+    animation: pulse 2s 1s;
+
     &.active {
-        color: #E56528;
+        color: $active-fontcolor;
 
         &:after {
             background-color: #E56528;
@@ -71,5 +77,21 @@
 
     &.visibilityLowered {
         opacity: .3;
+    }
+}
+
+
+@keyframes pulse {
+    0% {
+        font-size: $annotation-fontsize;
+        color: $default-fontcolor;
+    }
+    50% {
+        font-size: calc(#{$annotation-fontsize} * 1.25);
+        color: $active-fontcolor;
+    }
+    100% {
+        font-size: $annotation-fontsize;
+        color: $default-fontcolor;
     }
 }

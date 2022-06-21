@@ -164,7 +164,6 @@ export function createInfrared(renderer, camera, fireSceneChange) {
 
         //open ui panel
         panelDOM.classList.add("open");
-        document.getElementById("js--panel-close").removeAttribute("disabled");
     }
 
 
@@ -174,18 +173,13 @@ export function createInfrared(renderer, camera, fireSceneChange) {
         let panelDOM = document.querySelector('#js--ui #js--ui-panel');
         //close ui panel
         panelDOM.classList.remove("open");
-
-        //disable close button to prevent any bugs on reopening panel next time
-        document.getElementById("js--panel-close").setAttribute("disabled", true);
     }
-    //bind to button
-    document.getElementById("js--panel-close").onclick = function(){closePanel()};
 
     //collapses UI panel
     function toggleCollapsePanel() {
         //get DOM element
         let panelDOM = document.querySelector('#js--ui #js--ui-panel');
-        let panelLabel = document.querySelector('#js--ui #js--panel-label');
+        let panelLabel = document.querySelector('#js--ui #js--panel-label-collapse');
         //close ui panel
         panelDOM.classList.toggle("collapsed");
 

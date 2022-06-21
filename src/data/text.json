@@ -53,7 +53,7 @@
             "primarymirror": {
                 "id": 1,
                 "title": "Primaire spiegel",
-                "description": "18 aparte, zeshoekige spiegels - die elk 1.3 meter breed zijn - werken samen als één grote spiegel, die 6.5 meter hoog is. Deze enorme spiegel was berekend om nodig te zijn om de lichte van de verre sterrenstelsels te kunnen vangen. Een spiegel van deze grote was een technische uitdaging, al was het met dezelfde methode gemaakt als de primaire spiegel van de Hubble ruimtetelescoop <i>(die 6x kleiner is!)</i>, zou de spiegel te zwaar zijn om in de ruimte te krijgen.<br>Om dit te verhelpen was besloten om de spiegel in verschillende segmenten te maken, die <i>elk</i> maar 20 kilogram wegen, door hun constructie gemaakt van beryllium - gekozen voor de stevigheid en het weerstaan van extreem lage temperaturen - met een laag goud voor betere weerspiegeling van het infrarood licht. Elk van deze segmenten kan individueel gedraaid en gericht worden om uiteindelijk een zo correct mogelijk beeld te maken.<br>Om deze enorme telescoop in de raket te kunnen krijgen, moest de spiegel in stukken ingeklapt moeten worden, waarbij de 2 buitenste kolommen van segmenten naar achter draaien.",
+                "description": "18 aparte, zeshoekige spiegels - die elk 1.3 meter breed zijn - werken samen als één grote spiegel, die 6.5 meter hoog is. Deze enorme spiegel was berekend nodig te zijn om het licht van de verre sterrenstelsels te kunnen vangen. Een spiegel van deze grootte was een technische uitdaging, al was het met dezelfde methode gemaakt als de primaire spiegel van de Hubble ruimtetelescoop <i>(die 6x kleiner is!)</i>, zou de spiegel te zwaar zijn om in de ruimte te krijgen.<br>Om dit te verhelpen was besloten om de spiegel in verschillende segmenten te maken, die <i>elk</i> maar 20 kilogram wegen, door hun constructie gemaakt van beryllium - gekozen voor de stevigheid en het weerstaan van extreem lage temperaturen - met een laag goud voor betere weerspiegeling van het infrarood licht. Elk van deze segmenten kan individueel gedraaid en gericht worden om uiteindelijk een zo correct mogelijk beeld te maken.<br>Om deze enorme telescoop in de raket te kunnen krijgen, moest de spiegel in stukken ingeklapt moeten worden, waarbij de 2 buitenste kolommen van segmenten naar achter draaien.",
                 "location": {
                     "x": 0,
                     "y": 5,
@@ -115,7 +115,7 @@
             "solarpanels": {
                 "id": 6,
                 "title": "Zonnepanelen",
-                "description": "Alhoewel er een batterij aan boord van de ruimtetelescoop is, heeft deze maar de capaciteit om de telescoop voor enkele uren van stroom te voorzien. Na het lanceren van de telescoop, klappen de vijf panelen - die in totaal meer dan <i>6 meter lang</i> zijn - uit om van het directe zonlicht energie te verwekken voor de telescoop. <br>Hoewel de gehele ruimtetelescoop heeft maar <i>1 kilowatt</i> aan energie nodig, kunnen deze panelen samen bijna <i>dubbel</i> deze energiebehoefte leveren.",
+                "description": "Alhoewel er een batterij aan boord van de ruimtetelescoop is, heeft deze maar de capaciteit om de telescoop voor enkele uren van stroom te voorzien. Na het lanceren van de telescoop, klappen de vijf panelen - die in totaal meer dan <i>6 meter lang</i> zijn - uit om van het directe zonlicht energie te verwekken voor de telescoop. <br>Hoewel de gehele ruimtetelescoop maar <i>1 kilowatt</i> aan energie nodig heeft, kunnen deze panelen samen bijna <i>dubbel</i> deze energiebehoefte leveren.",
                 "location": {
                     "x": 0,
                     "y": -1.25,
@@ -125,13 +125,13 @@
             }
         },
         "quotes": {
- 
+
             "dishoeck": {
                 "id": 1,
                 "text": "\"Webb gaat ons straks radicaal nieuwe inzichten bezorgen over het heelal. Dankzij de enorme sprong in gevoeligheid en scherpte, ga je met Webb zeker ontdekkingen doen die als een verrassing komen.\"",
                 "name": "Ewine van Dishoeck",
                 "background": "Hoogleraar moleculaire astrofysica, Universiteit Leiden"
-                
+
             },
 
             "teplate": {
@@ -157,7 +157,7 @@
 
             "desert": {
                 "id": 5,
-                "text": "\"Ik heb nog nooit meegemaakt dat we zo’n bijzondere en krachtige telescoop lanceerde. De komende jaren worden voor de sterrenkunde ongekend spectaculair.\"",
+                "text": "\"Ik heb nog nooit meegemaakt dat we zo’n bijzondere en krachtige telescoop lanceerden. De komende jaren worden voor de sterrenkunde ongekend spectaculair.\"",
                 "name": "Jean-Michel Desert",
                 "background": "Astronoom, Universiteit van Amsterdam"
             }

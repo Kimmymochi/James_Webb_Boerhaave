@@ -128,7 +128,7 @@ export function createCredits(renderer, camera) {
     setTimeout( () => {
         quote.style.display ="none";
         addContribution("Grote vragen", ["Bezoek de tentoonstelling Grote Vragen in", "Rijksmuseum Boerhaave voor meer informatie", "over de James Webb Ruimtetelescoop"]);
-        addContribution("Collaboratie tussen", ["Hogeschool Leiden", "Museum Boerhaave"]);
+        addContribution("Collaboratie tussen", ["Hogeschool Leiden", "Rijksmuseum Boerhaave"]);
         addContribution("Ontwikkelaars", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
         addContribution("Ondersteuning", ["Annelore Scholten", "Maarten Storm", "Nina Paris", "Gerolf Heida"]);
         animate();

@@ -78,6 +78,7 @@ export function createLaunch(renderer, camera) {
         button.addEventListener("click", (event) => {
             if(!hasLaunched) {
                 body.style.cursor = "default";
+                interactionManager.dispose();
                 pushAnimation.play();
                 sound.setVolume( 0.2 );
                 hasLaunched = true;         

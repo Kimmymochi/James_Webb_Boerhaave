@@ -388,8 +388,10 @@ export function createPuzzle( renderer, camera ) {
         {
             snappingPointsData[SPIndex].mesh.material.opacity = 0;
         }
-
+        dragControls.deactivate();
         dragControls.dispose();
+
+        collisionsEnabled = false;
     }
 
 

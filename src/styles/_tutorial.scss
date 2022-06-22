@@ -1,0 +1,84 @@
+$anim-container-transition-time: .5s;
+
+.tutorial {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 999;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+
+    padding: 4rem 2rem;
+
+    background-color: rgba(25, 25, 25, 0.5);
+    backdrop-filter: blur(3rem);
+
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+
+    transition: opacity $anim-container-transition-time;
+
+    //states
+    &.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    //tablet>
+    @media only screen and (min-width: 768px) {
+        padding: 10rem 6rem;
+    }
+
+
+    //text box
+    &__intro {
+        display: flex;
+
+        .title {
+
+        }
+
+        .subtitle {
+
+        }
+    }
+
+    //steps
+    &__steps {
+
+        // single step elem
+        .step {
+
+            //container for icon/image/gif
+            .image-container {
+
+                img {
+
+                }
+            }
+
+            .step-title {
+
+            }
+
+            .step-context {
+
+            }
+        }
+    }
+
+
+    //button bar
+    &__button-bar {
+
+    }
+}

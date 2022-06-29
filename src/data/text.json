@@ -4,6 +4,28 @@
             "collapseLabel": {
                 "collapsed": "uitklappen",
                 "open": "inklappen"
+            },
+            "tutorial": {
+                "launch": {
+                    "title": "Het lanceren van de James Webb",
+                    "text": "Wanneer u de site binnenkomt, begeeft u zich in een control room. Dit is een ruimte waarin raketten gemonitord worden. Door te drukken op de rode startknop ( muis / touch) wordt de Ariane 5 raket, met de James Webb Ruimtetelescoop aan boord, gelanceerd. Dit kunt u vervolgens zien gebeuren op het scherm in de control room."
+                },
+                "infrared": {
+                    "title": "Leer over (infrarood) licht",
+                    "text": "Dit segment bestaat uit meerdere hoofdstukken, met elk textuele uitleg en een visualisatie hiervan. De uitleg kan gevonden worden in het tekstpaneel, die u wellicht nog moet uitklappen. Om naar het volgende hoofdstuk te gaan kan u op de pijl klikken aan de zijkant van het scherm."
+                },
+                "puzzle": {
+                    "title": "Verken de James Webb ruimtetelescoop",
+                    "text": "In dit segment kan u de James Webb Ruimtetelescoop bekijken en leren over de werking van de onderdelen. De telescoop kan rondgedraaid worden zodat u alle hoeken van het object kunt zien. Aan segmenten van de telescoop zijn punten verbonden waar u op kan klikken. Hierdoor kan u het geselecteerde component goed zien, zelfs al bevindt het zich binnen de telescoop."
+                },
+                "explore": {
+                    "title": "Zet de James Webb terug in elkaar",
+                    "text": "Na de exploration fase wordt er een puzzel spel gespeeld waarbij de James Webb ruimtetelescoop in elkaar gezet moet worden. In het centrum van de omgeving bevinden zich meerdere punten waar een onderdeel op vastgeklikt kan worden, dit zijn de grijze bollen in de bovenstaande afbeelding. Zodra een onderdeel binnen de radius van zo’n punt wordt gepositioneerd, zal het punt oplichten. Als vervolgens de linkermuisknop / de vinger losgelaten wordt, zal het onderdeel op het punt vastgezet worden. Als het onderdeel op het correcte punt geplaatst is, zal het object groen worden en als het op een incorrect punt geplaatst is, wordt het rood."
+                },
+                "quotes": {
+                    "title": "De visie en verwachtingen van experts",
+                    "text": "In dit segment kunt u lezen over wat experts zeggen over de toekomst van de ruimtetelescoop. Na het drukken op een foto verschijnt een quote van de bijbehorende persoon."
+                }
             }
         },
         "infrared": {
@@ -161,10 +183,6 @@
                 "name": "Jean-Michel Desert",
                 "background": "Astronoom, Universiteit van Amsterdam"
             }
-
-
-
-
         }
     }
 }

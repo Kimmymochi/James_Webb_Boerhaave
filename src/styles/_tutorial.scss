@@ -17,7 +17,7 @@ $anim-container-transition-time: .5s;
 
     padding: 4rem 2rem;
 
-    background-color: rgba(25, 25, 25, 0.5);
+    background-color: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(3rem);
 
     opacity: 1;
@@ -40,15 +40,38 @@ $anim-container-transition-time: .5s;
 
 
     //text box
-    &__intro {
+    &__intro, &__scene {
         display: flex;
+        flex-direction: column;
+        align-items: center;
 
         .title {
+            font-family: 'Prata', serif;
+            color: #EFEFEF;
+            font-size: 1.6rem;
 
+            font-weight: 100;
+            margin: 0;
+            text-transform: uppercase;
+
+            @media only screen and (min-width: 425px) {
+                font-size: 2.4rem;
+            }
         }
 
-        .subtitle {
+        .text {
+            width: 100%;
 
+            font-family: 'Lato', sans-serif;
+            color: #C6C6C6;
+            font-size: 1.2rem;
+
+            margin-top: 1rem;
+            display: block;
+
+            @media only screen and (min-width: 425px) {
+                font-size: 1.6rem;
+            }
         }
     }
 

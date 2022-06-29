@@ -7,6 +7,8 @@ import { createPuzzle } from './puzzle.js';
 import { createQuotes } from './quotes.js';
 import { createCredits } from './credits.js';
 
+import textData from '../data/text.json';
+
 let overlay = document.getElementById('js--overlay');
 
 let camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -28,6 +30,7 @@ let exploreScene;
 let puzzleScene;
 let quotesScene;
 let creditsScene;
+let tutorialText = textData.text.ui.tutorial;
 
 init();
 animate();
@@ -128,9 +131,6 @@ function changeScene() {
 
 }
 
-document.getElementById( "js--sceneChanger" ).onclick = function() { changeScene() };
-document.getElementById( "js--sceneChanger" ).onkeydown = function() { false }
-
 function sceneRemover(obj) {
     while(obj.children.length > 0){
         sceneRemover(obj.children[0]);
@@ -151,3 +151,41 @@ function sceneRemover(obj) {
       obj.material.dispose();
     }
   }
+
+document.getElementById( "js--sceneChanger" ).onclick = function() { changeScene() };
+document.getElementById( "js--sceneChanger" ).onkeydown = function() { false }
+
+
+//function to open help/tutorial screen with correct scene info
+function openHelpScreen(scene) {
+    //catch empty param
+    if (scene == null) {
+        console.error("Wrong scene code given to openHelpScreen()!");
+        return;
+    }
+
+    //get dom
+    let helpScreenDOM = document.getElementById( "js--tutorial" );
+
+    //get & set dom of text with explanation of current scene
+    let sceneHelpTitle = document.getElementById("js--scene-help-title");
+    sceneHelpTitle.innerHTML = tutorialText[scene].title;
+
+    let sceneHelpText = document.getElementById("js--scene-help-text");
+    sceneHelpText.innerHTML = tutorialText[scene].text;
+
+    //remove hidden styling
+    helpScreenDOM.classList.remove("hidden");
+}
+
+
+//function to close help screen
+function closeHelpScreen() {
+    //get dom
+    let helpScreenDOM = document.getElementById( "js--tutorial" );
+    //add hidden styling
+    helpScreenDOM.classList.add("hidden");
+}
+//DOM event bind
+document.getElementById("js--tutorialButton").onclick = function() { openHelpScreen(currentScene) };
+document.getElementById("js--tutorial-close").onclick = function() { closeHelpScreen() };

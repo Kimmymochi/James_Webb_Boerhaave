@@ -1,0 +1,19 @@
+.puzzle {
+    z-index: 1;
+    display: none;
+
+    &__open {
+        display: block;
+
+        h2 {
+            font-family: "Prata", "serif";
+            font-size: 3rem;
+            font-weight: 100;
+            color: white;
+        }
+    }
+}
+
+
+
+

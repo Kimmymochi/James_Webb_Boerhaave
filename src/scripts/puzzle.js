@@ -22,26 +22,23 @@ export function createPuzzle( renderer, camera ) {
     // ----------------------------------------------------------------------
 
     // Ortographic camera
-    const frustumSize = 100;
-    const aspect = window.innerWidth / window.innerHeight;
-    camera = new THREE.OrthographicCamera(
-        frustumSize * aspect / - 2,
-        frustumSize * aspect / 2,
-        frustumSize / 2,
-        frustumSize / - 2, 1, 1000
-    );
+    // const frustumSize = 100;
+    // const aspect = window.innerWidth / window.innerHeight;
+    // camera = new THREE.OrthographicCamera(
+    //     frustumSize * aspect / - 2,
+    //     frustumSize * aspect / 2,
+    //     frustumSize / 2,
+    //     frustumSize / - 2, 1, 1000
+    // );
 
-    camera.position.set( - 200, 200, 200 );
-
-    const orbitControls = new OrbitControls( camera, renderer.domElement );
-    orbitControls.enableZoom = false;
+    // camera.position.set( - 200, 200, 200 );
 
     // Regular camera
-    // camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
-    // const orbitControls = new OrbitControls( camera, renderer.domElement );
-    // camera.position.set( 0, 20, 100 );
-    // orbitControls.enableZoom = false;
-    // orbitControls.update();
+    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
+    const orbitControls = new OrbitControls( camera, renderer.domElement );
+    camera.position.set( 0, 20, 100 );
+    orbitControls.enableZoom = false;
+    orbitControls.update();
 
     // Lighting
     //sun lighting
@@ -107,6 +104,20 @@ export function createPuzzle( renderer, camera ) {
     animate();
 
 
+    // UI a
+    const puzzleUI = document.getElementById("js--puzzle");
+
+    openPuzzelUI();
+
+    function openPuzzelUI()
+    {
+        puzzleUI.classList.add("open");
+    }
+
+    function closePuzzleUI()
+    {
+        puzzleUI.classList.remove("open");
+    }
 
     // WINDOW RESIZE
     window.addEventListener("resize", onWindowResize, false);

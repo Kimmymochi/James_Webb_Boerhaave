@@ -13,12 +13,12 @@ import sunscreens from '../models/sunscreens.gltf'
 
 import DragControls from 'three-dragcontrols'
 
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+
 
 const scene = new THREE.Scene();
-
-
-const bloomLayer = new THREE.Layers();
-bloomLayer.set(1);
 
 
 // RENDERER
@@ -33,22 +33,6 @@ document.body.appendChild( renderer.domElement );
 
 // CAMERA
 // ----------------------------------------------------------------------
-
-// Ortographic camera
-// const frustumSize = 100;
-// const aspect = window.innerWidth / window.innerHeight;
-// let camera = new THREE.OrthographicCamera(
-//     frustumSize * aspect / - 2,
-//     frustumSize * aspect / 2,
-//     frustumSize / 2,
-//     frustumSize / - 2, 1, 1000
-// );
-// camera.position.set( - 200, 200, 200 );
-
-
-
-
-// Regular camera
 const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
 camera.position.set( 0, 20, 100 );
 
@@ -67,10 +51,6 @@ dirLight.position.set(1, 2, -1);
 scene.add(dirLight);
 dirLight.castShadow = true;
 
-
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 function getRandomNumber(min, max) {
     return Math.random() * (max - min) + min;
@@ -147,10 +127,6 @@ function createStar(x, y, z)
     scene.add(star);
 }
 
-
-
-
-
 const renderScene = new RenderPass(scene, camera);
 const bloomPass = new UnrealBloomPass(
     new THREE.Vector2(window.innerWidth, window.innerHeight),
@@ -167,17 +143,17 @@ bloomComposer.renderToScreen = true;
 bloomComposer.addPass(renderScene);
 bloomComposer.addPass(bloomPass);
 
+const defaultLayer = 0;
+const bloomLayer = 1;
+
 // INITIATION
 // ----------------------------------------------------------------------
 let draggableParts = [];
 const meshes = [backpanel, BUS, goldPlating, secondaryMirror, solarPanels, sunscreens];
 
-
-
 const snappingPointRadius = 1;
 
 let collisionsEnabled = false;
-
 
 let snappingPointsData = [];
 let partsData = [];
@@ -261,6 +237,11 @@ function addDraggablePart(mesh, pos)
     gltfLoader.load( mesh, ( gltf ) =>
     {
         let model = gltf.scene;
+
+        // model.traverse(function (child) {
+        //     child.layers.set(defaultLayer);
+        // });
+
         model.scale.set(3, 3, 3);
 
         model.castShadow = true;
@@ -300,6 +281,8 @@ function addDraggablePart(mesh, pos)
         hitBox.add(model);
 
         hitBox.position.set(pos.x, pos.y, pos.z);
+
+        // hitBox.layers.set(defaultLayer);
     });
     return group;
 }
@@ -492,9 +475,14 @@ function puzzleCompleted()
 
 function animate()
 {
-    renderer.render( scene, camera );
-    requestAnimationFrame( animate );
-    //camera.layers.set(1);
+    requestAnimationFrame(animate);
+
+    renderer.clear();
+    camera.layers.set(defaultLayer);
+    renderer.render(scene, camera);
+
+    renderer.clearDepth();
+    camera.layers.set(bloomLayer);
     bloomComposer.render();
 }
 

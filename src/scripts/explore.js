@@ -471,3 +471,14 @@ export function createExplore(renderer, camera) {
 
     return scene;
 }
+
+
+export function removeExplore() {
+    const spans = document.querySelectorAll(".js--ui-annotation");
+
+    spans.forEach( span => {
+        span.remove();
+    });
+
+    document.getElementsByClassName("ui-label--reset")[0].classList.add("hidden");
+}

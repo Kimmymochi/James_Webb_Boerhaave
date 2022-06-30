@@ -16,13 +16,8 @@ export function createQuotes(renderer, camera) {
     camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 2, 2000);
     camera.position.set(10, 0, 0);
 
-    // FOR TESTING PUZZLE FIRST, CAN BE DELETED LATER
-    const ui = document.getElementById("js--ui");
-    ui.style.display = "none";
-
     // set intro text
     quote.style.display = "flex";
-    quote.classList.add('fadeIn');
     animate();
 
 

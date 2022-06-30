@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { createLaunch } from './launch.js';
 import { createInfrared } from './infrared.js';
-import { createExplore } from './explore.js';
+import { createExplore, removeExplore } from './explore.js';
 import { createPuzzle } from './puzzle.js';
 import { createQuotes } from './quotes.js';
 import { createCredits } from './credits.js';
@@ -27,6 +27,7 @@ let exploreScene;
 let puzzleScene;
 let quotesScene;
 let creditsScene;
+let creditsTimeout;
 
 init();
 animate();
@@ -85,6 +86,7 @@ export function changeScene() {
 
         } else if ( currentScene === "explore" ) {
             sceneRemover(exploreScene);
+            removeExplore();
             puzzleScene = createPuzzle(renderer, camera);
             scene = puzzleScene;
             currentScene = "puzzle";
@@ -101,7 +103,28 @@ export function changeScene() {
             scene = creditsScene;
             currentScene = "credits";
 
+            // auto-change to launch scene after some time
+            // NOTES:   -   problematic when other devices animate the credits slower
+            //          -   in case we do camera zoom-out animation we can change scene within tween.onComplete
+            creditsTimeout =  setTimeout( () => {
+                // changeScene();
+                location.reload();
+            }, "50000")
+
+        } else if (currentScene === "credits" ) {
+
+            location.reload();
+
+            // USE THESE IN CASE KIOSK WON'T DO LOCATION RELOADS
+            // when clicked on restart, remove auto-change evemt
+            // clearTimeout(creditsTimeout);
+
+            // sceneRemover(launchScene);    
+            // launchScene = createLaunch(renderer, camera);
+            // scene = launchScene;
+            // currentScene = "launch";
         }
+
     }, "1000");
 
 }

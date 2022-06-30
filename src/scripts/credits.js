@@ -121,9 +121,8 @@ export function createCredits(renderer, camera) {
     }
 
     // REMOVE THE QUOTE HTML
-    quote.classList.remove('fadeIn');
-    quote.classList.add('fadeOut');
-
+    quote.style.display = "none";
+    
     setTimeout( () => {
         quote.style.display ="none";
         addContribution("Grote vragen", ["Bezoek de tentoonstelling Grote Vragen in", "Rijksmuseum Boerhaave voor meer informatie", "over de James Webb Ruimtetelescoop"]);
@@ -161,7 +160,9 @@ export function createCredits(renderer, camera) {
     }
 
     //remove next scene button since its last scene
-    document.getElementById( "js--sceneChanger" ).remove();
+    // document.getElementById( "js--sceneChanger" ).remove();
+    document.getElementById( "js--arrowIcon").classList.add("hidden");
+    document.getElementById( "js--restartIcon").classList.remove("hidden");
 
     return scene;
 }

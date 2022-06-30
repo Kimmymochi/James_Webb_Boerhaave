@@ -41,7 +41,7 @@
     </div>
 
     <!-- QUOTES -->
-    <div id="js--quote" class="quote fadeIn" style="display: none">
+    <div id="js--quote" class="quote" style="display: none">
         <div class="quote__imagebox">
             <img class="quote__imagebox__image" src="images/dishoeck.jpg" data-quote-id="1" alt="">
             <img class="quote__imagebox__image" src="images/teplate.jpg" data-quote-id="2" alt="">
@@ -64,8 +64,9 @@
     </div>
 
     <!-- BUTTON TO CHANGE SCENES -->
-    <button id="js--sceneChanger" class="button sceneButton hidden" title="volgende">
-        <img src="images/icons/scene-arrow.svg" alt="next scene icon" class="icon" draggable="false">
+    <button id="js--sceneChanger" class="button sceneButton" title="volgende">
+        <img id="js--arrowIcon" src="images/icons/scene-arrow.svg" alt="next scene icon" class="icon" draggable="false">
+        <img id="js--restartIcon" src="images/icons/restart.svg" alt="restart scene icon" class="icon hidden" draggable="false">
     </button>
 </body>
 </html>

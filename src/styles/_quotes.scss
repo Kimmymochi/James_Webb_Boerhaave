@@ -11,8 +11,8 @@
     transition: opacity .5s ease-in-out;
 
     &__box {
-        width: 90rem;
-        height: 30rem;
+        width: 75rem;
+        height: 25rem;
         margin: 0 auto;
         padding: 2rem;
         display: flex;
@@ -25,20 +25,25 @@
 
         @media only screen and (min-width: 1200px) {
             height: 40rem;
+            width: 80rem;
         }
 
 
         &__text{
             font-family: "Prata", "serif";
-            font-size: 3rem;
+            font-size: 2rem;
             font-weight: 100;
             z-index: 2;
             transition: opacity .5s ease-in-out;
+
+            @media only screen and (min-width: 1200px) {
+                font-size: 3rem;
+            }
         }
 
         &__person {
             font-family: "Lato", "sans-serif";
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 100;
             z-index: 2;
             line-height: 0;
@@ -46,6 +51,10 @@
 
             &--name {
                 color: #E56528;
+            }
+
+            @media only screen and (min-width: 1200px) {
+                font-size: 2.5rem;
             }
         }
     }
@@ -80,24 +89,4 @@
 .active {
     border-width: 0.8rem;
     pointer-events: none;
-}
-
-
-.fadeIn {
-    opacity: 0;
-    animation: 2s ease-in forwards fadeIn;
-}
-
-.fadeOut {
-    animation: 1s ease-in forwards fadeOut;
-}
-
-@keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-}
-
-@keyframes fadeOut {
-    0% { opacity: 1; }
-    100% { opacity: 0; }
 }

@@ -10,12 +10,17 @@ import launchVideo from '../media/launch.mp4'
 import staticVideo from '../media/static.mp4'
 import launchAudio from '../media/launch.wav'
 
+
 const TWEEN = require('@tweenjs/tween.js');
 
 export function createLaunch(renderer, camera) {
     const launchTitle = document.getElementById("js--launchTitle");
     const launchCircle = document.getElementById("js--launchCircle");
     const body = document.querySelector('body');
+            
+    document.getElementById( "js--arrowIcon").classList.remove("hidden");
+    document.getElementById( "js--restartIcon").classList.add("hidden");
+    document.getElementById( "js--sceneChanger").classList.add("hidden");
 
     let scene;
     let controlRoom;
@@ -31,6 +36,7 @@ export function createLaunch(renderer, camera) {
     let hasLaunched = false;
 
     // CAMERA
+    camera.position.set( 0.1, 0, 0 );
     // camera.add( listener );
     
     // SCENE

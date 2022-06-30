@@ -8,7 +8,7 @@
             "tutorial": {
                 "launch": {
                     "title": "Het lanceren van de James Webb",
-                    "text": "Wanneer u de site binnenkomt, begeeft u zich in een control room. Dit is een ruimte waarin raketten gemonitord worden. Door te drukken op de rode startknop ( muis / touch) wordt de Ariane 5 raket, met de James Webb Ruimtetelescoop aan boord, gelanceerd. Dit kunt u vervolgens zien gebeuren op het scherm in de control room."
+                    "text": "Wanneer u de site binnenkomt, begeeft u zich in een control room. Dit is een ruimte waarin raketten gemonitord worden. Door te drukken op de rode startknop wordt de Ariane 5 raket, met de James Webb Ruimtetelescoop aan boord, gelanceerd. Dit kunt u vervolgens zien gebeuren op het scherm in de control room - waarna de ervaring begint."
                 },
                 "infrared": {
                     "title": "Leer over (infrarood) licht",
@@ -25,6 +25,29 @@
                 "quotes": {
                     "title": "De visie en verwachtingen van experts",
                     "text": "In dit segment kunt u lezen over wat experts zeggen over de toekomst van de ruimtetelescoop. Na het drukken op een foto verschijnt een quote van de bijbehorende persoon."
+                }
+            },
+            "controls":
+            {
+                "touchscreen":{
+                    "zoom": {
+                        "title": "In en uitzoomen",
+                        "text": "Om in een uit te zoomen in de applicatie kan u twee vingers op het scherm plaatsen en de vingers knijpen of spreiden."
+                    },
+                    "rotate": {
+                        "title": "Ronddraaien van de camera",
+                        "text": "Om de camera rond te draaien - waar dit mogelijk is in de applicatie - kan u een vinger op het scherm plaatsen en deze rondbewegen."
+                    }
+                },
+                "keyboardMouse": {
+                    "zoom": {
+                        "title": "In en uitzoomen",
+                        "text": "Om in een uit te zoomen in de applicatie kan u de muiswiel gebruiken, door deze naar voren of naar achter te draaien."
+                    },
+                    "rotate": {
+                        "title": "Ronddraaien van de camera",
+                        "text": "Om de camera rond te draaien - waar dit mogelijk is in de applicatie - kan u op het scherm klikken en vasthouden, en de muis bewegen."
+                    }
                 }
             }
         },

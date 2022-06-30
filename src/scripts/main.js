@@ -30,7 +30,8 @@ let exploreScene;
 let puzzleScene;
 let quotesScene;
 let creditsScene;
-let tutorialText = textData.text.ui.tutorial;
+const tutorialText = textData.text.ui.tutorial;
+const controlsText = textData.text.ui.controls;
 
 init();
 animate();
@@ -164,8 +165,21 @@ function openHelpScreen(scene) {
         return;
     }
 
-    //get dom
-    let helpScreenDOM = document.getElementById( "js--tutorial" );
+    //get DOM of controls tutorial
+    //rotate camera
+    let rotateTitle = document.getElementById("js--controls-rotate-title");
+    let rotateText = document.getElementById("js--controls-rotate-text");
+    //zoom
+    let zoomTitle = document.getElementById("js--controls-zoom-title");
+    let zoomText = document.getElementById("js--controls-zoom-text");
+
+    //check for if user is using touchscreen
+    let primaryInteraction = isTouchDevice() ? "touchscreen" : "keyboardMouse";
+    //display control information for primary controls (touchdevice, keyboard / mouse)
+    rotateTitle.innerHTML = controlsText[primaryInteraction].rotate.title;
+    rotateText.innerHTML = controlsText[primaryInteraction].rotate.text;
+    zoomTitle.innerHTML = controlsText[primaryInteraction].zoom.title;
+    zoomText.innerHTML = controlsText[primaryInteraction].zoom.text;
 
     //get & set dom of text with explanation of current scene
     let sceneHelpTitle = document.getElementById("js--scene-help-title");
@@ -174,6 +188,8 @@ function openHelpScreen(scene) {
     let sceneHelpText = document.getElementById("js--scene-help-text");
     sceneHelpText.innerHTML = tutorialText[scene].text;
 
+    //get dom
+    let helpScreenDOM = document.getElementById( "js--tutorial" );
     //remove hidden styling
     helpScreenDOM.classList.remove("hidden");
 }
@@ -189,3 +205,11 @@ function closeHelpScreen() {
 //DOM event bind
 document.getElementById("js--tutorialButton").onclick = function() { openHelpScreen(currentScene) };
 document.getElementById("js--tutorial-close").onclick = function() { closeHelpScreen() };
+
+
+// check for if device uses touchscreen
+function isTouchDevice() {
+    return (('ontouchstart' in window) ||
+        (navigator.maxTouchPoints > 0) ||
+        (navigator.msMaxTouchPoints > 0));
+}

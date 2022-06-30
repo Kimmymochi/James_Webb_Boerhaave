@@ -1,9 +1,10 @@
-const THREE = require('three');
-const TWEEN = require('@tweenjs/tween.js')
+import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import model from '../models/jwst.gltf'
 import textData from '../data/text.json';
+
+const TWEEN = require('@tweenjs/tween.js')
 
 export function createExplore(renderer, camera) {
     //ui DOM

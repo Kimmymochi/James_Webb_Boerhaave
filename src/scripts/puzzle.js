@@ -1,12 +1,10 @@
-const THREE = require('three');
-
+import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
 import backpanel from '../models/backpanel.gltf'
 import BUS from '../models/BUS.gltf'
 import goldPlating from '../models/gold_plating.gltf'
-import ISIS from '../models/ISIS.gltf'
 import secondaryMirror from '../models/secondary_mirror.gltf'
 import solarPanels from '../models/solar_panels.gltf'
 import sunscreens from '../models/sunscreens.gltf'
@@ -17,6 +15,7 @@ export function createPuzzle( renderer, camera ) {
 
     const scene = new THREE.Scene();
     const ui = document.getElementById("js--ui");
+    const nextScene = document.getElementById("js--sceneChanger")
 
     // CAMERA
     // ----------------------------------------------------------------------
@@ -93,6 +92,8 @@ export function createPuzzle( renderer, camera ) {
     ];
 
     ui.style.display = "none";
+    nextScene.classList.add("hidden");
+
     for (let i = 0; i < meshes.length; i++) {
 
         // Create a draggable part for all 3D models
@@ -392,6 +393,7 @@ export function createPuzzle( renderer, camera ) {
         dragControls.dispose();
 
         collisionsEnabled = false;
+        nextScene.classList.remove("hidden");
     }
 
 

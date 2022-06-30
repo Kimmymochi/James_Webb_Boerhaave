@@ -46,4 +46,11 @@
             height: 100%;
         }
     }
+
+    &.hidden {
+        display: none;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
 }

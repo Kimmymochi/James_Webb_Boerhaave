@@ -1,5 +1,4 @@
-const THREE = require('three');
-
+import * as THREE from 'three';
 import { createLaunch } from './launch.js';
 import { createInfrared } from './infrared.js';
 import { createExplore } from './explore.js';
@@ -61,7 +60,7 @@ function render() {
 }
 
 // change scene on click, bind to button
-function changeScene() {
+export function changeScene() {
     overlay.classList.remove('firstFade');
     overlay.classList.add('fadeInOut');
 

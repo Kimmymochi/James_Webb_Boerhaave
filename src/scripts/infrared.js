@@ -1,14 +1,15 @@
-const THREE = require('three');
-const TWEEN = require('@tweenjs/tween.js')
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import textData from '../data/text.json';
 import model from '../models/jwst.gltf'
+
+const TWEEN = require('@tweenjs/tween.js')
 
 export function createInfrared(renderer, camera, fireSceneChange) {
     //ui DOM
     const ui = document.getElementById("js--ui");
     const launchTitle = document.getElementById("js--launchTitle");
+    document.getElementById("js--sceneChanger").classList.remove("hidden");
 
     //chapters
     const infraredText = textData.text.infrared.chapters;
@@ -72,6 +73,7 @@ export function createInfrared(renderer, camera, fireSceneChange) {
     setupInfrared();
     launchTitle.style.display = "none";
     ui.style.display = "block";
+
     camera.rotation.set(0,0,0);
 
     // EventListeners

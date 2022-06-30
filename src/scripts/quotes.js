@@ -1,4 +1,4 @@
-const THREE = require('three');
+import * as THREE from 'three';
 import textData from '../data/text.json';
 
 export function createQuotes(renderer, camera) {

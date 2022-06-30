@@ -1,14 +1,16 @@
-const THREE = require('three')
-const TWEEN = require('@tweenjs/tween.js')
+import * as THREE from 'three';
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { InteractionManager } from "three.interactive";
+import { changeScene }  from "./main.js";
+
 import modelControlroom from '../models/controlroom.gltf'
 import modelButton from '../models/button.gltf'
 import launchVideo from '../media/launch.mp4'
 import staticVideo from '../media/static.mp4'
 import launchAudio from '../media/launch.wav'
 
+const TWEEN = require('@tweenjs/tween.js');
 
 export function createLaunch(renderer, camera) {
     const launchTitle = document.getElementById("js--launchTitle");
@@ -199,6 +201,10 @@ export function createLaunch(renderer, camera) {
             .onComplete( function () {
                 camera.position.copy ( targetPos );
                 showTitle();
+
+                setTimeout( function () {
+                    changeScene();
+                }, "5000");
             })
             .start();
     }
@@ -209,6 +215,7 @@ export function createLaunch(renderer, camera) {
         launchTitle.classList.add('fadeIn');
         launchCircle.classList.add('rotate');
         sound.setVolume( 0 );
+        video.pause();
     }
 
     return scene;

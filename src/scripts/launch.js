@@ -1,6 +1,4 @@
 import * as THREE from 'three';
-
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { InteractionManager } from "three.interactive";
 import { changeScene }  from "./main.js";
 
@@ -13,7 +11,7 @@ import launchAudio from '../media/launch.wav'
 
 const TWEEN = require('@tweenjs/tween.js');
 
-export function createLaunch(renderer, camera) {
+export function createLaunch(renderer, camera, loader) {
     const launchTitle = document.getElementById("js--launchTitle");
     const launchCircle = document.getElementById("js--launchCircle");
     const body = document.querySelector('body');
@@ -27,6 +25,9 @@ export function createLaunch(renderer, camera) {
     let button;
     let pushAnimation;
     let video;
+    let videoImage;
+    let videoImageContext;
+    let videoTexture;
     let sound;
 
     let mixer = new THREE.AnimationMixer();
@@ -60,8 +61,7 @@ export function createLaunch(renderer, camera) {
 
     // MODELS
     // Button Model
-    const gltfLoader = new GLTFLoader();
-    gltfLoader.load( modelButton, function ( gltf ) {
+    loader.load( modelButton, function ( gltf ) {
         button = gltf.scene;
         button.castShadow = true;
         button.receiveShadow = true;
@@ -110,7 +110,7 @@ export function createLaunch(renderer, camera) {
     });
 
     // Controlroom Model
-    gltfLoader.load( modelControlroom, function ( gltf ) {
+    loader.load( modelControlroom, function ( gltf ) {
         controlRoom = gltf.scene;
         //Set new material to screens
         let screenMaterial = new THREE.MeshPhongMaterial( { 
@@ -139,28 +139,36 @@ export function createLaunch(renderer, camera) {
     video.load();
     video.play();
 
+    // fixes for 'WebGL: INVALID_VALUE: textImage2D: no video; 
+    videoImage = document.createElement( 'canvas' );
+	videoImage.width = 1920;
+	videoImage.height = 1080;
+
+	videoImageContext = videoImage.getContext( '2d' );
+	videoImageContext.fillStyle = '#000000';
+	videoImageContext.fillRect( 0, 0, videoImage.width, videoImage.height );
+
     // Add video to texture
-    let videoTexture = new THREE.VideoTexture( video );
+    videoTexture = new THREE.VideoTexture( videoImage );
     videoTexture.needsUpdate = true;
     videoTexture.minFilter = THREE.LinearFilter;
     videoTexture.magFilter = THREE.LinearFilter;
     let videoMaterial = new THREE.MeshBasicMaterial( {map: videoTexture, side: THREE.FrontSide, toneMapped: false} );
     
     // Create small video object
-    let smallVideoPLane = new THREE.PlaneGeometry( 0.45, 0.3 );
+    let smallVideoPLane = new THREE.PlaneBufferGeometry( 0.45, 0.3 );
     let smallVideoMesh = new THREE.Mesh( smallVideoPLane, videoMaterial );
     smallVideoMesh.position.set( -0.14, 0.04, -0.95 );;
     smallVideoMesh.rotateX(0.16);
     scene.add(smallVideoMesh)
 
     // Create big video object
-    let bigVideoPlane = new THREE.PlaneGeometry( 10, 7.5 );
+    let bigVideoPlane = new THREE.PlaneBufferGeometry( 10, 7.5 );
     let bigVideoMesh = new THREE.Mesh( bigVideoPlane, videoMaterial );
     bigVideoMesh.position.set( -6, 6.5, -6.3 );
     scene.add(bigVideoMesh)
 
     // AUDIO
-    // TODO: user gesture is sometimes needed to play audio, maybe add start screen where input is needed
     sound = new THREE.Audio( listener );
     let audioLoader = new THREE.AudioLoader();
     audioLoader.load( launchAudio, function ( buffer ) {
@@ -192,6 +200,13 @@ export function createLaunch(renderer, camera) {
     }
 
     function render() {
+
+        // fixes for 'WebGL: INVALID_VALUE: texImage2D: no video; 
+        if ( video.readyState === video.HAVE_ENOUGH_DATA ) {
+            videoImageContext.drawImage( video, 0, 0 );
+            if ( videoTexture ) { videoTexture.needsUpdate = true; }
+        }
+
         renderer.render(scene, camera);
     }
     
@@ -210,6 +225,7 @@ export function createLaunch(renderer, camera) {
 
                 setTimeout( function () {
                     changeScene();
+                    video.pause();
                 }, "5000");
             })
             .start();
@@ -221,7 +237,6 @@ export function createLaunch(renderer, camera) {
         launchTitle.classList.add('fadeIn');
         launchCircle.classList.add('rotate');
         sound.setVolume( 0 );
-        video.pause();
     }
 
     return scene;

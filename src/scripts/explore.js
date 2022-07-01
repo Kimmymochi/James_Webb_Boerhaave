@@ -1,12 +1,12 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import model from '../models/jwst.gltf'
 import textData from '../data/text.json';
 
 const TWEEN = require('@tweenjs/tween.js')
 
-export function createExplore(renderer, camera) {
+
+export function createExplore(renderer, camera, loader) {
     //ui DOM
     const ui = document.getElementById("js--ui");
     // this is the distance the annotation will have from the annotation fixture point
@@ -47,7 +47,7 @@ export function createExplore(renderer, camera) {
 
     // Camera
     camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 2, 2000);
-    camera.position.set(4, 0, 20);
+    camera.position.set(4, 0, 25);
 
     // Scene
     scene = new THREE.Scene();
@@ -70,9 +70,7 @@ export function createExplore(renderer, camera) {
     scene.add(sceneLight);
 
 	// Model
-	const gltfLoader = new GLTFLoader();
-
-	gltfLoader.load( model, function ( gltf ) {
+	loader.load( model, function ( gltf ) {
         gltf.scene.castShadow = true;
 		gltf.scene.receiveShadow = true;
 
@@ -160,7 +158,7 @@ export function createExplore(renderer, camera) {
             scene.add(annotationLine);
 
             //add little ball on ends of line
-            let geometry = new THREE.SphereGeometry( annotationSphereRadius, 16, 16 );
+            let geometry = new THREE.SphereBufferGeometry( annotationSphereRadius, 16, 16 );
             let sphereStart = new THREE.Mesh( geometry, annotationSphereMaterial );
             let sphereEnd = new THREE.Mesh( geometry, annotationSphereMaterial );
             sphereStart.position.set(location.x, location.y, location.z);

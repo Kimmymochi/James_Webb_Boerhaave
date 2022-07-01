@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { createLaunch } from './launch.js';
 import { createInfrared } from './infrared.js';
 import { createExplore, removeExplore } from './explore.js';
@@ -7,6 +8,7 @@ import { createQuotes } from './quotes.js';
 import { createCredits } from './credits.js';
 
 let overlay = document.getElementById('js--overlay');
+let nextScene = document.getElementById('js--sceneChanger');
 
 let camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
@@ -29,6 +31,9 @@ let quotesScene;
 let creditsScene;
 let creditsTimeout;
 
+// gtlf loader for all scenes, better peformance-wise
+const loader = new GLTFLoader();
+
 init();
 animate();
 
@@ -36,7 +41,7 @@ function init() {
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
     camera.position.set( 0.1, 0, 0 );
 
-    launchScene = createLaunch(renderer, camera);
+    launchScene = createLaunch(renderer, camera, loader);
     scene = launchScene;
     currentScene = "launch";
 
@@ -74,34 +79,39 @@ export function changeScene() {
 
         if ( currentScene === "launch" ) {
             sceneRemover(launchScene);
-            infraredScene = createInfrared(renderer, camera, changeScene);
+            infraredScene = createInfrared(renderer, camera, loader, changeScene);
             scene = infraredScene;
             currentScene = "infrared";
+            nextScene.style.display = "block";
+            nextScene.classList.remove('hidden');
 
         } else if ( currentScene === "infrared" ) {
             sceneRemover(infraredScene);
-            exploreScene = createExplore(renderer, camera);
+            exploreScene = createExplore(renderer, camera, loader);
             scene = exploreScene;
             currentScene = "explore";
+            nextScene.classList.remove('hidden');
 
         } else if ( currentScene === "explore" ) {
             sceneRemover(exploreScene);
             removeExplore();
-            puzzleScene = createPuzzle(renderer, camera);
+            puzzleScene = createPuzzle(renderer, camera, loader);
             scene = puzzleScene;
             currentScene = "puzzle";
 
         } else if ( currentScene === "puzzle" ) {
             sceneRemover(puzzleScene);
-            quotesScene = createQuotes(renderer, camera);
+            quotesScene = createQuotes(renderer, camera, loader);
             scene = quotesScene
             currentScene ="quotes"
+            nextScene.classList.remove('hidden');
 
         } else if ( currentScene === "quotes" ) {
             sceneRemover(quotesScene);
             creditsScene = createCredits(renderer, camera);
             scene = creditsScene;
             currentScene = "credits";
+            nextScene.classList.remove('hidden');
 
             // auto-change to launch scene after some time
             // NOTES:   -   problematic when other devices animate the credits slower
@@ -129,8 +139,12 @@ export function changeScene() {
 
 }
 
-document.getElementById( "js--sceneChanger" ).onclick = function() { changeScene() };
-document.getElementById( "js--sceneChanger" ).onkeydown = function() { false }
+nextScene.onclick = function() { 
+    changeButton.classList.add('hidden');
+    changeScene() 
+};
+
+nextScene.onkeydown = function() { false }
 
 function sceneRemover(obj) {
     while(obj.children.length > 0){

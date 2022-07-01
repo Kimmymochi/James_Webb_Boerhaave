@@ -1,15 +1,13 @@
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import textData from '../data/text.json';
 import model from '../models/jwst.gltf'
 
 const TWEEN = require('@tweenjs/tween.js')
 
-export function createInfrared(renderer, camera, fireSceneChange) {
+export function createInfrared(renderer, camera, loader, fireSceneChange) {
     //ui DOM
     const ui = document.getElementById("js--ui");
     const launchTitle = document.getElementById("js--launchTitle");
-    document.getElementById("js--sceneChanger").classList.remove("hidden");
 
     //chapters
     const infraredText = textData.text.infrared.chapters;
@@ -25,9 +23,7 @@ export function createInfrared(renderer, camera, fireSceneChange) {
     camera.position.set(-4, 0, 4);
 
     //model
-	const gltfLoader = new GLTFLoader();
-
-	gltfLoader.load( model, function ( gltf ) {
+	loader.load( model, function ( gltf ) {
         gltf.scene.castShadow = true;
 		gltf.scene.receiveShadow = true;
 
@@ -109,11 +105,22 @@ export function createInfrared(renderer, camera, fireSceneChange) {
 
 
     function setupInfrared() {
-        document.getElementById( "js--sceneChanger" ).onclick = function(event) {
+        document.getElementById("js--sceneChanger").onclick = function(event) {
             //if last chapter, run main.js function to change scene
             if (Object.keys(infraredText).length - 1 == currentChapterIndex) {
+                
                 closePanel();
-                fireSceneChange();
+                document.getElementById("js--sceneChanger").classList.add('hidden');               
+               
+                // change camera & telescope position
+                let cameraPosition = new THREE.Vector3(22.5, 3, 3);                
+                tweenCamera(cameraPosition, 2000);
+                tweenTelescope( -Math.PI / 10 );
+    
+                setTimeout( function() {
+                    fireSceneChange();
+                }, "2000");
+
             //otherwise, increment chapter and run setup
             } else {
                 currentChapterIndex++;
@@ -126,9 +133,9 @@ export function createInfrared(renderer, camera, fireSceneChange) {
         let dashedLine = new THREE.LineBasicMaterial( {
             color: 0xffffff,
             linewidth: 1,
-            scale: 1,
-            dashSize: .1,
-            gapSize: .1,
+            // scale: 1,
+            // dashSize: .1,
+            // gapSize: .1,
         });
         let dashedLine_red = dashedLine.clone();
         dashedLine_red.color.setHex(0xff0000);
@@ -231,5 +238,22 @@ export function createInfrared(renderer, camera, fireSceneChange) {
             })
             .start();
     }
+
+    // animates the Y rotation of telescope to given value
+    function tweenTelescope( newTelescopeY ) {
+        let currentTelescope = new THREE.Vector3().copy( telescope.rotation );
+
+        new TWEEN.Tween(currentTelescope)
+            .to({x: 0, y: newTelescopeY, z: 0}, 2000)
+            .easing(TWEEN.Easing.Quadratic.Out)
+            .onUpdate(function () {
+                telescope.rotation.y = currentTelescope.y
+            })
+            .onComplete( function () {
+                telescope.rotation.y = newTelescopeY;
+            })
+            .start();
+    }
+
     return scene;
 }

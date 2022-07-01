@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
 import backpanel from '../models/backpanel.gltf'
 import BUS from '../models/BUS.gltf'
@@ -11,7 +10,7 @@ import sunscreens from '../models/sunscreens.gltf'
 
 import DragControls from 'three-dragcontrols'
 
-export function createPuzzle( renderer, camera ) {
+export function createPuzzle( renderer, camera, loader ) {
 
     const scene = new THREE.Scene();
     const ui = document.getElementById("js--ui");
@@ -92,7 +91,6 @@ export function createPuzzle( renderer, camera ) {
     ];
 
     ui.style.display = "none";
-    nextScene.classList.add("hidden");
 
     for (let i = 0; i < meshes.length; i++) {
 
@@ -144,7 +142,7 @@ export function createPuzzle( renderer, camera ) {
     {
         let geometry, box;
 
-        geometry = new THREE.BoxGeometry(objectWidth,objectHeight,objectDepth);
+        geometry = new THREE.BoxBufferGeometry(objectWidth,objectHeight,objectDepth);
 
         box = new THREE.Mesh(geometry, material);
         draggableParts.push(box);
@@ -156,9 +154,7 @@ export function createPuzzle( renderer, camera ) {
     function addDraggablePart(mesh, pos)
     {
         let group = new THREE.Group();
-        const gltfLoader = new GLTFLoader();
-
-        gltfLoader.load( mesh, ( gltf ) =>
+        loader.load( mesh, ( gltf ) =>
         {
             let model = gltf.scene;
             model.scale.set(3, 3, 3);
@@ -214,7 +210,7 @@ export function createPuzzle( renderer, camera ) {
     function addSnappingPoint(radius, pos, correctPartId)
     {
         const snappingPointMesh = new THREE.Mesh(
-            new THREE.SphereGeometry(radius),
+            new THREE.SphereBufferGeometry(radius),
             new THREE.MeshPhongMaterial({color: 0xffffff})
         );
 
@@ -379,7 +375,8 @@ export function createPuzzle( renderer, camera ) {
     }
 
     function puzzleCompleted()
-    {
+    {   collisionsEnabled = false;
+
         for (let partsIndex = 0; partsIndex < partsData.length; partsIndex++)
         {
             partsData[partsIndex].mesh.material.opacity = 0;
@@ -389,11 +386,18 @@ export function createPuzzle( renderer, camera ) {
         {
             snappingPointsData[SPIndex].mesh.material.opacity = 0;
         }
+        
+        dragControls.removeEventListener('dragstart');
+        dragControls.removeEventListener('dragend');
+
+
         dragControls.deactivate();
         dragControls.dispose();
 
-        collisionsEnabled = false;
+
         nextScene.classList.remove("hidden");
+
+      
     }
 
 

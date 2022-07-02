@@ -9,6 +9,9 @@ import solarPanels from '../models/solar_panels.gltf'
 import sunscreens from '../models/sunscreens.gltf'
 
 import DragControls from 'three-dragcontrols'
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 export function createPuzzle( renderer, camera, loader ) {
 
@@ -43,20 +46,20 @@ export function createPuzzle( renderer, camera, loader ) {
 
     // Lighting
     //sun lighting
-    const sun = new THREE.PointLight( 0xffffff , 1, 500 );
-    sun.position.set( 20, -20, 0 );
-    sun.castShadow = true;
-    sun.shadow.radius = 2;
-    scene.add( sun );
-    const sun2 = new THREE.PointLight( 0xffffff , 1, 500 );
-    sun2.position.set( 20, 10, 0 );
-    sun2.castShadow = true;
-    sun2.shadow.radius = 2;
-    scene.add( sun2 );
+    // const sun = new THREE.PointLight( 0xffffff , 1, 500 );
+    // sun.position.set( 20, -20, 0 );
+    // sun.castShadow = true;
+    // sun.shadow.radius = 2;
+    // scene.add( sun );
+    // const sun2 = new THREE.PointLight( 0xffffff , 1, 500 );
+    // sun2.position.set( 20, 10, 0 );
+    // sun2.castShadow = true;
+    // sun2.shadow.radius = 2;
+    // scene.add( sun2 );
 
-    //general lighting
-    const sceneLight = new THREE.AmbientLight(0xffffb8, 0.2);
-    scene.add(sceneLight);
+    // //general lighting
+    // const sceneLight = new THREE.AmbientLight(0xffffb8, 0.2);
+    // scene.add(sceneLight);
 
 
     // INITIATION
@@ -66,10 +69,12 @@ export function createPuzzle( renderer, camera, loader ) {
 
     const snappingPointRadius = 1;
 
-    let collisionsEnabled = false;
 
-    let snappingPointsData = [];
-    let partsData = [];
+
+//     let collisionsEnabled = false;
+
+//     let snappingPointsData = [];
+//     let partsData = [];
 
     const partPositions = [
         new THREE.Vector3(23, -4, 20),
@@ -91,6 +96,111 @@ export function createPuzzle( renderer, camera, loader ) {
     ];
 
     ui.style.display = "none";
+
+    // LIGHTS
+    // ----------------------------------------------------------------------
+    const light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
+    scene.add( light );
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.3, 50);
+    dirLight.position.set(1, 2, -1);
+    scene.add(dirLight);
+    dirLight.castShadow = true;
+
+
+    function getRandomNumber(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+
+    // STARS BACKROUND
+
+
+    // var radius = 1;
+    // var sphere = new THREE.Mesh(new THREE.SphereGeometry(radius, 32, 24), new THREE.MeshBasicMaterial({color: "gray", wireframe: true}));
+    // scene.add(sphere);
+    //
+    // var box = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.2), new THREE.MeshBasicMaterial({color: "red", wireframe: true}));
+    // box.position.setFromSphericalCoords(radius + 0.1, THREE.Math.degToRad(23), THREE.Math.degToRad(45));
+    // box.lookAt(sphere.position);
+    // scene.add(box);
+
+    createStarEnvironment();
+
+    function createStarEnvironment()
+    {
+        for (let i = 0; i < 25; i++)
+        {
+            // top
+            createStar(
+                getRandomNumber(-300, 300), // x
+                getRandomNumber(200, 300), // y
+                getRandomNumber(-300, 300)  // z
+            );
+
+            // bottom
+            createStar(
+                getRandomNumber(-300, 300), // x
+                getRandomNumber(-200, -300), // y
+                getRandomNumber(-300, 300)  // z
+            );
+
+            // right
+            createStar(
+                getRandomNumber(200, 300), // x
+                getRandomNumber(-200, 300), // y
+                getRandomNumber(-300, 300)  // z
+            );
+
+            // left
+            createStar(
+                getRandomNumber(-200, -300), // x
+                getRandomNumber(-200, 300), // y
+                getRandomNumber(-300, 300)  // z
+            );
+        }
+    }
+
+    function createStar(x, y, z)
+    {
+        const starColors = [
+            new THREE.Color(0x6487C7),
+            new THREE.Color(0xD1C0A4),
+            new THREE.Color(0xB5754F),
+            new THREE.Color(0xFCFBF9)
+        ];
+
+        let starColor = starColors[Math.round(getRandomNumber(0, starColors.length - 1), 1)];
+
+        const star = new THREE.Mesh(
+            new THREE.SphereGeometry(getRandomNumber(0.3, 0.6)),
+            new THREE.MeshPhongMaterial({color: starColor})
+        );
+
+        star.layers.set(1);
+
+        star.position.set(x, y, z);
+
+        scene.add(star);
+    }
+
+    const renderScene = new RenderPass(scene, camera);
+    const bloomPass = new UnrealBloomPass(
+        new THREE.Vector2(window.innerWidth, window.innerHeight),
+        1.5,
+        0.4,
+        0.85
+    );
+    bloomPass.threshold = 0;
+    bloomPass.strength = 5; //intensity of glow
+    bloomPass.radius = 0;
+    const bloomComposer = new EffectComposer(renderer);
+    bloomComposer.setSize(window.innerWidth, window.innerHeight);
+    bloomComposer.renderToScreen = true;
+    bloomComposer.addPass(renderScene);
+    bloomComposer.addPass(bloomPass);
+
+    const defaultLayer = 0;
+    const bloomLayer = 1;
 
     for (let i = 0; i < meshes.length; i++) {
 
@@ -127,6 +237,13 @@ export function createPuzzle( renderer, camera, loader ) {
     {
         orbitControls.enabled = false;
         collisionsEnabled = true;
+        let model = gltf.scene;
+
+        // model.traverse(function (child) {
+        //     child.layers.set(defaultLayer);
+        // });
+
+        model.scale.set(3, 3, 3);
 
         currentlyDragging = true;
     });
@@ -230,9 +347,13 @@ export function createPuzzle( renderer, camera, loader ) {
             correctPart: correctPartId
         });
 
+        hitBox.position.set(pos.x, pos.y, pos.z);
+
+      
+        // hitBox.layers.set(defaultLayer);  
         return snappingPointMesh;
     }
-
+ 
     let closestPartDistance = 10000000;
     let closestPart = null;
     let closestSP = null;
@@ -341,12 +462,27 @@ export function createPuzzle( renderer, camera, loader ) {
     }
 
     function SPHoverState(SP)
-    {
-        SP.mesh.material.transparent = false;
+    dragControls.dispose();
+    
+    const scale = snappingPointRadius * 1.5;
+    SP.mesh.scale.set(scale, scale, scale);
+}
 
-        const scale = snappingPointRadius * 1.5;
-        SP.mesh.scale.set(scale, scale, scale);
-    }
+
+    // TODO: voeg deze code toe bij window resize
+    // bloomComposer.setSize(window.innerWidth, window.innerHeight);
+
+    // Updates the location of parts bounding box so it will
+    // stay in the right position when it is dragged
+    function updatePartsBBLocation()
+    {
+        for (let partsIndex = 0; partsIndex < partsData.length; partsIndex++)
+        {
+            SP.mesh.material.transparent = false;
+
+            const scale = snappingPointRadius * 1.5;
+            SP.mesh.scale.set(scale, scale, scale);
+        }
 
     function resetPartsToDefaultState()
     {
@@ -405,6 +541,9 @@ export function createPuzzle( renderer, camera, loader ) {
     //  ----------------------------------------------------------------------
     function animate()
     {
+        renderer.clear();
+        camera.layers.set(defaultLayer);
+
         requestAnimationFrame( animate );
 
         updatePartsBBLocation();
@@ -413,6 +552,10 @@ export function createPuzzle( renderer, camera, loader ) {
         if (collisionsEnabled) checkCollisions();
 
         renderer.render( scene, camera );
+        renderer.clearDepth();
+        camera.layers.set(bloomLayer);
+        bloomComposer.render();
+
     }
 
     // Updates the location of parts bounding box so it will

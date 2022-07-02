@@ -101,6 +101,7 @@ export function createPuzzle( renderer, camera ) {
     // UI
     // ----------------------------------------------------------------------
     const puzzleUI = document.getElementById("js--puzzle");
+    const puzzleHintButton = document.getElementById("js--puzzle-hint-button");
 
     initPuzzleUI(textData.text.puzzle.title, textData.text.puzzle.text);
     openPuzzleUI();
@@ -123,6 +124,14 @@ export function createPuzzle( renderer, camera ) {
     {
         puzzleUI.classList.remove("open");
     }
+
+    puzzleHintButton.addEventListener("click", useHint);
+
+    function useHint()
+    {
+        alert("You clicked me");
+    }
+
 
     // WINDOW RESIZE
     window.addEventListener("resize", onWindowResize, false);
@@ -377,24 +386,35 @@ export function createPuzzle( renderer, camera ) {
 
     function partDefaultState(part)
     {
-        part.mesh.material.color = new THREE.Color( 0xffffff);
-        part.mesh.material.opacity = 0.1;
+        setPartEmission(part, new THREE.Color( 0x000000));
     }
 
     function partPlacedCorrectlyState(part)
     {
-        part.mesh.material.color = new THREE.Color( 0x32a852);
-        part.mesh.material.opacity = 0.5;
+        setPartEmission(part, new THREE.Color( 0x32a852));
     }
 
     function partPlacedIncorrectlyState(part)
     {
-        part.mesh.material.color = new THREE.Color( 0xeb4034);
-        part.mesh.material.opacity = 0.5;
+        setPartEmission(part, new THREE.Color(0xeb4034));
+    }
+
+    function setPartEmission(part, color)
+    {
+        part.mesh.traverse(function (child)
+        {
+            if (child.material && child.material.emissive)
+            {
+                child.material.emissive = color;
+                child.material.opacity = 0.5;
+            }
+        });
     }
 
     function puzzleCompleted()
     {
+        resetPartsToDefaultState();
+
         for (let partsIndex = 0; partsIndex < partsData.length; partsIndex++)
         {
             partsData[partsIndex].mesh.material.opacity = 0;
@@ -404,6 +424,7 @@ export function createPuzzle( renderer, camera ) {
         {
             snappingPointsData[SPIndex].mesh.material.opacity = 0;
         }
+
         dragControls.deactivate();
         dragControls.dispose();
 

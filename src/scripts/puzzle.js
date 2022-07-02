@@ -13,6 +13,9 @@ import sunscreens from '../models/sunscreens.gltf'
 
 import DragControls from 'three-dragcontrols'
 
+import textData from '../data/text.json';
+
+
 export function createPuzzle( renderer, camera ) {
 
     const scene = new THREE.Scene();
@@ -20,28 +23,20 @@ export function createPuzzle( renderer, camera ) {
 
     // CAMERA
     // ----------------------------------------------------------------------
-
-    // Ortographic camera
-    // const frustumSize = 100;
-    // const aspect = window.innerWidth / window.innerHeight;
-    // camera = new THREE.OrthographicCamera(
-    //     frustumSize * aspect / - 2,
-    //     frustumSize * aspect / 2,
-    //     frustumSize / 2,
-    //     frustumSize / - 2, 1, 1000
-    // );
-
-    // camera.position.set( - 200, 200, 200 );
-
-    // Regular camera
     camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
-    const orbitControls = new OrbitControls( camera, renderer.domElement );
     camera.position.set( 0, 20, 100 );
+
+
+    // ORBIT CONTROLS
+    // ----------------------------------------------------------------------
+    const orbitControls = new OrbitControls( camera, renderer.domElement );
     orbitControls.enableZoom = false;
+    orbitControls.enablePan = false;
     orbitControls.update();
 
-    // Lighting
-    //sun lighting
+
+    // LIGHTING
+    // ----------------------------------------------------------------------
     const sun = new THREE.PointLight( 0xffffff , 1, 500 );
     sun.position.set( 20, -20, 0 );
     sun.castShadow = true;
@@ -53,7 +48,6 @@ export function createPuzzle( renderer, camera ) {
     sun2.shadow.radius = 2;
     scene.add( sun2 );
 
-    //general lighting
     const sceneLight = new THREE.AmbientLight(0xffffb8, 0.2);
     scene.add(sceneLight);
 
@@ -104,12 +98,23 @@ export function createPuzzle( renderer, camera ) {
     animate();
 
 
-    // UI a
+    // UI
+    // ----------------------------------------------------------------------
     const puzzleUI = document.getElementById("js--puzzle");
 
-    openPuzzelUI();
+    initPuzzleUI(textData.text.puzzle.title, textData.text.puzzle.text);
+    openPuzzleUI();
 
-    function openPuzzelUI()
+    function initPuzzleUI(title, text)
+    {
+        let titleDOM = document.querySelector('#js--puzzle-title');
+        let textDOM = document.querySelector('#js--puzzle-text');
+
+        titleDOM.innerHTML = title;
+        textDOM.innerHTML = text;
+    }
+
+    function openPuzzleUI()
     {
         puzzleUI.classList.add("open");
     }
@@ -403,6 +408,8 @@ export function createPuzzle( renderer, camera ) {
         dragControls.dispose();
 
         collisionsEnabled = false;
+
+        closePuzzleUI();
     }
 
 

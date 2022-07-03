@@ -129,7 +129,33 @@ export function createPuzzle( renderer, camera ) {
 
     function useHint()
     {
-        alert("You clicked me");
+        collisionsEnabled = true;
+
+        for (let SPIndex = 0; SPIndex < snappingPointsData.length; SPIndex++)
+        {
+            let SPMesh = snappingPointsData[SPIndex].mesh;
+            let partMesh = partsData[SPIndex].mesh;
+
+            let SPSnappedObject = snappingPointsData[SPIndex].snappedObject;
+
+            let isNotCorrectlyPlaced = SPSnappedObject != partsData[SPIndex];
+            let SPIsEmpty = SPSnappedObject === null;
+
+            if (isNotCorrectlyPlaced)
+            {
+                if (!SPIsEmpty)
+                {
+                    SPSnappedObject.mesh.position.set(
+                        SPSnappedObject.mesh.position.x + 30,
+                        SPSnappedObject.mesh.position.y + 30,
+                        SPSnappedObject.mesh.position.z + 30
+                    );
+                }
+
+                partMesh.position.set(SPMesh.position.x, SPMesh.position.y, SPMesh.position.z);
+                break;
+            }
+        }
     }
 
 

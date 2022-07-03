@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import textData from '../data/text.json';
+import { addEnvironment } from './stars.js';
 
 export function createQuotes(renderer, camera) {
     
@@ -10,15 +11,28 @@ export function createQuotes(renderer, camera) {
     const quotePerson = document.getElementById('js--quotePerson');
     const quoteImages = document.querySelectorAll('.quote__imagebox__image');
 
-    const scene = new THREE.Scene();
+    const scene = new THREE.Scene();;
 
     // set parameter camera to new position
-    camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 2, 2000);
-    camera.position.set(10, 0, 0);
+    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
+    camera.position.set( 0, 20, 100 );
+
+    // LIGHTS
+    // ----------------------------------------------------------------------
+    const light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
+    scene.add( light );
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.3, 50);
+    dirLight.position.set(1, 2, -1);
+    scene.add(dirLight);
+    dirLight.castShadow = true;
 
     // set intro text
     quote.style.display = "flex";
+
     animate();
+    addEnvironment( renderer, camera, scene);
+
 
 
     // window resizer

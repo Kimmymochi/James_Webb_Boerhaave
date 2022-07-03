@@ -7,6 +7,7 @@ import { createPuzzle } from './puzzle.js';
 import { createQuotes } from './quotes.js';
 import { createCredits } from './credits.js';
 
+
 let overlay = document.getElementById('js--overlay');
 let nextScene = document.getElementById('js--sceneChanger');
 
@@ -16,7 +17,7 @@ let camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHe
 let renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor(0x333333, 1);
+renderer.setClearColor( 0x000000,1 );
 renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.shadowMap.enabled = true;
 
@@ -47,6 +48,7 @@ function init() {
 
     document.body.appendChild(renderer.domElement);
     window.addEventListener("resize", onWindowResize, false);
+
 }
 
 function onWindowResize() {
@@ -67,6 +69,7 @@ function render() {
 
 // change scene on click, bind to button
 export function changeScene() {
+        
     overlay.classList.remove('firstFade');
     overlay.classList.add('fadeInOut');
 

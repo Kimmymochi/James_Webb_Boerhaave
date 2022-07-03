@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
+import { addEnvironment } from './stars.js';
 import lato from '../fonts/Lato_Regular.json';
 import prata from '../fonts/Prata_Regular.json';
 
@@ -130,6 +131,8 @@ export function createCredits(renderer, camera) {
         addContribution("Ontwikkelaars", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
         addContribution("Ondersteuning", ["Annelore Scholten", "Maarten Storm", "Nina Paris", "Gerolf Heida"]);
         animate();
+        addEnvironment( renderer, camera, scene);
+
     }, "2000");
 
 

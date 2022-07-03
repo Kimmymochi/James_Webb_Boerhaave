@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import textData from '../data/text.json';
 import model from '../models/jwst.gltf'
-
+import { addEnvironment } from './stars.js';
 const TWEEN = require('@tweenjs/tween.js')
 
 export function createInfrared(renderer, camera, loader, fireSceneChange) {
@@ -15,7 +15,7 @@ export function createInfrared(renderer, camera, loader, fireSceneChange) {
 
     // three.js
     // let controls;
-    let scene;
+    let scene = new THREE.Scene();;
     let telescope;
 
     // Camera
@@ -39,8 +39,6 @@ export function createInfrared(renderer, camera, loader, fireSceneChange) {
 	    console.error( error );
 	} );
 
-    // Scene
-    scene = new THREE.Scene();
 
     // Lighting
     //sun lighting
@@ -76,6 +74,7 @@ export function createInfrared(renderer, camera, loader, fireSceneChange) {
     window.addEventListener("resize", onWindowResize, false);
 
     animate();
+    addEnvironment( renderer, camera, scene);
 
     function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;

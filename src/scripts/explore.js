@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { addEnvironment } from './stars.js';
 import model from '../models/jwst.gltf'
 import textData from '../data/text.json';
 
@@ -107,6 +108,8 @@ export function createExplore(renderer, camera, loader) {
     ui.style.display = "block";
 
     animate();
+    addEnvironment( renderer, camera, scene);
+
 
     // WINDOW RESIZE
     window.addEventListener("resize", onWindowResize, false);

@@ -1,10 +1,15 @@
 import * as THREE from 'three';
+import { addEnvironment } from './stars';
 import textData from '../data/text.json';
-import { addEnvironment } from './stars.js';
+import quoteImage1 from '../images/dishoeck.jpg';
+import quoteImage2 from '../images/teplate.jpg';
+import quoteImage3 from '../images/hooijer.jpg';
+import quoteImage4 from '../images/robinson.jpg';
+import quoteImage5 from '../images/desert.jpg';
 
 export function createQuotes(renderer, camera) {
-    
     const quotesData = textData.text.quotes;
+    const imageList = [quoteImage1, quoteImage2, quoteImage3, quoteImage4, quoteImage5]
 
     const quote = document.getElementById("js--quote");
     const quoteText = document.getElementById('js--quoteText');
@@ -30,10 +35,14 @@ export function createQuotes(renderer, camera) {
     // set intro text
     quote.style.display = "flex";
 
+    // dynamically set imported images
+    quoteImages.forEach( function ( item ) {
+        let imageId = item.getAttribute('data-quote-id');
+        item.src = imageList[imageId - 1];
+    })
+
     animate();
     addEnvironment( renderer, camera, scene);
-
-
 
     // window resizer
     window.addEventListener("resize", onWindowResize, false);

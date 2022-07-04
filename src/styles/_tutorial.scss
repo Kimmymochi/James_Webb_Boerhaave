@@ -54,7 +54,7 @@ $anim-container-transition-time: .5s;
             margin: 0;
             text-transform: uppercase;
 
-            @media only screen and (min-width: 425px) {
+            @media only screen and (min-width: 768px) {
                 font-size: 2.4rem;
             }
         }
@@ -69,7 +69,7 @@ $anim-container-transition-time: .5s;
             margin-top: 1rem;
             display: block;
 
-            @media only screen and (min-width: 425px) {
+            @media only screen and (min-width: 768px) {
                 font-size: 1.6rem;
 
                 max-width: 70%;
@@ -145,7 +145,7 @@ $anim-container-transition-time: .5s;
                 margin-top: 1rem;
                 display: block;
 
-                @media only screen and (min-width: 425px) {
+                @media only screen and (min-width: 768px) {
                     font-size: 1.6rem;
                 }
             }

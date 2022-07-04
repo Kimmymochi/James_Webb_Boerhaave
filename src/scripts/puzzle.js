@@ -1,5 +1,10 @@
 import * as THREE from 'three';
+import DragControls from 'three-dragcontrols'
+
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { addEnvironment } from './stars';
+
+import textData from '../data/text.json';
 
 import backpanel from '../models/backpanel.gltf'
 import BUS from '../models/BUS.gltf'
@@ -7,9 +12,6 @@ import goldPlating from '../models/gold_plating.gltf'
 import secondaryMirror from '../models/secondary_mirror.gltf'
 import solarPanels from '../models/solar_panels.gltf'
 import sunscreens from '../models/sunscreens.gltf'
-
-import DragControls from 'three-dragcontrols'
-import { addEnvironment } from './stars';
 
 export function createPuzzle( renderer, camera, loader ) {
 
@@ -19,8 +21,12 @@ export function createPuzzle( renderer, camera, loader ) {
 
     // CAMERA
     // ----------------------------------------------------------------------
+    
+    // Regular Camera
+    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
+    camera.position.set( 0, 20, 100 );
 
-    // Ortographic camera
+    // Ortographic Camera
     // const frustumSize = 100;
     // const aspect = window.innerWidth / window.innerHeight;
     // camera = new THREE.OrthographicCamera(
@@ -32,15 +38,16 @@ export function createPuzzle( renderer, camera, loader ) {
 
     // camera.position.set( - 200, 200, 200 );
 
-    // Regular camera
-    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
-    camera.position.set( 0, 20, 100 );
-
+    // ORBIT CONTROLS
+    // ----------------------------------------------------------------------
     const orbitControls = new OrbitControls( camera, renderer.domElement );
     orbitControls.enableZoom = false;
+    orbitControls.enablePan = false;
+    orbitControls.update();
 
-    // Lighting
-    //sun lighting
+
+    // LIGHTING
+    // ----------------------------------------------------------------------
     const sun = new THREE.PointLight( 0xffffff , 1, 500 );
     sun.position.set( 20, -20, 0 );
     sun.castShadow = true;
@@ -52,15 +59,6 @@ export function createPuzzle( renderer, camera, loader ) {
     sun2.shadow.radius = 2;
     scene.add( sun2 );
 
-    // const light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
-    // scene.add( light );
-
-    // const dirLight = new THREE.DirectionalLight(0xffffff, 0.3, 50);
-    // dirLight.position.set(1, 2, -1);
-    // scene.add(dirLight);
-    // dirLight.castShadow = true;
-
-    //general lighting
     const sceneLight = new THREE.AmbientLight(0xffffb8, 0.2);
     scene.add(sceneLight);
 
@@ -114,6 +112,66 @@ export function createPuzzle( renderer, camera, loader ) {
     addEnvironment( renderer, camera, scene);
 
 
+
+    // UI
+    // ----------------------------------------------------------------------
+    const puzzleUI = document.getElementById("js--puzzle");
+    const puzzleHintButton = document.getElementById("js--puzzle-hint-button");
+
+    initPuzzleUI(textData.text.puzzle.title, textData.text.puzzle.text);
+    openPuzzleUI();
+
+    function initPuzzleUI(title, text)
+    {
+        let titleDOM = document.querySelector('#js--puzzle-title');
+        let textDOM = document.querySelector('#js--puzzle-text');
+
+        titleDOM.innerHTML = title;
+        textDOM.innerHTML = text;
+    }
+
+    function openPuzzleUI()
+    {
+        puzzleUI.classList.add("open");
+    }
+
+    function closePuzzleUI()
+    {
+        puzzleUI.classList.remove("open");
+    }
+
+    puzzleHintButton.addEventListener("click", useHint);
+
+    function useHint()
+    {
+        collisionsEnabled = true;
+
+        for (let SPIndex = 0; SPIndex < snappingPointsData.length; SPIndex++)
+        {
+            let SPMesh = snappingPointsData[SPIndex].mesh;
+            let partMesh = partsData[SPIndex].mesh;
+
+            let SPSnappedObject = snappingPointsData[SPIndex].snappedObject;
+
+            let isNotCorrectlyPlaced = SPSnappedObject != partsData[SPIndex];
+            let SPIsEmpty = SPSnappedObject === null;
+
+            if (isNotCorrectlyPlaced)
+            {
+                if (!SPIsEmpty)
+                {
+                    SPSnappedObject.mesh.position.set(
+                        SPSnappedObject.mesh.position.x + 30,
+                        SPSnappedObject.mesh.position.y + 30,
+                        SPSnappedObject.mesh.position.z + 30
+                    );
+                }
+
+                partMesh.position.set(SPMesh.position.x, SPMesh.position.y, SPMesh.position.z);
+                break;
+            }
+        }
+    }
 
 
     // WINDOW RESIZE
@@ -367,24 +425,34 @@ export function createPuzzle( renderer, camera, loader ) {
 
     function partDefaultState(part)
     {
-        part.mesh.material.color = new THREE.Color( 0xffffff);
-        part.mesh.material.opacity = 0.1;
+        setPartEmission(part, new THREE.Color( 0x000000));
     }
 
     function partPlacedCorrectlyState(part)
     {
-        part.mesh.material.color = new THREE.Color( 0x32a852);
-        part.mesh.material.opacity = 0.5;
+        setPartEmission(part, new THREE.Color( 0x32a852));
     }
 
     function partPlacedIncorrectlyState(part)
     {
-        part.mesh.material.color = new THREE.Color( 0xeb4034);
-        part.mesh.material.opacity = 0.5;
+        setPartEmission(part, new THREE.Color(0xeb4034));
+    }
+
+    function setPartEmission(part, color)
+    {
+        part.mesh.traverse(function (child)
+        {
+            if (child.material && child.material.emissive)
+            {
+                child.material.emissive = color;
+                child.material.opacity = 0.5;
+            }
+        });
     }
 
     function puzzleCompleted()
-    {   collisionsEnabled = false;
+    {
+        resetPartsToDefaultState();
 
         for (let partsIndex = 0; partsIndex < partsData.length; partsIndex++)
         {
@@ -395,10 +463,6 @@ export function createPuzzle( renderer, camera, loader ) {
         {
             snappingPointsData[SPIndex].mesh.material.opacity = 0;
         }
-        
-        dragControls.removeEventListener('dragstart');
-        dragControls.removeEventListener('dragend');
-
 
         dragControls.deactivate();
         dragControls.dispose();
@@ -407,6 +471,9 @@ export function createPuzzle( renderer, camera, loader ) {
         nextScene.classList.remove("hidden");
 
       
+        collisionsEnabled = false;
+
+        closePuzzleUI();
     }
 
 

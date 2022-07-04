@@ -124,6 +124,10 @@
                 "model": "Solar_Panels"
             }
         },
+        "puzzle": {
+            "title": "James-Webb assembleren",
+            "text": "<b>De James-Webb ruimtetelescoop moet geassembleerd worden!</b><br><br>Sleep de componenten op de juiste vastzetpunten (de doorzichtige bollen) om de ruimtetelescoop in elkaar te zetten."
+        },
         "quotes": {
 
             "dishoeck": {

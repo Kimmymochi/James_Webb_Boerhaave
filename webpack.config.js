@@ -31,7 +31,7 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(bin|mp4|wav|png)$/,
+                test: /\.(bin|mp4|wav|jpg|png)$/,
                     use: [
                     {
                         loader: 'file-loader',

@@ -18,6 +18,7 @@ export function createPuzzle( renderer, camera, loader ) {
 
     const scene = new THREE.Scene();
     const ui = document.getElementById("js--ui");
+    const nextScene = document.getElementById('js--sceneChanger');
 
     // CAMERA
     // ----------------------------------------------------------------------
@@ -217,9 +218,7 @@ export function createPuzzle( renderer, camera, loader ) {
     function addDraggablePart(mesh, pos)
     {
         let group = new THREE.Group();
-        const gltfLoader = new GLTFLoader();
-
-        gltfLoader.load( mesh, ( gltf ) =>
+        loader.load( mesh, ( gltf ) =>
         {
             let model = gltf.scene;
             model.scale.set(3, 3, 3);

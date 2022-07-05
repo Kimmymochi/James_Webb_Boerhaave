@@ -48,16 +48,10 @@ function init() {
 
     launchScene = createLaunch(renderer, camera, loader);
     scene = launchScene;
-    // currentScene = "launch";
+    currentScene = "launch";
 
     document.body.appendChild(renderer.domElement);
     window.addEventListener("resize", onWindowResize, false);
-
-    currentScene = "quotes";
-    quotesScene = createQuotes(renderer, camera, loader);
-    scene = quotesScene;
-    changeScene();
-
 }
 
 function onWindowResize() {
@@ -135,16 +129,16 @@ export function changeScene() {
 
         } else if (currentScene === "credits" ) {
 
-            // location.reload();
+            location.reload();
 
             // USE THESE IN CASE KIOSK WON'T DO LOCATION RELOADS
             // when clicked on restart, remove auto-change evemt
             // clearTimeout(creditsTimeout);
 
-            // sceneRemover(launchScene);    
-            // launchScene = createLaunch(renderer, camera);
-            // scene = launchScene;
-            // currentScene = "launch";
+            sceneRemover(launchScene);    
+            launchScene = createLaunch(renderer, camera);
+            scene = launchScene;
+            currentScene = "launch";
         }
 
     }, "1000");
@@ -179,8 +173,8 @@ function sceneRemover(obj) {
     }
   }
 
-// document.getElementById( "js--sceneChanger" ).onclick = function() { changeScene() };
-// document.getElementById( "js--sceneChanger" ).onkeydown = function() { false }
+document.getElementById( "js--sceneChanger" ).onclick = function() { changeScene() };
+document.getElementById( "js--sceneChanger" ).onkeydown = function() { false }
 
 
 //function to open help/tutorial screen with correct scene info

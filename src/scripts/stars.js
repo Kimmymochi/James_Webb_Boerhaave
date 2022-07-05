@@ -1,9 +1,5 @@
 import * as THREE from 'three';
 
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
-
 import stars from '../images/stars.png';
 
 export function addEnvironment( renderer, camera, scene ) {
@@ -39,7 +35,6 @@ export function addEnvironment( renderer, camera, scene ) {
         camera.updateProjectionMatrix();
     
         renderer.setSize(window.innerWidth, window.innerHeight);
-        bloomComposer.setSize(window.innerWidth, window.innerHeight);
     }
 
 };

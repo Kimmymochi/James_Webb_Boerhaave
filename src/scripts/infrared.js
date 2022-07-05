@@ -107,15 +107,15 @@ export function createInfrared(renderer, camera, loader, fireSceneChange) {
         document.getElementById("js--sceneChanger").onclick = function(event) {
             //if last chapter, run main.js function to change scene
             if (Object.keys(infraredText).length - 1 == currentChapterIndex) {
-                
+
                 closePanel();
-                document.getElementById("js--sceneChanger").classList.add('hidden');               
-               
+                document.getElementById("js--sceneChanger").classList.add('hidden');
+
                 // change camera & telescope position
-                let cameraPosition = new THREE.Vector3(22.5, 3, 3);                
+                let cameraPosition = new THREE.Vector3(22.5, 3, 3);
                 tweenCamera(cameraPosition, 2000);
                 tweenTelescope( -Math.PI / 10 );
-    
+
                 setTimeout( function() {
                     fireSceneChange();
                 }, "2000");
@@ -198,6 +198,7 @@ export function createInfrared(renderer, camera, loader, fireSceneChange) {
 
         //open ui panel
         panelDOM.classList.add("open");
+        panelDOM.classList.remove("collapsed");
     }
 
 

@@ -73,7 +73,6 @@ export function createPuzzle( renderer, camera ) {
         new THREE.Vector3(-40, 0, -37),
     ];
 
-    // TODO: Find correct snapping points positions instead of guessing
     const SPPositions = [
         new THREE.Vector3(0.60, 19.15, -0.75), // backpanel
         new THREE.Vector3(0.60, -0.23, -1.24), // BUS
@@ -82,6 +81,17 @@ export function createPuzzle( renderer, camera ) {
         new THREE.Vector3(0.60, 5.79, -17.47), // solar panels
         new THREE.Vector3(0.60, 5.22, 1.15) // sunscreens
     ];
+
+    function addPartDataEntry(mesh, boundingBox, snappingPoint, correctSP, initialPos)
+    {
+        partsData.push({
+            mesh: mesh,
+            boundingBox: boundingBox,
+            snappingPoint: snappingPoint,
+            correctSP: correctSP,
+            initialPos: initialPos
+        });
+    }
 
     ui.style.display = "none";
     for (let i = 0; i < meshes.length; i++) {
@@ -106,6 +116,7 @@ export function createPuzzle( renderer, camera ) {
     initPuzzleUI(textData.text.puzzle.title, textData.text.puzzle.text);
     openPuzzleUI();
 
+    // Initiates all UI related to the puzzle
     function initPuzzleUI(title, text)
     {
         let titleDOM = document.querySelector('#js--puzzle-title');
@@ -127,6 +138,7 @@ export function createPuzzle( renderer, camera ) {
 
     puzzleHintButton.addEventListener("click", useHint);
 
+    // Places a part on the correct snapping point
     function useHint()
     {
         collisionsEnabled = true;
@@ -203,6 +215,7 @@ export function createPuzzle( renderer, camera ) {
         return box;
     }
 
+    // Adds a 3D model to the scene that can be dragged by the player
     function addDraggablePart(mesh, pos)
     {
         let group = new THREE.Group();
@@ -261,6 +274,8 @@ export function createPuzzle( renderer, camera ) {
 
     // SNAPPING POINTS & COLLISION DETECTION
     // ----------------------------------------------------------------------
+
+    // Adds a point that parts can be snapped to
     function addSnappingPoint(radius, pos, correctPartId)
     {
         const snappingPointMesh = new THREE.Mesh(
@@ -294,6 +309,7 @@ export function createPuzzle( renderer, camera ) {
     const snappingDistance = 20;
     const toleranceDistance = 0.1;
 
+    // Handles everything related to collisions between parts and snapping points
     function checkCollisions()
     {
         closestPartDistance = 10000000;
@@ -339,6 +355,7 @@ export function createPuzzle( renderer, camera ) {
         if (isPuzzleCompleted) puzzleCompleted();
     }
 
+    // Updates values necessary for finding closest part to snapping point
     function findClosestPart(snappingPointData)
     {
         for (let partsIndex = 0; partsIndex < partsData.length; partsIndex++)
@@ -387,6 +404,7 @@ export function createPuzzle( renderer, camera ) {
         }
     }
 
+    // Sets snapping point to transparent default state
     function SPDefaultState(SP)
     {
         SP.mesh.material.transparent = true;
@@ -394,6 +412,7 @@ export function createPuzzle( renderer, camera ) {
         SP.mesh.scale.set(snappingPointRadius, snappingPointRadius, snappingPointRadius);
     }
 
+    // Removes transparency of snapping point and enlarges it
     function SPHoverState(SP)
     {
         SP.mesh.material.transparent = false;
@@ -402,6 +421,7 @@ export function createPuzzle( renderer, camera ) {
         SP.mesh.scale.set(scale, scale, scale);
     }
 
+    // Makes all existing parts default colors
     function resetPartsToDefaultState()
     {
         for (let partsIndex = 0; partsIndex < partsData.length; partsIndex++)
@@ -410,21 +430,25 @@ export function createPuzzle( renderer, camera ) {
         }
     }
 
+    // Makes part default colors
     function partDefaultState(part)
     {
         setPartEmission(part, new THREE.Color( 0x000000));
     }
 
+    // Makes part green
     function partPlacedCorrectlyState(part)
     {
         setPartEmission(part, new THREE.Color( 0x32a852));
     }
 
+    // Makes part red
     function partPlacedIncorrectlyState(part)
     {
         setPartEmission(part, new THREE.Color(0xeb4034));
     }
 
+    // Makes part desired color
     function setPartEmission(part, color)
     {
         part.mesh.traverse(function (child)
@@ -437,6 +461,7 @@ export function createPuzzle( renderer, camera ) {
         });
     }
 
+    // Disables UI and player drag input
     function puzzleCompleted()
     {
         resetPartsToDefaultState();
@@ -468,7 +493,7 @@ export function createPuzzle( renderer, camera ) {
 
         updatePartsBBLocation();
         orbitControls.update();
-        // partsFloatAnimation();
+
         if (collisionsEnabled) checkCollisions();
 
         renderer.render( scene, camera );
@@ -482,17 +507,6 @@ export function createPuzzle( renderer, camera ) {
         {
             partsData[partsIndex].boundingBox.copy(partsData[partsIndex].mesh.geometry.boundingBox)
                 .applyMatrix4(partsData[partsIndex].mesh.matrixWorld);
-        }
-    }
-
-    // Makes parts float like they would in space
-    function partsFloatAnimation()
-    {
-        for (let i = 0; i < draggableParts.length; i++)
-        {
-            const position = draggableParts[i].position;
-            const speed = 0.002;
-            if(position.x < 100) position.set(position.x + speed, position.y + speed, position.z + speed);
         }
     }
 

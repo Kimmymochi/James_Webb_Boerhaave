@@ -82,27 +82,17 @@ export function createPuzzle( renderer, camera ) {
         new THREE.Vector3(0.60, 5.22, 1.15) // sunscreens
     ];
 
-    function addPartDataEntry(mesh, boundingBox, snappingPoint, correctSP, initialPos)
-    {
-        partsData.push({
-            mesh: mesh,
-            boundingBox: boundingBox,
-            snappingPoint: snappingPoint,
-            correctSP: correctSP,
-            initialPos: initialPos
-        });
-    }
-
     ui.style.display = "none";
     for (let i = 0; i < meshes.length; i++) {
 
         // Create a draggable part for all 3D models
-        let draggablePart = addDraggablePart(meshes[i], partPositions[i]);
+        let draggablePart = addDraggablePart(meshes[i], partPositions[i], i);
         scene.add(draggablePart);
         draggableParts.push(draggablePart);
 
         // Create a snapping point for each part
         addSnappingPoint(snappingPointRadius, SPPositions[i], i);
+
     }
 
     animate();
@@ -216,7 +206,7 @@ export function createPuzzle( renderer, camera ) {
     }
 
     // Adds a 3D model to the scene that can be dragged by the player
-    function addDraggablePart(mesh, pos)
+    function addDraggablePart(mesh, pos, id)
     {
         let group = new THREE.Group();
         const gltfLoader = new GLTFLoader();
@@ -259,6 +249,7 @@ export function createPuzzle( renderer, camera ) {
                 mesh: hitBox,
                 boundingBox: boundingBox,
                 snappingPoint: null,
+                id: id
             },);
 
             model.position.set(-meshPosition.x, -meshPosition.y, -meshPosition.z);
@@ -296,7 +287,7 @@ export function createPuzzle( renderer, camera ) {
             mesh: snappingPointMesh,
             boundingBox: snappingPointBB,
             snappedObject: null,
-            correctPart: correctPartId
+            correctPartId: correctPartId
         });
 
         return snappingPointMesh;
@@ -324,7 +315,11 @@ export function createPuzzle( renderer, camera ) {
         {
             SPDefaultState(snappingPointsData[SPIndex]);
 
-            if (snappingPointsData[SPIndex].snappedObject == null )
+            let snappedObjectIsPresent = snappingPointsData[SPIndex].snappedObject;
+            let snappedObjectIsCorrect = snappedObjectIsPresent &&
+                snappingPointsData[SPIndex].snappedObject.id === snappingPointsData[SPIndex].correctPartId;
+
+            if (!snappedObjectIsPresent)
             {
                 findClosestPart(snappingPointsData[SPIndex]);
             } else
@@ -332,8 +327,7 @@ export function createPuzzle( renderer, camera ) {
                 ensureTolerableDistance(snappingPointsData[SPIndex]);
             }
 
-            // If correct part is snapped
-            if (snappingPointsData[SPIndex].snappedObject === partsData[SPIndex])
+            if (snappedObjectIsPresent && snappedObjectIsCorrect)
             {
                 partPlacedCorrectlyState(snappingPointsData[SPIndex].snappedObject);
             }

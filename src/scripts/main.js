@@ -44,10 +44,15 @@ function init() {
 
     launchScene = createLaunch(renderer, camera, loader);
     scene = launchScene;
-    currentScene = "launch";
+    // currentScene = "launch";
 
     document.body.appendChild(renderer.domElement);
     window.addEventListener("resize", onWindowResize, false);
+
+    currentScene = "quotes";
+    quotesScene = createQuotes(renderer, camera, loader);
+    scene = quotesScene;
+    changeScene();
 
 }
 
@@ -105,7 +110,7 @@ export function changeScene() {
         } else if ( currentScene === "puzzle" ) {
             sceneRemover(puzzleScene);
             quotesScene = createQuotes(renderer, camera, loader);
-            scene = quotesScene
+            scene = quotesScene;
             currentScene ="quotes"
             nextScene.classList.remove('hidden');
 

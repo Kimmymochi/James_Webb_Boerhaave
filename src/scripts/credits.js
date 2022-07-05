@@ -5,6 +5,9 @@ import { addEnvironment } from './stars.js';
 import lato from '../fonts/Lato_Regular.json';
 import prata from '../fonts/Prata_Regular.json';
 
+import monke from '../images/monke.png';
+
+
 export function createCredits(renderer, camera) {
 
     const scene = new THREE.Scene();
@@ -80,7 +83,6 @@ export function createCredits(renderer, camera) {
 
     let previousContributionPos = null;
 
-
     function addContribution(headerText, contributors)
     {
         // HEADER TEXT
@@ -121,6 +123,37 @@ export function createCredits(renderer, camera) {
         }
     }
 
+    // let imageMesh = null;
+
+    // function addImage()
+    // {
+    //     const boxGeometry = new THREE.BoxGeometry(100, 50, 1);
+    //     const textureLoader = new THREE.TextureLoader();
+    //
+    //     textureLoader.load(monke, (texture) =>
+    //     {
+    //         const material = new THREE.MeshBasicMaterial({
+    //             map: texture,
+    //             side: THREE.BackSide,
+    //             transparent: true,
+    //         });
+    //
+    //         const mesh = new THREE.Mesh(boxGeometry, material);
+    //
+    //         mesh.position.set(-50, 0, -80);
+    //         // mesh.rotation.set(-Math.PI / 3, 0, 0);
+    //
+    //         if (previousContributionPos != null)
+    //         {
+    //             mesh.position.y = previousContributionPos.y - 60;
+    //         }
+    //
+    //         scene.add(mesh);
+    //         imageMesh = mesh;
+    //     });
+    // }
+
+
     // REMOVE THE QUOTE HTML
     quote.style.display = "none";
     
@@ -129,7 +162,8 @@ export function createCredits(renderer, camera) {
         addContribution("Grote vragen", ["Bezoek de tentoonstelling Grote Vragen in", "Rijksmuseum Boerhaave voor meer informatie", "over de James Webb Ruimtetelescoop"]);
         addContribution("Collaboratie tussen", ["Hogeschool Leiden", "Rijksmuseum Boerhaave"]);
         addContribution("Ontwikkelaars", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
-        addContribution("Ondersteuning", ["Annelore Scholten", "Maarten Storm", "Nina Paris", "Gerolf Heida"]);
+        addContribution("Ondersteuning", ["Annelore Scholten","Bart Grob", "Maarten Muns", "Maarten Storm", "Nina Paris", "Gerolf Heida"]);
+        // addImage();
         animate();
         addEnvironment( renderer, camera, scene);
 
@@ -159,6 +193,12 @@ export function createCredits(renderer, camera) {
         for (let i = 0; i < textMeshes.length; i++) {
             textMeshes[i].position.y += 0.07;
             textMeshes[i].position.z -= 0.04;
+        }
+
+        if (imageMesh)
+        {
+            imageMesh.position.y += 0.07
+            imageMesh.position.z -= 0.04;
         }
     }
 

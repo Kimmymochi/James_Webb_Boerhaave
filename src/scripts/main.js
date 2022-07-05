@@ -12,6 +12,9 @@ import textData from '../data/text.json';
 let overlay = document.getElementById('js--overlay');
 let nextScene = document.getElementById('js--sceneChanger');
 
+document.getElementById('js--tutorial').style.display = "flex";
+document.getElementById('js--rotate').style.display = "flex";
+
 let camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
 // NOTE: using renderer more than once will result in multiple canvases

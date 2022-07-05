@@ -14,11 +14,11 @@
                     "title": "Leer over (infrarood) licht",
                     "text": "Deze sectie bestaat uit meerdere hoofdstukken, elk met een tekstuele uitleg en een visualisatie. De uitleg kan gevonden worden in het tekstpaneel, deze kan je open- en dichtklappen. Om naar het volgende hoofdstuk te gaan kan je op de pijl klikken aan de zijkant van het scherm."
                 },
-                "puzzle": {
+                "explore": {
                     "title": "Verken de James Webb Ruimtetelescoop",
                     "text": "Hier kan je de telescoop bekijken en leren over de werking van de onderdelen. De telescoop kan rondgedraaid worden zodat je alle hoeken van het object kunt zien. Aan onderdelen van de telescoop zijn punten verbonden waar je op kan klikken. Hierdoor kan je het geselecteerde onderdeel goed zien, zelfs al bevindt het zich binnen de telescoop."
                 },
-                "explore": {
+                "puzzle": {
                     "title": "Bouw de James Webb Ruimtetelescoop",
                     "text": "Hier kan de telescoop in elkaar gezet worden. In het midden van de omgeving staan meerdere bollen waar de onderdelen op gezet kunnen worden. Als een onderdeel in de buurt komt van een bol gesleept wordt, dan licht de bol op. Wanneer het onderdeel dan losgelaten wordt, wordt het vastgezet op de bol. Is dit de goede plek? Dan wordt het object groen. Is dit de verkeerde plek? Dan wordt het object rood."
                 },

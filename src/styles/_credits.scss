@@ -55,10 +55,6 @@
         width: 80%;
         margin: 0 auto;
 
-        @media only screen and (min-width: 1000px) {
-            align-items: center;
-        }
-
         img {
             border: 1px solid #EFEFEF;
             border-radius: 2px;
@@ -68,7 +64,6 @@
             margin-right: 2rem;
 
             @media only screen and (min-width: 1000px) {
-                margin-top: 4rem;
                 margin-left: auto;
                 margin-right: 4rem;
                 max-width: 60rem;
@@ -123,9 +118,7 @@
 
                     font-size: 1.6rem;
 
-                    max-height: none;
-                    overflow: auto;
-                    pointer-events: none;
+                    max-height: 35rem;
                 }
             }
         }

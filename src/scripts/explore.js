@@ -10,6 +10,9 @@ const TWEEN = require('@tweenjs/tween.js')
 export function createExplore(renderer, camera, loader) {
     //ui DOM
     const ui = document.getElementById("js--ui");
+    //clear text panel ui from previous scenes
+    document.querySelector('#js--ui #js--ui-panel').classList.remove("collapsed");
+    document.querySelector('#js--ui #js--ui-panel').classList.remove("open");
     // this is the distance the annotation will have from the annotation fixture point
     const annotationOffset = 5;
     // turn this bool to true if you want annotations to have "visibilityLowered" class when behind telescope

@@ -10,10 +10,11 @@
     opacity: 1;
     transition: opacity .5s ease-in-out;
 
+    padding: 6rem 2rem 4rem;
+
     &__box {
-        width: 75rem;
-        height: 25rem;
-        margin: 0 auto;
+
+        margin: 2rem 4rem 0;
         padding: 2rem;
         display: flex;
         color: white;
@@ -23,18 +24,14 @@
         backdrop-filter: blur(3rem);
         border-radius: 0.4rem;
 
-        @media only screen and (min-width: 1200px) {
-            height: 40rem;
-            width: 80rem;
-        }
-
-
         &__text{
             font-family: "Prata", "serif";
-            font-size: 2rem;
+            font-size: 1.2rem;
             font-weight: 100;
             z-index: 2;
             transition: opacity .5s ease-in-out;
+
+            min-height: 7rem;
 
             @media only screen and (min-width: 1200px) {
                 font-size: 3rem;
@@ -43,7 +40,7 @@
 
         &__person {
             font-family: "Lato", "sans-serif";
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 100;
             z-index: 2;
             line-height: 0;
@@ -61,12 +58,18 @@
 
     &__imagebox {
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
+        padding: 1rem 2rem 0rem;
+
+        @media only screen and (min-width: 1200px) {
+            justify-content: space-around;
+            padding: 1rem 4rem;
+        }
 
         &__image {
             z-index: 10;
-            width: 11rem;
-            height: 11rem;
+            width: 8rem;
+            height: 8rem;
             object-fit: cover;
             border-radius: 10rem;
             border: #E56528 0.2rem solid;
@@ -87,6 +90,6 @@
 }
 
 .active {
-    border-width: 0.8rem;
+    border-width: 0.5rem;
     pointer-events: none;
 }

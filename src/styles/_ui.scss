@@ -23,8 +23,7 @@ $label-spacing: 2rem;
         display: block;
         height: $panel-height-mobile;
         width: 100%;
-        padding: 4rem;
-        padding-top: 10rem;
+        padding: 2rem;
 
         position: absolute;
         left: 0;
@@ -38,9 +37,10 @@ $label-spacing: 2rem;
 
         transition: top $panel-transition-time;
 
-        @media only screen and (min-width: 425px) {
+        @media only screen and (min-width: 768px) {
             height: $panel-height-mobile;
             padding-top: 4rem;
+            padding: 4rem;
         }
 
         &.open {
@@ -48,7 +48,7 @@ $label-spacing: 2rem;
             top: calc(100% - #{$panel-height-mobile} + #{$label-height} + 1rem);
 
             //non fullscreen for mobile
-            @media only screen and (min-width: 425px) {
+            @media only screen and (min-width: 768px) {
                 top: calc(100% - #{$panel-height});
             }
 
@@ -72,7 +72,7 @@ $label-spacing: 2rem;
         display: flex;
         flex-direction: column;
 
-        @media only screen and (min-width: 425px) {
+        @media only screen and (min-width: 768px) {
             flex-direction: row;
         }
 
@@ -87,7 +87,7 @@ $label-spacing: 2rem;
             margin: 0;
             text-transform: uppercase;
 
-            @media only screen and (min-width: 425px) {
+            @media only screen and (min-width: 768px) {
                 width: 30%;
                 margin: 0;
 
@@ -102,10 +102,10 @@ $label-spacing: 2rem;
             color: #C6C6C6;
             font-size: 1.2rem;
 
-            margin-top: 4rem;
+            margin-top: 2rem;
             display: block;
 
-            @media only screen and (min-width: 425px) {
+            @media only screen and (min-width: 768px) {
                 width: 60%;
                 margin-top: 0;
 

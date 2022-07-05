@@ -4,6 +4,51 @@
             "collapseLabel": {
                 "collapsed": "uitklappen",
                 "open": "inklappen"
+            },
+            "tutorial": {
+                "launch": {
+                    "title": "Het lanceren van de James Webb",
+                    "text": "Wanneer u de site binnenkomt, begeeft u zich in een control room. Dit is een ruimte waarin raketten gemonitord worden. Door te drukken op de rode startknop wordt de Ariane 5 raket, met de James Webb Ruimtetelescoop aan boord, gelanceerd. Dit kunt u vervolgens zien gebeuren op het scherm in de control room - waarna de ervaring begint."
+                },
+                "infrared": {
+                    "title": "Leer over (infrarood) licht",
+                    "text": "Dit segment bestaat uit meerdere hoofdstukken, met elk textuele uitleg en een visualisatie hiervan. De uitleg kan gevonden worden in het tekstpaneel, die u wellicht nog moet uitklappen. Om naar het volgende hoofdstuk te gaan kan u op de pijl klikken aan de zijkant van het scherm."
+                },
+                "puzzle": {
+                    "title": "Verken de James Webb ruimtetelescoop",
+                    "text": "In dit segment kan u de James Webb Ruimtetelescoop bekijken en leren over de werking van de onderdelen. De telescoop kan rondgedraaid worden zodat u alle hoeken van het object kunt zien. Aan segmenten van de telescoop zijn punten verbonden waar u op kan klikken. Hierdoor kan u het geselecteerde component goed zien, zelfs al bevindt het zich binnen de telescoop."
+                },
+                "explore": {
+                    "title": "Zet de James Webb terug in elkaar",
+                    "text": "Na de exploration fase wordt er een puzzel spel gespeeld waarbij de James Webb ruimtetelescoop in elkaar gezet moet worden. In het centrum van de omgeving bevinden zich meerdere punten waar een onderdeel op vastgeklikt kan worden, dit zijn de grijze bollen in de bovenstaande afbeelding. Zodra een onderdeel binnen de radius van zo’n punt wordt gepositioneerd, zal het punt oplichten. Als vervolgens de linkermuisknop / de vinger losgelaten wordt, zal het onderdeel op het punt vastgezet worden. Als het onderdeel op het correcte punt geplaatst is, zal het object groen worden en als het op een incorrect punt geplaatst is, wordt het rood."
+                },
+                "quotes": {
+                    "title": "De visie en verwachtingen van experts",
+                    "text": "In dit segment kunt u lezen over wat experts zeggen over de toekomst van de ruimtetelescoop. Na het drukken op een foto verschijnt een quote van de bijbehorende persoon."
+                }
+            },
+            "controls":
+            {
+                "touchscreen":{
+                    "zoom": {
+                        "title": "In en uitzoomen",
+                        "text": "Om in een uit te zoomen in de applicatie kan u twee vingers op het scherm plaatsen en de vingers knijpen of spreiden."
+                    },
+                    "rotate": {
+                        "title": "Ronddraaien van de camera",
+                        "text": "Om de camera rond te draaien - waar dit mogelijk is in de applicatie - kan u een vinger op het scherm plaatsen en deze rondbewegen."
+                    }
+                },
+                "keyboardMouse": {
+                    "zoom": {
+                        "title": "In en uitzoomen",
+                        "text": "Om in een uit te zoomen in de applicatie kan u de muiswiel gebruiken, door deze naar voren of naar achter te draaien."
+                    },
+                    "rotate": {
+                        "title": "Ronddraaien van de camera",
+                        "text": "Om de camera rond te draaien - waar dit mogelijk is in de applicatie - kan u op het scherm klikken en vasthouden, en de muis bewegen."
+                    }
+                }
             }
         },
         "infrared": {
@@ -53,7 +98,7 @@
             "primarymirror": {
                 "id": 1,
                 "title": "Primaire spiegel",
-                "description": "18 aparte, zeshoekige spiegels - die elk 1.3 meter breed zijn - werken samen als één grote spiegel, die 6.5 meter hoog is. Deze enorme spiegel was berekend nodig te zijn om het licht van de verre sterrenstelsels te kunnen vangen. Een spiegel van deze grootte was een technische uitdaging, al was het met dezelfde methode gemaakt als de primaire spiegel van de Hubble ruimtetelescoop <i>(die 6x kleiner is!)</i>, zou de spiegel te zwaar zijn om in de ruimte te krijgen.<br>Om dit te verhelpen was besloten om de spiegel in verschillende segmenten te maken, die <i>elk</i> maar 20 kilogram wegen, door hun constructie gemaakt van beryllium - gekozen voor de stevigheid en het weerstaan van extreem lage temperaturen - met een laag goud voor betere weerspiegeling van het infrarood licht. Elk van deze segmenten kan individueel gedraaid en gericht worden om uiteindelijk een zo correct mogelijk beeld te maken.<br>Om deze enorme telescoop in de raket te kunnen krijgen, moest de spiegel in stukken ingeklapt moeten worden, waarbij de 2 buitenste kolommen van segmenten naar achter draaien.",
+                "description": "18 aparte, zeshoekige spiegels - die elk 1.3 meter breed zijn - werken samen als één grote spiegel, die 6.5 meter hoog is. Deze enorme spiegel was berekend nodig te zijn om het licht van de verre sterrenstelsels te kunnen vangen. Een spiegel van deze grootte was een technische uitdaging, al was het met dezelfde methode gemaakt als de primaire spiegel van de Hubble ruimtetelescoop <i>(die 6x kleiner is!)</i>, zou de spiegel te groot zijn om in de ruimte te krijgen.<br>Om dit te verhelpen was besloten om de spiegel in verschillende segmenten te maken, die <i>elk</i> maar 20 kilogram wegen, door hun constructie gemaakt van beryllium - gekozen voor de stevigheid en het weerstaan van extreem lage temperaturen - met een laag goud voor betere weerspiegeling van het infrarood licht. Elk van deze segmenten kan individueel gedraaid en gericht worden om uiteindelijk een zo correct mogelijk beeld te maken.<br>Om deze enorme telescoop in de raket te kunnen krijgen, moest de spiegel in stukken ingeklapt kunnen worden, waarbij de 2 buitenste kolommen van segmenten naar achter draaien.",
                 "location": {
                     "x": 0,
                     "y": 5,
@@ -66,7 +111,7 @@
             "secundarymirror": {
                 "id": 2,
                 "title": "Secundaire spiegel",
-                "description": "De secundaire spiegel, die tijdens lancering ingeklapt tegen de primaire spiegel stond, is in de ruimte uitgeklapt en heeft als functie om het licht - wat van de primaire spiegel af weerkaatst is - te bundelen en terug te kaatsen naar de telescoop.<br>De primaire spiegel heeft <i>geen</> segment in het midden, waardoor de lichtbundels infrarood hier de telescoop kunnen binnentreden waar het nog van een kleinere, derde spiegel kaatst in het meetapparatuur. Deze spiegel is hierom ook kleiner, met een diameter van <i>maar</i> 74 centimeter.",
+                "description": "De secundaire spiegel, die tijdens lancering ingeklapt tegen de primaire spiegel stond, is in de ruimte uitgeklapt en heeft als functie om het licht - wat van de primaire spiegel af weerkaatst is - te bundelen en terug te kaatsen naar de telescoop.<br>De primaire spiegel heeft <i>geen</> segment in het midden, waardoor de bundels infrarood hier de telescoop kunnen binnentreden waar het nog van een kleinere, derde spiegel kaatst in het meetapparatuur. De secundaire spiegel is hierom ook kleiner, met een diameter van <i>maar</i> 74 centimeter.",
                 "location": {
                     "x": 0,
                     "y": 3.5,
@@ -78,7 +123,7 @@
             "sunscreens": {
                 "id": 3,
                 "title": "Zonneschermen",
-                "description": "Om de meetinstrumenten goed te kunnen gebruiken, moeten deze op extreem lage temperaturen werken, tot ongeveer -234°C de instrumenten die licht gebruiken dicht tegen infrarood aan, of zelfs -266°C voor de MIRI, die infrarood licht gebruikt. Om te voorkomen dat deze instrumenten opwarmen door de zon, zijn er 5 zonneschermen - elk wel een tennisveld groot! - op elkaar gestapeld. Deze schermen blokkeren het licht, en de warmte, van de zon, waardoor de instrumenten in een stabiel koele omgevingen goed kunnen werken.<br>Het zonnescherm heeft een verschil van <b>minstens 300 graden Celsius</b> aan beide kanten! De kant die naar de zon is gericht, heeft een gemiddelde temperatuur van ongeveer  <b>90 graden Celsius</b>, terwijl de kant van de instrumenten een temperatuur heeft van  <b>-347 graden Celsius </b>, ofwel 36 graden Kelvin.",
+                "description": "Om de meetinstrumenten goed te kunnen gebruiken, moeten deze op extreem lage temperaturen werken, tot ongeveer -234°C of zelfs -266°C voor de MIRI, die mid-infrarood licht gebruikt - wat nog langere golflengtes gebruikt. Om te voorkomen dat deze instrumenten opwarmen door de zon, zijn er 5 zonneschermen - elk wel een tennisveld groot! - op elkaar gestapeld. Deze schermen blokkeren het licht, en de warmte, van de zon, waardoor de instrumenten in een stabiel koele omgevingen goed kunnen werken.<br>Het zonnescherm heeft een verschil van <b>300 graden Celsius</b> aan beide kanten! De kant die naar de zon is gericht, heeft een gemiddelde temperatuur van ongeveer  <b>90 graden Celsius</b>, terwijl de kant van de instrumenten een temperatuur heeft van  <b>-347 graden Celsius </b>, ofwel 36 graden Kelvin.",
                 "location": {
                     "x": 3,
                     "y": 1.25,
@@ -102,7 +147,7 @@
             "tools": {
                 "id": 5,
                 "title": "Meetinstrumenten",
-                "description": "De ISIM <i>(Integrated Instrument Module)</i> bevindt zich achter de primaire spiegel, en bevat alle meetinstrumenten voor het verzamelen en onderzoeken van het licht van de telescoop.<br>De ISIM bevat vier instrumenten:<ul><li><b>NIRCam (Near-Infrared Camera)</b>: Dit is het primaire optische element van de James Webb Ruimtetelescoop, die de golflengtes van <i>0.6 tot 5 micron detecteert</i> - dit zijn de golflengtes die van de vroegste sterren en sterrenstelsels die in het proces van vormen zijn afkomen.</li><li><b>NIRSpec (Near-Infrared Spectrograph)</b>: Het licht van de NIRCam komt in dit instrument, waar het licht van een object naar een spectrum verspreid wordt. Hierdoor kunnen de fysieke eigenschappen, zoals temperatuur, massa en chemische opbouw gemeten worden.</li><li><b>MIRI (Mid-Infrared Instrument)</b>: Dit instrument bevat zowel een camera als een spectrograaf, die het licht waarnemen van middenin het infrarode spectrum, van <i>5 tot 28 micron</i>. De lichtsensoren geven de mogelijkheidom verre sterrenstelsels, nieuw vormende sterren en kometen waar te nemen.</li><li><b>FGS (Fine Guidance Sensor)/NIRISS</b>: Door dit instrument kan de James Webb Ruimtetelescoop accuraat naar de juiste locatie wijzen, om zo de hoogste kwaliteit foto’s te maken van het doel. Gekoppelt met een ander instrument, de <i>NIRISS</i>, geeft de mogelijkheid om exoplaneten te vinden en karakteriseren, met hun eigenschappen.</li></ul>",
+                "description": "De ISIM <i>(Integrated Instrument Module)</i> bevindt zich achter de primaire spiegel, en bevat alle meetinstrumenten voor het verzamelen en onderzoeken van het licht van de telescoop.<br>De ISIM bevat vier instrumenten:<ul><li><b>NIRCam (Near-Infrared Camera)</b>: Dit is het primaire optische element van de James Webb Ruimtetelescoop, die de golflengtes van <i>0.6 tot 5 micron detecteert</i>.</li><li><b>NIRSpec (Near-Infrared Spectrograph)</b>: Het licht van de NIRCam komt in dit instrument, waar het licht van een object naar een spectrum verspreid wordt. Hierdoor kunnen de fysieke eigenschappen, zoals temperatuur, massa en chemische opbouw gemeten worden.</li><li><b>MIRI (Mid-Infrared Instrument)</b>: Dit instrument bevat zowel een camera als een spectrograaf, die het licht waarnemen van middenin het infrarode spectrum, van <i>5 tot 28 micron</i>. De lichtsensoren geven de mogelijkheidom verre sterrenstelsels, nieuw vormende sterren en kometen waar te nemen.</li><li><b>FGS (Fine Guidance Sensor)/NIRISS</b>: Door dit instrument kan de James Webb Ruimtetelescoop accuraat naar de juiste locatie wijzen, om zo de hoogste kwaliteit foto’s te maken van het doel. Gekoppelt met een ander instrument, de <i>NIRISS</i>, geeft de mogelijkheid om exoplaneten te vinden en karakteriseren, met hun eigenschappen.</li></ul>",
                 "location": {
                     "x": 0,
                     "y": 4,
@@ -165,10 +210,6 @@
                 "name": "Jean-Michel Desert",
                 "background": "Astronoom, Universiteit van Amsterdam"
             }
-
-
-
-
         }
     }
 }

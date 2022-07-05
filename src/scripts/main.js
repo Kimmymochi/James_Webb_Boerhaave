@@ -7,6 +7,7 @@ import { createPuzzle } from './puzzle.js';
 import { createQuotes } from './quotes.js';
 import { createCredits } from './credits.js';
 
+import textData from '../data/text.json';
 
 let overlay = document.getElementById('js--overlay');
 let nextScene = document.getElementById('js--sceneChanger');
@@ -34,6 +35,9 @@ let creditsTimeout;
 
 // gtlf loader for all scenes, better peformance-wise
 const loader = new GLTFLoader();
+
+const tutorialText = textData.text.ui.tutorial;
+const controlsText = textData.text.ui.controls;
 
 init();
 animate();
@@ -169,3 +173,64 @@ function sceneRemover(obj) {
       obj.material.dispose();
     }
   }
+
+// document.getElementById( "js--sceneChanger" ).onclick = function() { changeScene() };
+// document.getElementById( "js--sceneChanger" ).onkeydown = function() { false }
+
+
+//function to open help/tutorial screen with correct scene info
+function openHelpScreen(scene) {
+    //catch empty param
+    if (scene == null) {
+        console.error("Wrong scene code given to openHelpScreen()!");
+        return;
+    }
+
+    //get DOM of controls tutorial
+    //rotate camera
+    let rotateTitle = document.getElementById("js--controls-rotate-title");
+    let rotateText = document.getElementById("js--controls-rotate-text");
+    //zoom
+    let zoomTitle = document.getElementById("js--controls-zoom-title");
+    let zoomText = document.getElementById("js--controls-zoom-text");
+
+    //check for if user is using touchscreen
+    let primaryInteraction = isTouchDevice() ? "touchscreen" : "keyboardMouse";
+    //display control information for primary controls (touchdevice, keyboard / mouse)
+    rotateTitle.innerHTML = controlsText[primaryInteraction].rotate.title;
+    rotateText.innerHTML = controlsText[primaryInteraction].rotate.text;
+    zoomTitle.innerHTML = controlsText[primaryInteraction].zoom.title;
+    zoomText.innerHTML = controlsText[primaryInteraction].zoom.text;
+
+    //get & set dom of text with explanation of current scene
+    let sceneHelpTitle = document.getElementById("js--scene-help-title");
+    sceneHelpTitle.innerHTML = tutorialText[scene].title;
+
+    let sceneHelpText = document.getElementById("js--scene-help-text");
+    sceneHelpText.innerHTML = tutorialText[scene].text;
+
+    //get dom
+    let helpScreenDOM = document.getElementById( "js--tutorial" );
+    //remove hidden styling
+    helpScreenDOM.classList.remove("hidden");
+}
+
+
+//function to close help screen
+function closeHelpScreen() {
+    //get dom
+    let helpScreenDOM = document.getElementById( "js--tutorial" );
+    //add hidden styling
+    helpScreenDOM.classList.add("hidden");
+}
+//DOM event bind
+document.getElementById("js--tutorialButton").onclick = function() { openHelpScreen(currentScene) };
+document.getElementById("js--tutorial-close").onclick = function() { closeHelpScreen() };
+
+
+// check for if device uses touchscreen
+function isTouchDevice() {
+    return (('ontouchstart' in window) ||
+        (navigator.maxTouchPoints > 0) ||
+        (navigator.msMaxTouchPoints > 0));
+}

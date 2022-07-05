@@ -7,7 +7,7 @@ npm -v
 ```
 Is npm not recognize or under version 8.5.0, download new version of [NodeJS](https://nodejs.org/en/download/).
 
-Install the `package.json` dependencies 
+Install the `package.json` dependencies
 ```
 npm install
 ```
@@ -24,3 +24,8 @@ npm run build
 
 ## Note
 New .js and .scss files can be imported within `index.js` instead of HTML ✪ ω ✪
+
+
+
+## Telescope model
+The James Webb Space Telescope" (https://skfb.ly/oqUTA) by Ignazio Pillitteri is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/)

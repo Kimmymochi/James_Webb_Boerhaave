@@ -2,11 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="icon" type="image/x-icon" href="images/icons/JWEX-logo2-inv.svg">
     <title>James Webb Experience | Rijksmuseum Boerhaave</title>
+
+
 </head>
 <body style="background-color: black">
+    <!-- ROTATE SCREEN OVERLAY -->
+    <div id="js--rotate" class="rotateScreen">
+        <img src="images/icons/boerhaave-logo.svg" alt="Rijksmuseum Boerhaave logo" class="logo">
+        <img src="images/icons/rotate_phone-white.svg" alt="draai telefoon icoon" class="rotateIcon">
+        <div class="text">
+            <h2 class="title">Voor de beste ervaring</h2>
+            <p class="subtitle">draai uw telefoon naar 'landscape' modus</p>
+        </div>
+    </div>
+
+    <!-- SETTINGS OVERLAY -->
+    <div id="js--tutorial" class="tutorial hidden">
+        <button id="js--tutorial-close" class="button tutorialClosebutton" title="sluit help scherm">
+            <img src="images/icons/x-outline.svg" alt="close button outline" class="icon">
+        </button>
+        <div class="tutorial__intro">
+            <h2 class="title">De James Webb Experience</h2>
+            <p class="text">Dit is de James webb Experience, een introductie voor de expositie 'Grote Vragen' in Rijksmuseum Boerhaave! Hier kan u uitleg krijgen over hoe u door deze ervaring navigeert en interacteert.</p>
+        </div>
+        <div class="tutorial__scene">
+            <h2 id="js--scene-help-title" class="title">Lorem ipsum dolor sit amet.</h2>
+            <p id="js--scene-help-text" class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius molestiae tenetur, rerum aspernatur! Consequuntur tempora repellendus natus, dignissimos expedita sed?</p>
+        </div>
+        <div class="tutorial__steps">
+            <div class="step">
+                <div class="image-container">
+                    <img src="images/icons/guide-rotate.svg" alt="uitleg rotatie in de applicatie">
+                </div>
+                <p id="js--controls-rotate-title" class="step-title">lorem lorem</p>
+                <p id="js--controls-rotate-text" class="step-context">lorem lorem lorem Lorem ipsum dolor sit amet.</p>
+            </div>
+
+            <div class="step">
+                <div class="image-container">
+                    <img src="images/icons/guide-zoom.svg" alt="uitleg zoomen in de applicatie">
+                </div>
+                <p id="js--controls-zoom-title" class="step-title">lorem lorem</p>
+                <p id="js--controls-zoom-text" class="step-context">lorem lorem lorem Lorem ipsum dolor sit amet.</p>
+            </div>
+        </div>
+    </div>
 
     <!-- BLACK OVERLAY -->
     <div id="js--overlay" class="overlay firstFade"></div>
@@ -25,12 +69,14 @@
                 <h2 class="title">TEST ANNOTATION TITLE</h2>
                 <p class="text">textie Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque cum dolor ducimus in, expedita hic recusandae tempora quasi molestias nulla incidunt quidem sunt minus non illum dicta velit id, autem, dignissimos aliquam maxime, quam. Perferendis et animi quia consequuntur modi, iste possimus similique quaerat ab nesciunt, iusto quis commodi asperiores quod tempore sapiente. Illum voluptates, quae consequuntur eum nobis nemo eius earum vitae cum unde fuga, esse amet accusantium totam, atque labore. Est fugit aspernatur, iste quas, ullam numquam libero saepe ea animi modi cumque quasi quis ducimus accusamus dolorum in, odio, neque voluptatem maxime nemo sed enim hic eaque!</p>
             </div>
+            <!-- exploration reset label -->
             <span class="ui-label ui-label--reset hidden">
                 <button id="js--panel-reset">
                     <p id="js--panel-label-reset" class="label">terug</p>
                     <img src="images/icons/close.svg" alt="reset icon" class="icon">
                 </button>
             </span>
+            <!-- collapse label -->
             <span class="ui-label ui-label--collapse">
                 <button id="js--panel-collapse">
                     <p id="js--panel-label-collapse" class="label">inklappen</p>
@@ -75,5 +121,13 @@
         <img id="js--arrowIcon" src="images/icons/scene-arrow.svg" alt="next scene icon" class="icon" draggable="false">
         <img id="js--restartIcon" src="images/icons/restart.svg" alt="restart scene icon" class="icon hidden" draggable="false">
     </button>
+
+    <!-- BUTTON FOR SETTINGS -->
+    <button id="js--tutorialButton" class="button tutorialButton" title="help">
+        <img src="images/icons/help.svg" alt="help icon" class="icon">
+    </button>
+
+    <!-- james webb telescope model: -->
+	<!-- "The James Webb Space Telescope" (https://skfb.ly/oqUTA) by Ignazio Pillitteri is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/). -->
 </body>
 </html>

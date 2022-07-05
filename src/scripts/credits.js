@@ -179,7 +179,7 @@ export function createCredits(renderer, camera) {
     function setCreditsImg()
     {
         let request = new XMLHttpRequest();
-        request.open("GET", "https://api.nsa.gov/planetary/apod?api_key=f8h8v7DEKnxam5W6O1NejQfImQst6gkP4vQ4Jru1");
+        request.open("GET", "https://api.nasa.gov/planetary/apod?api_key=f8h8v7DEKnxam5W6O1NejQfImQst6gkP4vQ4Jru1");
         request.send();
         request.onload = () =>
         {
@@ -191,7 +191,7 @@ export function createCredits(renderer, camera) {
                 creditsImgExplanation.innerHTML = apodJSON.explanation;
             }
         }
-        
+
         request.onerror = () => {
             creditsImg.src = defaultImage;
         }

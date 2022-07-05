@@ -162,13 +162,22 @@ export function createPuzzle( renderer, camera, loader ) {
                 if (SPSnappedObject)
                 {
                     SPSnappedObject.mesh.position.set(
-                        SPSnappedObject.mesh.position.x,
-                        SPSnappedObject.mesh.position.y + 100,
-                        SPSnappedObject.mesh.position.z
+                        SPSnappedObject.mesh.position.x + 20,
+                        SPSnappedObject.mesh.position.y + 20,
+                        SPSnappedObject.mesh.position.z + 20
                     );
                 }
 
-                partMesh.position.set(SPMesh.position.x, SPMesh.position.y, SPMesh.position.z);
+                for (let partsIndex = 0; partsIndex < partsData.length; partsIndex++)
+                {
+                    if (partsData[partsIndex].id === snappingPointsData[SPIndex].correctPartId)
+                    {
+                        collisionsEnabled = false;
+                        partsData[partsIndex].mesh.position.set(SPMesh.position.x, SPMesh.position.y, SPMesh.position.z);
+                        collisionsEnabled = true;
+                        break;
+                    }
+                }
                 break;
             }
         }

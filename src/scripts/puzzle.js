@@ -154,17 +154,17 @@ export function createPuzzle( renderer, camera, loader ) {
 
             let SPSnappedObject = snappingPointsData[SPIndex].snappedObject;
 
-            let isNotCorrectlyPlaced = SPSnappedObject != partsData[SPIndex];
-            let SPIsEmpty = SPSnappedObject === null;
+            let snappedObjectIsCorrect = SPSnappedObject &&
+                SPSnappedObject.id === snappingPointsData[SPIndex].correctPartId;
 
-            if (isNotCorrectlyPlaced)
+            if (!snappedObjectIsCorrect)
             {
-                if (!SPIsEmpty)
+                if (SPSnappedObject)
                 {
                     SPSnappedObject.mesh.position.set(
-                        SPSnappedObject.mesh.position.x + 30,
-                        SPSnappedObject.mesh.position.y + 30,
-                        SPSnappedObject.mesh.position.z + 30
+                        SPSnappedObject.mesh.position.x,
+                        SPSnappedObject.mesh.position.y + 100,
+                        SPSnappedObject.mesh.position.z
                     );
                 }
 

@@ -9,6 +9,7 @@ import textData from '../data/text.json';
 import backpanel from '../models/backpanel.gltf'
 import BUS from '../models/BUS.gltf'
 import goldPlating from '../models/gold_plating.gltf'
+import ISIS from '../models/ISIS.gltf'
 import secondaryMirror from '../models/secondary_mirror.gltf'
 import solarPanels from '../models/solar_panels.gltf'
 import sunscreens from '../models/sunscreens.gltf'
@@ -17,7 +18,6 @@ export function createPuzzle( renderer, camera, loader ) {
 
     const scene = new THREE.Scene();
     const ui = document.getElementById("js--ui");
-    const nextScene = document.getElementById("js--sceneChanger")
 
     // CAMERA
     // ----------------------------------------------------------------------
@@ -95,7 +95,6 @@ export function createPuzzle( renderer, camera, loader ) {
     ];
 
     ui.style.display = "none";
-
     for (let i = 0; i < meshes.length; i++) {
 
         // Create a draggable part for all 3D models
@@ -107,10 +106,7 @@ export function createPuzzle( renderer, camera, loader ) {
         addSnappingPoint(snappingPointRadius, SPPositions[i], i);
     }
 
-
     animate();
-    addEnvironment( renderer, camera, scene);
-
 
 
     // UI
@@ -209,7 +205,7 @@ export function createPuzzle( renderer, camera, loader ) {
     {
         let geometry, box;
 
-        geometry = new THREE.BoxBufferGeometry(objectWidth,objectHeight,objectDepth);
+        geometry = new THREE.BoxGeometry(objectWidth,objectHeight,objectDepth);
 
         box = new THREE.Mesh(geometry, material);
         draggableParts.push(box);
@@ -221,7 +217,9 @@ export function createPuzzle( renderer, camera, loader ) {
     function addDraggablePart(mesh, pos)
     {
         let group = new THREE.Group();
-        loader.load( mesh, ( gltf ) =>
+        const gltfLoader = new GLTFLoader();
+
+        gltfLoader.load( mesh, ( gltf ) =>
         {
             let model = gltf.scene;
             model.scale.set(3, 3, 3);
@@ -277,7 +275,7 @@ export function createPuzzle( renderer, camera, loader ) {
     function addSnappingPoint(radius, pos, correctPartId)
     {
         const snappingPointMesh = new THREE.Mesh(
-            new THREE.SphereBufferGeometry(radius),
+            new THREE.SphereGeometry(radius),
             new THREE.MeshPhongMaterial({color: 0xffffff})
         );
 

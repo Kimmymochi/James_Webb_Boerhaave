@@ -48,10 +48,15 @@ function init() {
 
     launchScene = createLaunch(renderer, camera, loader);
     scene = launchScene;
-    currentScene = "launch";
+    // currentScene = "launch";
 
     document.body.appendChild(renderer.domElement);
     window.addEventListener("resize", onWindowResize, false);
+
+    currentScene = "quotes";
+    quotesScene = createQuotes(renderer, camera, loader);
+    scene = quotesScene;
+    changeScene();
 
 }
 
@@ -109,7 +114,7 @@ export function changeScene() {
         } else if ( currentScene === "puzzle" ) {
             sceneRemover(puzzleScene);
             quotesScene = createQuotes(renderer, camera, loader);
-            scene = quotesScene
+            scene = quotesScene;
             currentScene ="quotes"
             nextScene.classList.remove('hidden');
 
@@ -123,14 +128,14 @@ export function changeScene() {
             // auto-change to launch scene after some time
             // NOTES:   -   problematic when other devices animate the credits slower
             //          -   in case we do camera zoom-out animation we can change scene within tween.onComplete
-            creditsTimeout =  setTimeout( () => {
-                // changeScene();
-                location.reload();
-            }, "50000")
+            // creditsTimeout =  setTimeout( () => {
+            //     // changeScene();
+            //     location.reload();
+            // }, "50000")
 
         } else if (currentScene === "credits" ) {
 
-            location.reload();
+            // location.reload();
 
             // USE THESE IN CASE KIOSK WON'T DO LOCATION RELOADS
             // when clicked on restart, remove auto-change evemt

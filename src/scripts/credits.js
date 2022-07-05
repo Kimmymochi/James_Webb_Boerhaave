@@ -211,6 +211,7 @@ export function createCredits(renderer, camera) {
         {
             overlay.classList.remove('fadeInOut');
             overlay.style.opacity = 0;
+            document.getElementById( "js--sceneChanger" ).classList.remove("hidden");
             addContribution("Meer ontdekken?", ["Bezoek de tentoonstelling Grote Vragen in", "Rijksmuseum Boerhaave en neem een kijkje", "bij het schaalmodel van de James Webb", "Ruimtetelescoop"]);
             addContribution("Collaboratie tussen", ["Hogeschool Leiden", "Rijksmuseum Boerhaave"]);
             addContribution("Ontwikkelaars", ["Kim Hoogland", "Tijs Ruigrok", "Lukas Splinter"]);
@@ -237,7 +238,6 @@ export function createCredits(renderer, camera) {
     }
 
     //remove next scene button since its last scene
-    // document.getElementById( "js--sceneChanger" ).remove();
     document.getElementById( "js--arrowIcon").classList.add("hidden");
     document.getElementById( "js--restartIcon").classList.remove("hidden");
 

@@ -117,7 +117,6 @@ export function changeScene() {
             creditsScene = createCredits(renderer, camera);
             scene = creditsScene;
             currentScene = "credits";
-            nextScene.classList.remove('hidden');
 
             // auto-change to launch scene after some time
             // NOTES:   -   problematic when other devices animate the credits slower

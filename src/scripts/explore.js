@@ -415,7 +415,22 @@ export function createExplore(renderer, camera, loader) {
 
         //open ui panel
         panelDOM.classList.add("open");
+        panelDOM.classList.remove("collapsed");
     }
+
+    //collapses UI panel
+    function toggleCollapsePanel() {
+        //get DOM element
+        let panelDOM = document.querySelector('#js--ui #js--ui-panel');
+        let panelLabel = document.querySelector('#js--ui #js--panel-label-collapse');
+        //close ui panel
+        panelDOM.classList.toggle("collapsed");
+
+        //set text
+        panelLabel.innerHTML = panelDOM.classList.contains("collapsed") ? textData.text.ui.collapseLabel.collapsed : textData.text.ui.collapseLabel.open;
+    }
+    //bind to button
+    document.getElementById("js--panel-collapse").onclick = function(){toggleCollapsePanel()};
 
 
     //resets the UI focus on a telescope segment to neutral

@@ -126,7 +126,7 @@ export function createCredits(renderer, camera) {
 
     // REMOVE THE QUOTE HTML
     quote.style.display = "none";
-    
+
     setTimeout( () => {
         quote.style.display ="none";
         animate();
@@ -205,6 +205,10 @@ export function createCredits(renderer, camera) {
         setTimeout(function ()
         {
             closeCreditsUI();
+
+            //also show change button
+            document.getElementById( "js--arrowIcon").classList.add("hidden");
+            document.getElementById( "js--restartIcon").classList.remove("hidden");
         }, 1000);
 
         setTimeout(function ()

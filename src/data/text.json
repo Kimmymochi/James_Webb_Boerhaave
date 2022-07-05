@@ -25,6 +25,10 @@
                 "quotes": {
                     "title": "De visie en verwachtingen van experts",
                     "text": "Hier geven experts hun mening over de toekomst van de ruimtetelescoop. Na het drukken op een foto verschijnt een quote van de bijbehorende persoon."
+                },
+                "credits": {
+                    "title": "NASA beelden en dankwoord",
+                    "text": "Hier kan je een dagelijks nieuwe afbeelding van NASA vinden, en credits/dankwoord aan de mensen die deze applicatie mogelijk hebben gemaakt."
                 }
             },
             "controls":
@@ -42,7 +46,7 @@
                 "keyboardMouse": {
                     "zoom": {
                         "title": "In en uitzoomen",
-                        "text": "Gebruik het muiswiel en draai naar voren / achteren om in en uit te zoomen. (waar mogelijk)"                    
+                        "text": "Gebruik het muiswiel en draai naar voren / achteren om in en uit te zoomen. (waar mogelijk)"
                     },
                     "rotate": {
                         "title": "Ronddraaien camera",
@@ -211,7 +215,7 @@
                 "background": "Astronoom, Universiteit van Amsterdam"
             }
         },
-        
+
         "credits": {
             "title": "Wat denk jij dat de telescoop gaat ontdekken?",
             "text": "Hier een voorproefje van wat NASA eerder gevonden heeft in de ruimte. Dagelijks toont NASA een nieuwe foto, die zullen op deze pagina verschijnen. Wie weet worden hier in de toekomst foto's die door de James Webb ruimtetelescoop gemaakt zijn weergeven."

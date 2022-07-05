@@ -10,19 +10,27 @@
     opacity: 1;
     transition: opacity .5s ease-in-out;
 
-    padding: 6rem 2rem 4rem;
+    padding: 6rem 2rem 2rem;
 
     &__box {
 
-        margin: 2rem 4rem 0;
+        width: 60rem;
+        height: 25rem;
+        margin: 0 auto;
+        margin-top: 2rem;
         padding: 2rem;
         display: flex;
         color: white;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         background-color: rgba(25, 25, 25, 0.5);
         backdrop-filter: blur(3rem);
         border-radius: 0.4rem;
+
+        @media only screen and (min-width: 1200px) {
+            height: 35rem;
+            width: 80rem;
+        }
 
         &__text{
             font-family: "Prata", "serif";
@@ -30,8 +38,7 @@
             font-weight: 100;
             z-index: 2;
             transition: opacity .5s ease-in-out;
-
-            min-height: 7rem;
+            height: 3rem;
 
             @media only screen and (min-width: 1200px) {
                 font-size: 3rem;

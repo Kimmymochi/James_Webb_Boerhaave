@@ -107,6 +107,8 @@ export function createPuzzle( renderer, camera, loader ) {
         addSnappingPoint(snappingPointRadius, SPPositions[i], i);
     }
 
+    addEnvironment(renderer, camera, scene);
+
     animate();
 
 

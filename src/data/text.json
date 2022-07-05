@@ -165,10 +165,10 @@
                 "name": "Jean-Michel Desert",
                 "background": "Astronoom, Universiteit van Amsterdam"
             }
-
-
-
-
+        },
+        "credits": {
+            "title": "Wat denk jij dat de telescoop gaat ontdekken?",
+            "text": "Hier een voorproefje van wat NASA eerder gevonden heeft in de ruimte. Dagelijks toont NASA een nieuwe foto, die zullen op deze pagina verschijnen. Wie weet worden hier in de toekomst foto's die door de James Webb ruimtetelescoop gemaakt zijn weergeven."
         }
     }
 }

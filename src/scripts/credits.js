@@ -6,7 +6,7 @@ import lato from '../fonts/Lato_Regular.json';
 import prata from '../fonts/Prata_Regular.json';
 
 import textData from '../data/text.json';
-
+import defaultImage from '../images/defaultImage.jpg';
 
 export function createCredits(renderer, camera) {
 
@@ -179,7 +179,7 @@ export function createCredits(renderer, camera) {
     function setCreditsImg()
     {
         let request = new XMLHttpRequest();
-        request.open("GET", "https://api.nasa.gov/planetary/apod?api_key=f8h8v7DEKnxam5W6O1NejQfImQst6gkP4vQ4Jru1");
+        request.open("GET", "https://api.nsa.gov/planetary/apod?api_key=f8h8v7DEKnxam5W6O1NejQfImQst6gkP4vQ4Jru1");
         request.send();
         request.onload = () =>
         {
@@ -190,6 +190,10 @@ export function createCredits(renderer, camera) {
                 creditsImgDate.innerHTML = apodJSON.date;
                 creditsImgExplanation.innerHTML = apodJSON.explanation;
             }
+        }
+        
+        request.onerror = () => {
+            creditsImg.src = defaultImage;
         }
     }
 

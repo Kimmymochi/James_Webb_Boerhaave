@@ -53,6 +53,8 @@ $label-spacing: 2rem;
             .ui-label {
                 top: calc(-1 * #{$label-height});
                 opacity: 1;
+                border: 1px solid #ffffff4d;
+                border-bottom: none;
             }
         }
 
@@ -107,14 +109,20 @@ $label-spacing: 2rem;
             margin-top: 2rem;
             display: block;
 
+            max-height: 15rem;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            pointer-events: all;
+
             @media only screen and (min-width: 1200px) {
                 width: 60%;
                 margin-top: 0;
 
                 font-size: 1.6rem;
 
-                column-count: 2;
                 display: block;
+
+                max-height: 20rem;
             }
         }
     }
@@ -133,8 +141,7 @@ $label-spacing: 2rem;
         backdrop-filter: blur(3rem);
         opacity: 0;
 
-        border: 1px solid #ffffff4d;
-        border-bottom: none;
+        border: 1px solid #00000000;
         border-radius: .5rem .5rem 0 0;
         pointer-events: all;
 

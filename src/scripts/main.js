@@ -5,7 +5,6 @@ import { createInfrared } from './infrared.js';
 import { createExplore, removeExplore } from './explore.js';
 import { createPuzzle } from './puzzle.js';
 import { createQuotes } from './quotes.js';
-import { createCredits } from './credits.js';
 
 import textData from '../data/text.json';
 
@@ -33,8 +32,6 @@ let infraredScene;
 let exploreScene;
 let puzzleScene;
 let quotesScene;
-let creditsScene;
-let creditsTimeout;
 
 // gtlf loader for all scenes, better peformance-wise
 const loader = new GLTFLoader();
@@ -75,7 +72,7 @@ function render() {
 
 // change scene on click, bind to button
 export function changeScene() {
-        
+
     overlay.classList.remove('firstFade');
     overlay.classList.add('fadeInOut');
 
@@ -116,40 +113,24 @@ export function changeScene() {
             nextScene.classList.remove('hidden');
 
         } else if ( currentScene === "quotes" ) {
-            sceneRemover(quotesScene);
-            creditsScene = createCredits(renderer, camera);
-            scene = creditsScene;
-            currentScene = "credits";
-
-            // auto-change to launch scene after some time
-            // NOTES:   -   problematic when other devices animate the credits slower
-            //          -   in case we do camera zoom-out animation we can change scene within tween.onComplete
-            // creditsTimeout =  setTimeout( () => {
-            //     // changeScene();
-            //     location.reload();
-            // }, "50000")
-
-        } else if (currentScene === "credits" ) {
-
             location.reload();
 
-            // USE THESE IN CASE KIOSK WON'T DO LOCATION RELOADS
-            // when clicked on restart, remove auto-change evemt
-            // clearTimeout(creditsTimeout);
-
-            sceneRemover(launchScene);    
+            sceneRemover(quotesScene);
             launchScene = createLaunch(renderer, camera);
             scene = launchScene;
             currentScene = "launch";
+
+
+
         }
 
     }, "1000");
 
 }
 
-nextScene.onclick = function() { 
+nextScene.onclick = function() {
     changeButton.classList.add('hidden');
-    changeScene() 
+    changeScene()
 };
 
 nextScene.onkeydown = function() { false }

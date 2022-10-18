@@ -50,14 +50,14 @@ export function createQuotes(renderer, camera) {
     function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
-    
+
         renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
     function animate() {
         requestAnimationFrame(animate);
         renderer.render(scene, camera);
-    } 
+    }
 
     // sets quote field to corresponding id number
     function setQuote(quote) {
@@ -110,6 +110,10 @@ export function createQuotes(renderer, camera) {
         item.onclick = function(){quoteOnClick(item)};
     });
 
+    //remove next scene button since its last scene
+    document.getElementById( "js--arrowIcon").classList.add("hidden");
+    document.getElementById( "js--restartIcon").classList.remove("hidden");
+
+
     return scene;
 }
-
